@@ -1,0 +1,93 @@
+using UnityEngine;
+using UnityEngine.AI;
+public class EnemyAI : MonoBehaviour
+{
+    public NavMeshAgent agent; //navmesh agent reference
+
+    public Transform player; //player position reference
+
+    public LayerMask whatIsGround, whatIsPlayer; //layers for ground and player
+
+    public Animation animator; //animaton reference
+
+    //Patrolling
+    public Vector3 walkPoint;
+    bool walkPointSet;
+    public float walkPointRange;
+
+    //Attacking 
+    public float timeBetweenAttacks;
+    bool alreadyAttacked;
+
+    //States
+    public float sightRange, AttackRange;
+    public bool playerInSightRange, playerInAttackRange;
+
+    private void Awake()
+    {
+        player = GameObject.Find("Player").transform; //assign player to the game object called player and its transform settings
+        agent = GetComponent<NavMeshAgent>(); //assign agent to the navmeshagent 
+        animator = GetComponent<Animation>();
+    }
+
+    private void Update()
+    {
+        //Check for sight and attack range
+        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);//checks for the position of the player in a radius of sight range on layer mask of player
+        playerInAttackRange = Physics.CheckSphere(transform.position, AttackRange, whatIsPlayer); //checks for the position of the player in a radius of attack range on layer mask of player
+
+        if (!playerInSightRange && !playerInAttackRange) Patrolling(); //if we cant see the player and are not in the player attack range, patrol
+        if (playerInSightRange && !playerInAttackRange) ChasePlayer(); //if we see the player but not in the attack range, chase the player
+        if (playerInAttackRange && playerInSightRange) AttackPlayer(); //if we see the player and the player is in attack range, attack
+    }
+
+    private void Patrolling()
+    {
+        animator.Play("Walk");
+        if (!walkPointSet) SearchWalkPoint();
+
+        if (walkPointSet)
+            agent.SetDestination(walkPoint);//agent starts patrolling to walk point
+
+        Vector3 distanceToWalkPoint = transform.position - walkPoint; //distance from current spot to walk point
+
+        if (distanceToWalkPoint.magnitude < 1f)//if we reached the walkpoint create a new one
+            walkPointSet = false;
+    }
+
+    private void SearchWalkPoint()
+    {
+        float randomZ = Random.Range(-walkPointRange, walkPointRange); //random range between our two walk points for the enemy to patrol in X and Z axis
+        float randomX = Random.Range(-walkPointRange, walkPointRange); 
+
+        walkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ); //set current position on x and z to our random values
+
+        if (Physics.Raycast(walkPoint, -transform.up, 2f, whatIsGround)) //make sure our walkpoint is on the ground and not off the map
+            walkPointSet = true;  //walk point is set
+    }
+
+    private void ChasePlayer()
+    {
+        animator.Play("Walk");
+        agent.SetDestination(player.position); //make agent go to the player
+    }
+
+    private void AttackPlayer()
+    {
+        agent.SetDestination(transform.position); //make sure enemy doesnt move
+
+        transform.LookAt(player); //rotate the enemy so it faces the player when attacking
+        animator.Play("Eat");
+
+        if (!alreadyAttacked)
+        {
+            alreadyAttacked = true; //set attack to true
+            Invoke(nameof(ResetAttack), timeBetweenAttacks); //invokes the reset atack function after a delay of time between attacks
+        }
+    }
+
+    private void ResetAttack()
+    {
+        alreadyAttacked = false;
+    }
+}
