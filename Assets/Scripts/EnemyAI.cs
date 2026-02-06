@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
@@ -8,12 +9,13 @@ public class EnemyAI : MonoBehaviour
 
     public LayerMask whatIsGround, whatIsPlayer; //layers for ground and player
 
-    public Animation animator; //animaton reference
+    public Animator animator; //animaton reference
 
     //Patrolling
     public Vector3 walkPoint;
     bool walkPointSet;
     public float walkPointRange;
+    public bool isIdling;
 
     //Attacking 
     public float timeBetweenAttacks;
@@ -27,7 +29,7 @@ public class EnemyAI : MonoBehaviour
     {
         player = GameObject.Find("Player").transform; //assign player to the game object called player and its transform settings
         agent = GetComponent<NavMeshAgent>(); //assign agent to the navmeshagent 
-        animator = GetComponent<Animation>();
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -43,7 +45,10 @@ public class EnemyAI : MonoBehaviour
 
     private void Patrolling()
     {
-        animator.Play("Walk");
+        if (isIdling)
+            return;
+
+        animator.SetBool("walking", true);
         if (!walkPointSet) SearchWalkPoint();
 
         if (walkPointSet)
@@ -52,7 +57,10 @@ public class EnemyAI : MonoBehaviour
         Vector3 distanceToWalkPoint = transform.position - walkPoint; //distance from current spot to walk point
 
         if (distanceToWalkPoint.magnitude < 1f)//if we reached the walkpoint create a new one
+        {
+            StartCoroutine(Idle(4.5f));
             walkPointSet = false;
+        }
     }
 
     private void SearchWalkPoint()
@@ -68,7 +76,7 @@ public class EnemyAI : MonoBehaviour
 
     private void ChasePlayer()
     {
-        animator.Play("Walk");
+        animator.SetBool("walking", true);
         agent.SetDestination(player.position); //make agent go to the player
     }
 
@@ -77,7 +85,7 @@ public class EnemyAI : MonoBehaviour
         agent.SetDestination(transform.position); //make sure enemy doesnt move
 
         transform.LookAt(player); //rotate the enemy so it faces the player when attacking
-        animator.Play("Eat");
+        //animator.Play("Eat");
 
         if (!alreadyAttacked)
         {
@@ -90,4 +98,18 @@ public class EnemyAI : MonoBehaviour
     {
         alreadyAttacked = false;
     }
+    
+    private IEnumerator Idle(float idleTime)
+    {
+        isIdling = true;
+
+        animator.SetBool("walking", false);
+        agent.isStopped = true;
+
+        yield return new WaitForSeconds(idleTime);
+
+        agent.isStopped = false;
+        isIdling = false;
+    }
+
 }
