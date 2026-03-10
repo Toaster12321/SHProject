@@ -3,6 +3,9 @@ using UnityEngine;
 using UnityEngine.AI;
 public class EnemyAI : MonoBehaviour
 {
+    [SerializeField] private float maxHP;
+    private float currentHP;
+
     public NavMeshAgent agent; //navmesh agent reference
 
     public Transform player; //player position reference
@@ -24,6 +27,29 @@ public class EnemyAI : MonoBehaviour
     //States
     public float sightRange, AttackRange;
     public bool playerInSightRange, playerInAttackRange;
+
+    private void Start()
+    {
+        GetSetHealth = maxHP; //make sure enemy starts with max HP
+    }
+
+    public float GetSetHealth
+    {
+        get 
+        { 
+            return currentHP; 
+        }
+        set
+        {
+            currentHP = value; //value from max HP
+            Debug.Log(currentHP);
+
+            if ( currentHP <= 0f )
+            {
+                Destroy(gameObject);
+            }
+        }
+    }
 
     private void Awake()
     {
