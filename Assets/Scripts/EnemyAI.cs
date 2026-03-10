@@ -5,6 +5,8 @@ public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private float maxHP;
     private float currentHP;
+    private Renderer enemyRenderer;
+    private Color originalColor;
 
     public NavMeshAgent agent; //navmesh agent reference
 
@@ -43,7 +45,11 @@ public class EnemyAI : MonoBehaviour
         {
             currentHP = value; //value from max HP
             Debug.Log(currentHP);
+            if (currentHP != maxHP)
+            {
+                StartCoroutine(FlashRed());
 
+            }
             if ( currentHP <= 0f )
             {
                 Destroy(gameObject);
@@ -56,6 +62,11 @@ public class EnemyAI : MonoBehaviour
         player = GameObject.Find("Player").transform; //assign player to the game object called player and its transform settings
         agent = GetComponent<NavMeshAgent>(); //assign agent to the navmeshagent 
         animator = GetComponent<Animator>();
+        enemyRenderer = this.gameObject.GetComponentInChildren<Renderer>(); //renderer is located in child for scab
+        if (enemyRenderer != null)
+        {
+            originalColor = enemyRenderer.material.color;
+        }
     }
 
     private void Update()
@@ -125,7 +136,7 @@ public class EnemyAI : MonoBehaviour
         alreadyAttacked = false;
     }
     
-    private IEnumerator Idle(float idleTime)
+    private IEnumerator Idle(float idleTime) //idle for a set amount of time before moving again
     {
         isIdling = true;
 
@@ -136,6 +147,13 @@ public class EnemyAI : MonoBehaviour
 
         agent.isStopped = false;
         isIdling = false;
+    }
+
+    IEnumerator FlashRed() //coroutine to set red flash as indicator for damage for 0.1s
+    {
+        enemyRenderer.material.color = Color.red;
+        yield return new WaitForSeconds(0.1f);
+        enemyRenderer.material.color = originalColor;
     }
 
 }
