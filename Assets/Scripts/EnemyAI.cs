@@ -27,9 +27,9 @@ public class EnemyAI : MonoBehaviour
     bool alreadyAttacked;
 
     //States
-    public float sightRange, AttackRange;
+    public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
-
+    public bool isDead;
     private void Start()
     {
         GetSetHealth = maxHP; //make sure enemy starts with max HP
@@ -45,14 +45,18 @@ public class EnemyAI : MonoBehaviour
         {
             currentHP = value; //value from max HP
             Debug.Log(currentHP);
-            if (currentHP != maxHP)
+            if (currentHP != maxHP && !isDead)
             {
                 StartCoroutine(FlashRed());
 
             }
             if ( currentHP <= 0f )
             {
-                Destroy(gameObject);
+                animator.SetTrigger("no_hp");
+                isDead = true;
+                agent.isStopped = true;
+                isIdling = false;
+                //Destroy(gameObject);
             }
         }
     }
@@ -71,13 +75,17 @@ public class EnemyAI : MonoBehaviour
 
     private void Update()
     {
-        //Check for sight and attack range
-        playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);//checks for the position of the player in a radius of sight range on layer mask of player
-        playerInAttackRange = Physics.CheckSphere(transform.position, AttackRange, whatIsPlayer); //checks for the position of the player in a radius of attack range on layer mask of player
+        if ( !isDead )
+        {
+            //Check for sight and attack range
+            playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);//checks for the position of the player in a radius of sight range on layer mask of player
+            playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer); //checks for the position of the player in a radius of attack range on layer mask of player
 
-        if (!playerInSightRange && !playerInAttackRange) Patrolling(); //if we cant see the player and are not in the player attack range, patrol
-        if (playerInSightRange && !playerInAttackRange) ChasePlayer(); //if we see the player but not in the attack range, chase the player
-        if (playerInAttackRange && playerInSightRange) AttackPlayer(); //if we see the player and the player is in attack range, attack
+            if (!playerInSightRange && !playerInAttackRange) Patrolling(); //if we cant see the player and are not in the player attack range, patrol
+            if (playerInSightRange && !playerInAttackRange) ChasePlayer(); //if we see the player but not in the attack range, chase the player
+            if (playerInAttackRange && playerInSightRange) AttackPlayer(); //if we see the player and the player is in attack range, attack
+        }
+
     }
 
     private void Patrolling()
