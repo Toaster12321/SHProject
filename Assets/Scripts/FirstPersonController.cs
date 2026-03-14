@@ -75,12 +75,14 @@ public class FirstPersonController : MonoBehaviour
         currentInput = (moveInput.action.ReadValue<Vector2>()).normalized * walkSpeed; //reads up,down,left,right movement for walk speed (normalize so diag movement isnt faster)
         if (Keyboard.current.shiftKey.wasPressedThisFrame && isDashing == false && !dashCoolingDown && currentInput != new Vector2(0,0))//while shift is held, dash cooldown is over and we are moving a direction
         {
+            walking.pitch = 1.6f; //speed up playback if running
             walkSpeed *= 2; //press shift to double move speed
             isDashing = true;
         }
 
         if (Keyboard.current.shiftKey.wasReleasedThisFrame && isDashing == true) 
         {
+            walking.pitch = 0.8f; //reset pitch to normal walking playback
             dashTime = 0f; //reset dash time and move speed
             walkSpeed /= 2;
             isDashing = false;
@@ -125,9 +127,9 @@ public class FirstPersonController : MonoBehaviour
         bool isMoving = 
             currentInput != new Vector2(0, 0); //bool for movement 
 
-        if (isMoving && !walking.isPlaying) //play footsteps when walking and not dashing
+        if (isMoving && !walking.isPlaying && !isDashing) //play footsteps when walking and not dashing
             walking.Play();
-        else if (!isMoving || isDashing == true)
+        else if (!isMoving)
             walking.Stop();
     }
 

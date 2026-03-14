@@ -5,7 +5,7 @@ public class EnemyAI : MonoBehaviour
 {
     [SerializeField] private float maxHP;
     private float currentHP;
-    private Renderer enemyRenderer;
+    private SkinnedMeshRenderer enemyRenderer;
     private Color originalColor;
 
     public NavMeshAgent agent; //navmesh agent reference
@@ -15,6 +15,8 @@ public class EnemyAI : MonoBehaviour
     public LayerMask whatIsGround, whatIsPlayer; //layers for ground and player
 
     public Animator animator; //animaton reference
+
+    public ParticleSystem particleEmittor;
 
     //Patrolling
     public Vector3 walkPoint;
@@ -30,33 +32,32 @@ public class EnemyAI : MonoBehaviour
     public float sightRange, attackRange;
     public bool playerInSightRange, playerInAttackRange;
     public bool isDead;
+
     private void Start()
     {
         GetSetHealth = maxHP; //make sure enemy starts with max HP
+        isDead = false;
     }
 
     public float GetSetHealth
     {
         get 
         { 
-            return currentHP; 
+            return currentHP;
         }
         set
         {
-            currentHP = value; //value from max HP
-            Debug.Log(currentHP);
-            if (currentHP != maxHP && !isDead)
+            if (!isDead) //dont keep applying damage if dead
+                currentHP = value; //value from max HP
+
+            if ( currentHP != maxHP && !isDead ) //flash red only during first hit and if not dead
             {
-                StartCoroutine(FlashRed());
+                StartCoroutine( FlashRed() );
 
             }
-            if ( currentHP <= 0f )
+            if ( currentHP <= 0f && !isDead ) //trigger death state functions
             {
-                animator.SetTrigger("no_hp");
-                isDead = true;
-                agent.isStopped = true;
-                isIdling = false;
-                //Destroy(gameObject);
+               DeathState();
             }
         }
     }
@@ -66,7 +67,9 @@ public class EnemyAI : MonoBehaviour
         player = GameObject.Find("Player").transform; //assign player to the game object called player and its transform settings
         agent = GetComponent<NavMeshAgent>(); //assign agent to the navmeshagent 
         animator = GetComponent<Animator>();
-        enemyRenderer = this.gameObject.GetComponentInChildren<Renderer>(); //renderer is located in child for scab
+        particleEmittor = GetComponent<ParticleSystem>();
+        enemyRenderer = this.gameObject.GetComponentInChildren<SkinnedMeshRenderer>(); //renderer is located in child for scab
+
         if (enemyRenderer != null)
         {
             originalColor = enemyRenderer.material.color;
@@ -143,8 +146,38 @@ public class EnemyAI : MonoBehaviour
     {
         alreadyAttacked = false;
     }
+
+
+    private void DeathState()
+    {
+        animator.SetTrigger("no_hp");
+        isDead = true;
+        GetComponent<BoxCollider>().enabled = false;
+
+        agent.isStopped = true; //turn off navmesh functions
+        agent.ResetPath();
+        agent.enabled = false;
+
+        StartCoroutine(Die());
+    }    
+
+    private void Explosion()
+    {
+        bool playerDamaged = false;
+
+        Collider[] colliders = Physics.OverlapSphere(particleEmittor.transform.position, 5f);
+        foreach (Collider c in colliders)
+        {
+           if (c.GetComponent<Player>() && !playerDamaged)
+           {
+              playerDamaged = true;
+              c.GetComponent<Player>().TakeDamage(1f);
+           }
+               
+        }
+    }
     
-    private IEnumerator Idle(float idleTime) //idle for a set amount of time before moving again
+    IEnumerator Idle(float idleTime) //idle for a set amount of time before moving again
     {
         isIdling = true;
 
@@ -152,6 +185,9 @@ public class EnemyAI : MonoBehaviour
         agent.isStopped = true;
 
         yield return new WaitForSeconds(idleTime);
+
+        if (isDead || !agent.enabled)//stop idle coroutine functions if enemy dies
+            yield break;
 
         agent.isStopped = false;
         isIdling = false;
@@ -162,6 +198,25 @@ public class EnemyAI : MonoBehaviour
         enemyRenderer.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         enemyRenderer.material.color = originalColor;
+    }
+
+    IEnumerator Die()
+    {
+        float tickRate = 0f;
+        float gasDuration = 3f;
+
+        yield return new WaitForSeconds(1.25f); //wait for animation to finish
+        particleEmittor.Play(); //play gas explosion effect and turn off sprite
+        enemyRenderer.enabled = false;
+
+        while (tickRate < gasDuration)
+        {
+            yield return new WaitForSeconds(1f);
+            Explosion();
+            tickRate += 1f;
+        }
+
+        Destroy(gameObject);
     }
 
 }
