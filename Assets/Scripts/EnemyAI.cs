@@ -84,14 +84,14 @@ public class EnemyAI : MonoBehaviour
             playerInSightRange = Physics.CheckSphere(transform.position, sightRange, whatIsPlayer);//checks for the position of the player in a radius of sight range on layer mask of player
             playerInAttackRange = Physics.CheckSphere(transform.position, attackRange, whatIsPlayer); //checks for the position of the player in a radius of attack range on layer mask of player
 
-            if (!playerInSightRange && !playerInAttackRange) Patrolling(); //if we cant see the player and are not in the player attack range, patrol
-            if (playerInSightRange && !playerInAttackRange) ChasePlayer(); //if we see the player but not in the attack range, chase the player
-            if (playerInAttackRange && playerInSightRange) AttackPlayer(); //if we see the player and the player is in attack range, attack
+            if (!playerInSightRange && !playerInAttackRange) PatrolState(); //if we cant see the player and are not in the player attack range, patrol
+            if (playerInSightRange && !playerInAttackRange) ChaseState(); //if we see the player but not in the attack range, chase the player
+            if (playerInAttackRange && playerInSightRange) AttackState(); //if we see the player and the player is in attack range, attack
         }
 
     }
 
-    private void Patrolling()
+    private void PatrolState()
     {
         if (isIdling)
             return;
@@ -122,18 +122,26 @@ public class EnemyAI : MonoBehaviour
             walkPointSet = true;  //walk point is set
     }
 
-    private void ChasePlayer()
+    private void ChaseState()
     {
+        if (isIdling) //if player enters sight range while idling -> chase
+        {
+            agent.isStopped = false;
+            isIdling = false;
+        }
+        if (animator.GetBool("attacking"))
+            animator.SetBool("attacking", false);
+
         animator.SetBool("walking", true);
         agent.SetDestination(player.position); //make agent go to the player
     }
 
-    private void AttackPlayer()
+    private void AttackState()
     {
         agent.SetDestination(transform.position); //make sure enemy doesnt move
 
         transform.LookAt(player); //rotate the enemy so it faces the player when attacking
-        //animator.Play("Eat");
+        animator.SetBool("attacking", true);
 
         if (!alreadyAttacked)
         {

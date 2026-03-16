@@ -34,7 +34,6 @@ public class Revolver : MonoBehaviour
     {
         if (currentCooldown <= 0f)
         {
-            Debug.Log("shoot");
             animator.SetTrigger( "fire" );
             if (!gunshot.isPlaying)
                 gunshot.Play();
