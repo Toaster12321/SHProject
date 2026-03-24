@@ -21,7 +21,7 @@ public class DamageRevolver : MonoBehaviour
         Ray gunRay = new Ray( playerCamera.position, playerCamera.forward ); //raycast pointing from camera forwards
         if (Physics.Raycast( gunRay, out RaycastHit hitinfo, bulletRange ) ) //if the raycast collides
         {
-            if ( hitinfo.collider.gameObject.TryGetComponent( out EnemyAI enemy ) ) //if we hit an object with the enemy AI script
+            if ( hitinfo.collider.gameObject.TryGetComponent( out EnemyStateMachine enemy ) ) //if we hit an object with the enemy AI script
             {
                 enemy.GetSetHealth -= damage; //apply damage
                 //StartCoroutine(CrosshairFlash());
