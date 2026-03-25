@@ -7,7 +7,7 @@ public abstract class BaseState<Estate> where Estate : Enum //Estate is a generi
 {
     public BaseState(Estate state) //constructor to get/set StateKey as type Estate
     {
-        state = StateKey;
+        StateKey = state;
     }
     public Estate StateKey { get; private set; }
     public abstract void EnterState();

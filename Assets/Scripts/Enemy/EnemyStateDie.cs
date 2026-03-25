@@ -1,16 +1,44 @@
 using UnityEngine;
 
-public class EnemyStateDie : MonoBehaviour
+public class EnemyStateDie : EnemyState
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public EnemyStateDie(EnemyStateContext context, EnemyStateMachine.EEnemyState estate) : base(context, estate)
     {
-        
+       
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void EnterState()
     {
-        
+
+    }
+
+    public override void ExitState()
+    {
+
+    }
+
+    public override void UpdateState()
+    {
+
+    }
+
+    public override EnemyStateMachine.EEnemyState GetNextState()
+    {
+        return StateKey;
+    }
+
+    public override void OnTriggerEnter(Collider other)
+    {
+
+    }
+
+    public override void OnTriggerExit(Collider other)
+    {
+
+    }
+
+    public override void OnTriggerStay(Collider other)
+    {
+
     }
 }

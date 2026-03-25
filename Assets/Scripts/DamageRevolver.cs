@@ -23,7 +23,7 @@ public class DamageRevolver : MonoBehaviour
         {
             if ( hitinfo.collider.gameObject.TryGetComponent( out EnemyStateMachine enemy ) ) //if we hit an object with the enemy AI script
             {
-                enemy.GetSetHealth -= damage; //apply damage
+                //enemy.GetSetHealth -= damage; //apply damage
                 //StartCoroutine(CrosshairFlash());
             }
         }

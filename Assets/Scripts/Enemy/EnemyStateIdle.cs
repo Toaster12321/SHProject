@@ -1,16 +1,58 @@
 using UnityEngine;
 
-public class EnemyStateIdle : MonoBehaviour
+public class EnemyStateIdle : EnemyState
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    private float _idleTimer = 0f;
+    private float _idleDuration = 4.5f;
+    public EnemyStateIdle(EnemyStateContext context, EnemyStateMachine.EEnemyState estate) : base(context, estate)
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void EnterState()
     {
-        
+        _idleTimer = 0f;
+
+        Context.Animator.SetBool("walking", false); //set walking to false just in case, idle animation autoloads by default
+        Context.Agent.isStopped = true; //stop moving
+    }
+
+    public override void ExitState()
+    {
+        Context.Agent.isStopped = false; //resume movement
+    }
+
+    public override void UpdateState()
+    {
+        _idleTimer += Time.deltaTime; //start timer
+    }
+
+    public override EnemyStateMachine.EEnemyState GetNextState()
+    {
+        if (Context.PlayerInSightRange) //if player enters vision radius -> chase
+            return EnemyStateMachine.EEnemyState.Chase;
+
+        if (Context.PlayerInAttackRange) //if player enters attack radius -> attack
+            return EnemyStateMachine.EEnemyState.Attack;
+
+        if (_idleTimer >= _idleDuration) //once timer is over start patrolling
+            return EnemyStateMachine.EEnemyState.Patrol;
+
+        return StateKey; //returns self
+    }
+
+    public override void OnTriggerEnter(Collider other)
+    {
+
+    }
+
+    public override void OnTriggerExit(Collider other)
+    {
+
+    }
+
+    public override void OnTriggerStay(Collider other)
+    {
+
     }
 }

@@ -1132,8 +1132,8 @@ MonoBehaviour:
   lookSpeedY: 0.2
   UpperLockLimit: 60
   LowerLockLimit: 60
-  moveInput: {fileID: 1996673888}
-  lookInput: {fileID: 1160730594}
+  moveInput: {fileID: 0}
+  lookInput: {fileID: 0}
 --- !u!143 &66839950
 CharacterController:
   m_ObjectHideFlags: 0
@@ -6545,38 +6545,6 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 1
   m_ObstacleAvoidanceType: 4
---- !u!114 &750184811
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 750184806}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: dd8fcafd1555e9f49b370d1a423c06b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EnemyAI
-  maxHP: 2
-  agent: {fileID: 750184810}
-  player: {fileID: 66839948}
-  whatIsGround:
-    serializedVersion: 2
-    m_Bits: 64
-  whatIsPlayer:
-    serializedVersion: 2
-    m_Bits: 128
-  animator: {fileID: 750184813}
-  particleEmittor: {fileID: 750184816}
-  walkPoint: {x: 0, y: 0, z: 0}
-  walkPointRange: 10
-  isIdling: 0
-  timeBetweenAttacks: 0.5
-  sightRange: 5
-  attackRange: 1
-  playerInSightRange: 0
-  playerInAttackRange: 0
-  isDead: 0
 --- !u!95 &750184813
 Animator:
   serializedVersion: 7
@@ -11460,6 +11428,36 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!114 &750184817
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750184806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 916b4673fbaba8e4eb8aeece8e233da3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyStateMachine
+  maxHP: 5
+  _enemyRenderer: {fileID: 1197713931}
+  _originalColor: {r: 0, g: 0, b: 0, a: 0}
+  _agent: {fileID: 750184810}
+  _player: {fileID: 66839948}
+  _whatIsGround:
+    serializedVersion: 2
+    m_Bits: 64
+  _whatIsPlayer:
+    serializedVersion: 2
+    m_Bits: 128
+  _animator: {fileID: 750184813}
+  _particleEmittor: {fileID: 750184816}
+  _sightRange: 5
+  _attackRange: 2
+  _walkPointRange: 10
+  walkPoint: {x: 0, y: 0, z: 0}
+  timeBetweenAttacks: 2
 --- !u!1 &762957125
 GameObject:
   m_ObjectHideFlags: 0
@@ -15211,20 +15209,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1147342621}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!114 &1160730594
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Player/Look
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
-  m_ActionId: 6b444451-8a00-4d00-a97e-f47457f736a8
 --- !u!1 &1173412942
 GameObject:
   m_ObjectHideFlags: 0
@@ -15989,9 +15973,6 @@ PrefabInstance:
       addedObject: {fileID: 750184810}
     - targetCorrespondingSourceObject: {fileID: 8771091787928289351, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 750184811}
-    - targetCorrespondingSourceObject: {fileID: 8771091787928289351, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
-      insertIndex: -1
       addedObject: {fileID: 750184813}
     - targetCorrespondingSourceObject: {fileID: 8771091787928289351, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
       insertIndex: -1
@@ -15999,7 +15980,15 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8771091787928289351, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 750184815}
+    - targetCorrespondingSourceObject: {fileID: 8771091787928289351, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 750184817}
   m_SourcePrefab: {fileID: -4161369568681901532, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
+--- !u!137 &1197713931 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6674452145187933331, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
+  m_PrefabInstance: {fileID: 1197713930}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1205766854
 GameObject:
   m_ObjectHideFlags: 0
@@ -25190,20 +25179,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1996673888
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc1515ab76e54f068e2f2207940fab32, type: 3}
-  m_Name: Player/Move
-  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.InputActionReference
-  m_Asset: {fileID: -944628639613478452, guid: 289c1b55c9541489481df5cc06664110, type: 3}
-  m_ActionId: 351f2ccd-1f9f-44bf-9bec-d62ac5c5f408
 --- !u!1 &2007626097
 GameObject:
   m_ObjectHideFlags: 0

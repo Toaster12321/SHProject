@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class EnemyStateAttack : EnemyState
+public class EnemyStateChase : EnemyState
 {
-    public EnemyStateAttack( EnemyStateContext context, EnemyStateMachine.EEnemyState estate) : base(context, estate)
+    public EnemyStateChase(EnemyStateContext context, EnemyStateMachine.EEnemyState estate) : base(context, estate)
     {
-        
+
     }
 
     public override void EnterState()
@@ -19,7 +19,7 @@ public class EnemyStateAttack : EnemyState
 
     public override void UpdateState()
     {
-        
+
     }
 
     public override EnemyStateMachine.EEnemyState GetNextState()
@@ -29,16 +29,16 @@ public class EnemyStateAttack : EnemyState
 
     public override void OnTriggerEnter(Collider other)
     {
-        
+
     }
 
     public override void OnTriggerExit(Collider other)
     {
-        
+
     }
 
     public override void OnTriggerStay(Collider other)
     {
-        
+
     }
 }

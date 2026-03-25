@@ -5,8 +5,9 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
 {
     public enum EEnemyState
     {
-        Walk,
+        Patrol,
         Idle,
+        Chase,
         Attack,
         Die,
     }
@@ -23,22 +24,15 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     [SerializeField] private LayerMask _whatIsGround, _whatIsPlayer; //layers for ground and player
     [SerializeField] private Animator _animator; //animaton reference
     [SerializeField] private ParticleSystem _particleEmittor;
+    [SerializeField] private float _sightRange, _attackRange, _walkPointRange;
 
     //Patrolling
     public Vector3 walkPoint;
     bool walkPointSet;
-    public float walkPointRange;
-    public bool isIdling;
 
     //Attacking 
     public float timeBetweenAttacks;
     bool alreadyAttacked;
-    bool isAttacking;
-
-    //States
-    public float sightRange, attackRange;
-    public bool playerInSightRange, playerInAttackRange;
-    public bool isDead;
 
 
     //private void Start()
@@ -72,7 +66,9 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
 
     private void Awake()
     {
-        _context = new EnemyStateContext(_enemyRenderer,_originalColor,_agent,_player,_whatIsGround,_whatIsPlayer,_animator,_particleEmittor);
+        _context = new EnemyStateContext(_enemyRenderer, _originalColor, _agent, _player, _whatIsGround, _whatIsPlayer, _animator, _particleEmittor, _sightRange,
+            _attackRange, _walkPointRange);
+        InitializeStates();
         //player = GameObject.Find("Player").transform; //assign player to the game object called player and its transform settings
         //agent = GetComponent<NavMeshAgent>(); //assign agent to the navmeshagent 
         //animator = GetComponent<Animator>();
@@ -83,6 +79,16 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
         //{
         //    originalColor = enemyRenderer.material.color;
         //}
+    }
+
+    private void InitializeStates()
+    {
+        States.Add(EEnemyState.Idle, new EnemyStateIdle(_context, EEnemyState.Idle));
+        States.Add(EEnemyState.Patrol, new EnemyStatePatrol(_context, EEnemyState.Patrol));
+        States.Add(EEnemyState.Chase, new EnemyStateChase(_context, EEnemyState.Chase));
+        States.Add(EEnemyState.Attack, new EnemyStateAttack(_context, EEnemyState.Attack));
+        States.Add(EEnemyState.Die, new EnemyStateDie(_context, EEnemyState.Die));
+        CurrentState = States[EEnemyState.Idle];
     }
 
     //private void Update()
