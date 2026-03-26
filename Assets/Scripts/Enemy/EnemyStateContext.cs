@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyStateContext : MonoBehaviour
+public class EnemyStateContext
 {
     private SkinnedMeshRenderer _enemyRenderer;
     private Color _originalColor;
@@ -9,12 +9,13 @@ public class EnemyStateContext : MonoBehaviour
     private Transform _player; //player position reference
     private LayerMask _whatIsGround, _whatIsPlayer; //layers for ground and player
     private Animator _animator; //animaton reference
-    private ParticleSystem _particleEmittor;
+    private ParticleSystem _particleEmitter;
     private float _sightRange, _attackRange, _walkPointRange;
+    private Transform _selfTransform;
 
 
     public EnemyStateContext(SkinnedMeshRenderer enemyRenderer, Color originalColor, NavMeshAgent agent, Transform player, LayerMask whatIsGround,
-        LayerMask whatIsPlayer, Animator animator, ParticleSystem particleEmittor, float sightRange, float attackRange, float walkPointRange)
+        LayerMask whatIsPlayer, Animator animator, ParticleSystem particleEmittor, float sightRange, float attackRange, float walkPointRange, Transform selfTransform)
     {
         _enemyRenderer = enemyRenderer;
         _originalColor = originalColor;
@@ -23,28 +24,29 @@ public class EnemyStateContext : MonoBehaviour
         _whatIsGround = whatIsGround;
         _whatIsPlayer = whatIsPlayer;
         _animator = animator;
-        _particleEmittor = particleEmittor;
+        _particleEmitter = particleEmittor;
         _sightRange = sightRange;
         _attackRange = attackRange;
         _walkPointRange = walkPointRange;
+        _selfTransform = selfTransform;
     }
 
     public SkinnedMeshRenderer EnemyRenderer => _enemyRenderer;
-    public Color OriginalColor => _enemyRenderer.material.color;
+    public Color OriginalColor => _originalColor;
     public NavMeshAgent Agent => _agent;
     public Transform Player => _player;
     public Animator Animator => _animator;
-    public ParticleSystem ParticleEmittor => _particleEmittor;
+    public ParticleSystem ParticleEmittor => _particleEmitter;
     public LayerMask WhatIsGround => _whatIsGround;
     public LayerMask WhatIsPlayer => _whatIsPlayer;
     public float SightRange => _sightRange;
     public float AttackRange => _attackRange;
     public float WalkPointRange => _walkPointRange;
-
+    public Transform SelfTransform => _selfTransform;
 
     public bool PlayerInSightRange => //checks for the position of the player in a radius of sight range on layer mask of player
-        Physics.CheckSphere(transform.position, _sightRange, _whatIsPlayer);  
+        Physics.CheckSphere(SelfTransform.position, _sightRange, _whatIsPlayer);  
 
     public bool PlayerInAttackRange => //checks for the position of the player in a radius of attack range on layer mask of player
-        Physics.CheckSphere(transform.position, _attackRange, _whatIsPlayer);
+        Physics.CheckSphere(SelfTransform.position, _attackRange, _whatIsPlayer);
 }

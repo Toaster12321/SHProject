@@ -9,7 +9,8 @@ public class EnemyStateAttack : EnemyState
 
     public override void EnterState()
     {
-
+        Context.Animator.SetBool("attacking", true);
+        Context.Agent.SetDestination(Context.SelfTransform.position); //make sure enemy doesn't move
     }
 
     public override void ExitState()
@@ -24,6 +25,9 @@ public class EnemyStateAttack : EnemyState
 
     public override EnemyStateMachine.EEnemyState GetNextState()
     {
+        if (Context.PlayerInSightRange && !Context.PlayerInAttackRange) //if player enters vision radius -> chase
+            return EnemyStateMachine.EEnemyState.Chase;
+
         return StateKey;
     }
 

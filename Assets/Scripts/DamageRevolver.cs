@@ -7,6 +7,7 @@ public class DamageRevolver : MonoBehaviour
     public float damage;
     public float bulletRange; //how far bullet travels
     private Transform playerCamera;
+    [SerializeField] private LayerMask _hitMask;
     //[SerializeField] GameObject crosshair;
 
     private void Start()
@@ -19,11 +20,13 @@ public class DamageRevolver : MonoBehaviour
     public void Shoot()
     {
         Ray gunRay = new Ray( playerCamera.position, playerCamera.forward ); //raycast pointing from camera forwards
-        if (Physics.Raycast( gunRay, out RaycastHit hitinfo, bulletRange ) ) //if the raycast collides
+        if (Physics.Raycast( gunRay, out RaycastHit hitinfo, bulletRange, _hitMask ) ) //if the raycast collides
         {
-            if ( hitinfo.collider.gameObject.TryGetComponent( out EnemyStateMachine enemy ) ) //if we hit an object with the enemy AI script
+            EnemyStateMachine enemy = hitinfo.collider.GetComponentInParent<EnemyStateMachine>();
+            Debug.Log("Hit: " + hitinfo.collider.name);
+            if (enemy) //if we hit an object with the enemystatemachine script
             {
-                //enemy.GetSetHealth -= damage; //apply damage
+                enemy.TakeDamage(damage); //apply damage
                 //StartCoroutine(CrosshairFlash());
             }
         }

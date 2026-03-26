@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class EnemyStateIdle : EnemyState
 {
-    private float _idleTimer = 0f;
+    private float _idleTimer;
     private float _idleDuration = 4.5f;
     public EnemyStateIdle(EnemyStateContext context, EnemyStateMachine.EEnemyState estate) : base(context, estate)
     {
