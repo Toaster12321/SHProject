@@ -1031,8 +1031,8 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
-  m_Height: 2
+  m_Radius: 0.33
+  m_Height: 2.9
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &66839946
@@ -6536,12 +6536,12 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.69, y: 0.89, z: 0.47}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 0.98, y: 0.89, z: 1.08}
+  m_Center: {x: 0, y: 0.1, z: 0}
 --- !u!195 &750184810
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -6551,7 +6551,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 750184806}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.5
+  m_Radius: 0.27
   m_Speed: 4
   m_Acceleration: 8
   avoidancePriority: 50
@@ -7305,7 +7305,7 @@ ParticleSystem:
     donutRadius: 0.2
     m_Position: {x: 0, y: 0.47200677, z: 0}
     m_Rotation: {x: -0, y: 0, z: 0}
-    m_Scale: {x: 1.0797212, y: 1.1921364, z: 1.3412588}
+    m_Scale: {x: 1.0797212, y: 1.1921364, z: 1.3413}
     placementMode: 0
     m_MeshMaterialIndex: 0
     m_MeshNormalOffset: 0
@@ -11472,7 +11472,7 @@ MonoBehaviour:
   _animator: {fileID: 750184813}
   _particleEmitter: {fileID: 750184816}
   _sightRange: 5
-  _attackRange: 2
+  _attackRange: 1
   _walkPointRange: 10
   _selfTransform: {fileID: 750184818}
 --- !u!4 &750184818 stripped
@@ -11480,6 +11480,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -3910990755373119420, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
   m_PrefabInstance: {fileID: 1197713930}
   m_PrefabAsset: {fileID: 0}
+--- !u!54 &750184819
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750184806}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &762957125
 GameObject:
   m_ObjectHideFlags: 0
@@ -16097,6 +16124,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8771091787928289351, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 750184817}
+    - targetCorrespondingSourceObject: {fileID: 8771091787928289351, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 750184819}
   m_SourcePrefab: {fileID: -4161369568681901532, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
 --- !u!137 &1197713931 stripped
 SkinnedMeshRenderer:
