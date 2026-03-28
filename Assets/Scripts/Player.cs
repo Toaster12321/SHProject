@@ -4,6 +4,8 @@ public class Player : MonoBehaviour
 {
     public float maxHealth = 10f;
     private float currentHealth;
+    [SerializeField] private Animator bloodAnimator;
+    [SerializeField] private AudioSource hurt1, hurt2;
 
     private bool isDead;
     void Start()
@@ -11,14 +13,13 @@ public class Player : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-
     public void TakeDamage(float damage)
     {
         if (!isDead)
         {
             currentHealth -= damage;
+            bloodAnimator.SetTrigger("hurt");
             Debug.Log(currentHealth);
-
         }
 
 
@@ -31,4 +32,13 @@ public class Player : MonoBehaviour
         isDead = true;
     }
     
+    public void PlayHurtSFX()
+    {
+        int _randSFX = Random.Range(0, 2);
+
+        if (_randSFX == 0)
+            hurt1.Play();
+        else
+            hurt2.Play();
+    }
 }
