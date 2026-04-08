@@ -46,13 +46,13 @@ public class Revolver : MonoBehaviour
 
     private void OnEnable()
     {
-        playerControls.Player.Fire.performed += Shoot;
+        playerControls.Player.Attack.performed += Shoot;
         playerControls.Enable();
     }
 
     private void OnDisable()
     {
-        playerControls.Player.Fire.performed -= Shoot;
+        playerControls.Player.Attack.performed -= Shoot;
         playerControls.Disable();
     }
 
