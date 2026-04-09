@@ -10,7 +10,8 @@ public class Revolver : MonoBehaviour
     [SerializeField] private AudioSource cocking;
     public UnityEvent onGunShoot;
     public float fireCooldown;
-    public Animator animator; 
+    public Animator gunAnimator;
+    public Animator cameraAnimator;
 
     private float currentCooldown;
     private PlayerControls playerControls;
@@ -34,7 +35,8 @@ public class Revolver : MonoBehaviour
     {
         if (currentCooldown <= 0f)
         {
-            animator.SetTrigger( "fire" );
+            gunAnimator.SetTrigger("fire");
+            cameraAnimator.SetTrigger("recoil"); 
             if (!gunshot.isPlaying)
                 gunshot.Play();
 
