@@ -5,13 +5,12 @@ public class MeleeWeapon : MonoBehaviour
 {
     [Header("Attacking Params")]
     public float attackDistance = 3.5f;
-    public float attackDelay = 0.4f; //delay of when attack should hit
+    public float attackDelay = 0.001f; //delay of when attack should hit
     public float attackSpeed = 1f;
     public int attackDamage = 1;
     public LayerMask attackLayer;
 
     public AudioSource swingSound;
-    public AudioSource hitSound;
     private PlayerControls playerControls;
     private Transform playerCamera;
 
@@ -25,6 +24,7 @@ public class MeleeWeapon : MonoBehaviour
     private void Awake()
     {
         playerControls = new PlayerControls();
+        AssignInput();
     }
 
     private void Start()
@@ -34,34 +34,43 @@ public class MeleeWeapon : MonoBehaviour
 
     private void Update()
     {
-
+        if (playerControls.Player.Attack.IsPressed()) //if player holds down attack, keep attacking
+            Swing();
     }
 
     private void OnEnable()
     {
-        playerControls.Player.Attack.performed += Swing;
         playerControls.Enable();
     }
 
     private void OnDisable()
     {
-        playerControls.Player.Attack.performed -= Swing;
         playerControls.Disable();
     }
 
-    public void Swing(InputAction.CallbackContext ctx)
+    public void Swing()
     {
         if (!readyToAttack || attacking) return; //if we aren't ready to attack or are already attacking -> do nothing
 
         readyToAttack = false;
         attacking = true;
 
-        animator.SetTrigger("swinging");
+        Invoke(nameof(AttackRaycast), attackDelay);//calls the attack ray cast function after attack delay
         Invoke(nameof(ResetAttack), attackSpeed); //calls reset attack function after 1s(attack speed)
-        Invoke(nameof(AttackRaycast), attackDelay);//calls the attack ray cast function after 0.4s(attack delay)
 
         swingSound.pitch = Random.Range(0.7f, 0.9f);
         swingSound.Play();
+
+        if (attackCount == 0)
+        {
+            animator.SetTrigger("swinging");
+            attackCount++;
+        }
+        else
+        {
+            animator.SetTrigger("following_up");
+            attackCount = 0;
+        }
     }
 
     private void ResetAttack() //reset bools
@@ -84,12 +93,9 @@ public class MeleeWeapon : MonoBehaviour
         }
     }
 
-    //public void ChangeAnimationState(string newState)
-    //{
-    //    if (currentAnimationState == newState) return; //stop the same animation from playing itself again
-
-    //    currentAnimationState = newState;
-    //    animator.CrossFadeInFixedTime(currentAnimationState, 0.2f);
-    //}
-
+    void AssignInput()
+    {
+        playerControls.Player.Attack.performed += ctx => Swing(); //call swing when attack is performed
+    }
 }
+
