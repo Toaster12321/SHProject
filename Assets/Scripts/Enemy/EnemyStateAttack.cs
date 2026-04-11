@@ -3,13 +3,9 @@ using UnityEngine;
 
 public class EnemyStateAttack : EnemyState
 {
-    private float _attackCooldown = 1.7f;//how long before damage is applied again
-    private float _attackStartTime;
+    private float _attackCooldown = 2f;//how long before damage is applied again
     private float _lastAttackTime;
-    private bool _alreadyAttacked;
-    private float _attackRange = 1f;
-    private float _attackDelay = 0.9f;
-    private LayerMask _layerMask;
+    private bool _isAttacking;
 
     public EnemyStateAttack( EnemyStateContext context, EnemyStateMachine.EEnemyState estate) : base(context, estate)
     {
@@ -18,40 +14,29 @@ public class EnemyStateAttack : EnemyState
 
     public override void EnterState()
     {
-        _attackStartTime = Time.time;
+        _isAttacking = true;
         _lastAttackTime = 0f;
-        _layerMask = Context.WhatIsGround | Context.WhatIsPlayer;
 
-        _alreadyAttacked = false;
         Context.Animator.SetBool("attacking", true);
-        Context.Agent.SetDestination(Context.SelfTransform.position); //make sure enemy doesn't move
+        Context.Agent.SetDestination(Context.SelfTransform.position);
     }
 
     public override void ExitState()
     {
-
+        _isAttacking = false;
+        Context.Agent.isStopped = false;
+        Context.Animator.SetBool("attacking", false);
     }
 
     public override void UpdateState()
     {
-        if (_alreadyAttacked == false && Time.time >= _attackStartTime + _attackDelay) //if the time passed if 2 seconds past the last attack time and we havent attacked already
-        {
-            AttackRaycast();
-            _lastAttackTime = Time.time;
-            _alreadyAttacked = true;
-
-        }
-
-        if (_alreadyAttacked && Time.time >= _lastAttackTime + _attackCooldown)
-        {
-            _attackStartTime = Time.time;
-            _alreadyAttacked = false;
-        }
-
+        if (_isAttacking)
+            Context.Animator.SetBool("attacking", true);
     }
 
     public override EnemyStateMachine.EEnemyState GetNextState()
     {
+
         if (Context.PlayerInSightRange && !Context.PlayerInAttackRange) //if player enters vision radius -> chase
             return EnemyStateMachine.EEnemyState.Chase;
 
@@ -60,7 +45,7 @@ public class EnemyStateAttack : EnemyState
 
     public override void OnTriggerEnter(Collider other)
     {
-        
+
     }
 
     public override void OnTriggerExit(Collider other)
@@ -71,19 +56,17 @@ public class EnemyStateAttack : EnemyState
     public override void OnTriggerStay(Collider other)
     {
         
-    }
+        Player _player = other.GetComponent<Player>();
 
-    public void AttackRaycast()
-    {
-        Vector3 rayOrigin = Context.Agent.transform.position + Vector3.up * 1.5f; //move raycast up some
+        if (_player == null) //do nothing if not player collider
+            return;
 
-        Ray attackRay = new Ray(rayOrigin, Context.Agent.transform.forward); //raycast pointing from camera forwards
-        if (Physics.Raycast(attackRay, out RaycastHit hitinfo, _attackRange, _layerMask)) //if the raycast collides
+        if (Time.time >= _lastAttackTime + _attackCooldown)
         {
-            if (hitinfo.collider.GetComponentInParent<Player>()) //if we hit an object with the player script
-            {
-                Context.Player.GetComponentInParent<Player>().TakeDamage(1); //apply damage
-            }
+            Context.Player.GetComponentInParent<Player>().TakeDamage(1); //apply damage
+            _lastAttackTime = Time.time;
         }
+
     }
+
 }

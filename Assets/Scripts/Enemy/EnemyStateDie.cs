@@ -40,7 +40,7 @@ public class EnemyStateDie : EnemyState
 
         if (_timer >= _explosionAnimationTime && !_explosionStarted) //wait for explosion animation to finish
         {
-            Context.ParticleEmittor.Play(); //play gas explosion effect and turn off sprite
+            Context.ParticleEmitter.Play(); //play gas explosion effect and turn off sprite
             Context.EnemyRenderer.enabled = false;
             _explosionStarted = true;
         }
@@ -86,7 +86,7 @@ public class EnemyStateDie : EnemyState
     {
         bool playerDamaged = false;
          
-        Collider[] colliders = Physics.OverlapSphere(Context.ParticleEmittor.transform.position, 3f); //physics collision sphere with a radius of 5f
+        Collider[] colliders = Physics.OverlapSphere(Context.ParticleEmitter.transform.position, 3f); //physics collision sphere with a radius of 5f
 
         foreach (Collider c in colliders) 
         {

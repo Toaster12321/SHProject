@@ -1,6 +1,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
 {
     public enum EEnemyState
@@ -26,6 +27,7 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     [SerializeField] private ParticleSystem _particleEmitter;
     [SerializeField] private float _sightRange, _attackRange, _walkPointRange;
     [SerializeField] private Transform _selfTransform;
+    [SerializeField] private Collider _attackHitbox;
     private Color _originalColor;
 
 
@@ -53,7 +55,7 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
 
     private void Awake()
     {
-        _context = new EnemyStateContext(_enemyRenderer, _originalColor, _agent, _player, _whatIsGround, _whatIsPlayer, _animator, _particleEmitter, _sightRange,
+        _context = new EnemyStateContext(_enemyRenderer, _originalColor, _agent, _player, _whatIsGround, _attackHitbox, _whatIsPlayer, _animator, _particleEmitter, _sightRange,
             _attackRange, _walkPointRange, _selfTransform);
         InitializeStates();
     }
@@ -73,6 +75,16 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
         _enemyRenderer.material.color = Color.red;
         yield return new WaitForSeconds(0.1f);
         _enemyRenderer.material.color = _originalColor;
+    }
+
+    public void EnableAttackHitbox()
+    {
+        _attackHitbox.enabled = true;
+    }
+
+    public void DisableAttackHitbox()
+    {
+        _attackHitbox.enabled = false;
     }
 
 }

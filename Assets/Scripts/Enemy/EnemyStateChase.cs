@@ -22,7 +22,6 @@ public class EnemyStateChase : EnemyState
 
     public override void ExitState()
     {
-
     }
 
     public override void UpdateState()

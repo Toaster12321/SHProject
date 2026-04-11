@@ -8,14 +8,15 @@ public class EnemyStateContext
     private NavMeshAgent _agent; //navmesh agent reference
     private Transform _player; //player position reference
     private LayerMask _whatIsGround, _whatIsPlayer; //layers for ground and player
-    private Animator _animator; //animaton reference
+    private Animator _animator; //animation reference
     private ParticleSystem _particleEmitter;
     private float _sightRange, _attackRange, _walkPointRange;
     private Transform _selfTransform;
+    private Collider _attackHitbox;
 
 
-    public EnemyStateContext(SkinnedMeshRenderer enemyRenderer, Color originalColor, NavMeshAgent agent, Transform player, LayerMask whatIsGround,
-        LayerMask whatIsPlayer, Animator animator, ParticleSystem particleEmittor, float sightRange, float attackRange, float walkPointRange, Transform selfTransform)
+    public EnemyStateContext(SkinnedMeshRenderer enemyRenderer, Color originalColor, NavMeshAgent agent, Transform player, LayerMask whatIsGround, Collider attackHitbox,
+        LayerMask whatIsPlayer, Animator animator, ParticleSystem particleEmitter, float sightRange, float attackRange, float walkPointRange, Transform selfTransform)
     {
         _enemyRenderer = enemyRenderer;
         _originalColor = originalColor;
@@ -23,8 +24,9 @@ public class EnemyStateContext
         _player = player;
         _whatIsGround = whatIsGround;
         _whatIsPlayer = whatIsPlayer;
+        _attackHitbox = attackHitbox;
         _animator = animator;
-        _particleEmitter = particleEmittor;
+        _particleEmitter = particleEmitter;
         _sightRange = sightRange;
         _attackRange = attackRange;
         _walkPointRange = walkPointRange;
@@ -36,13 +38,14 @@ public class EnemyStateContext
     public NavMeshAgent Agent => _agent;
     public Transform Player => _player;
     public Animator Animator => _animator;
-    public ParticleSystem ParticleEmittor => _particleEmitter;
+    public ParticleSystem ParticleEmitter => _particleEmitter;
     public LayerMask WhatIsGround => _whatIsGround;
     public LayerMask WhatIsPlayer => _whatIsPlayer;
     public float SightRange => _sightRange;
     public float AttackRange => _attackRange;
     public float WalkPointRange => _walkPointRange;
     public Transform SelfTransform => _selfTransform;
+    public Collider AttackHitbox => _attackHitbox;
 
     public bool PlayerInSightRange => //checks for the position of the player in a radius of sight range on layer mask of player
         Physics.CheckSphere(SelfTransform.position, _sightRange, _whatIsPlayer);  

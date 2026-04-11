@@ -1101,7 +1101,7 @@ Transform:
   m_GameObject: {fileID: 66839944}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5, y: 2.3900003, z: -6.25}
+  m_LocalPosition: {x: -4.567, y: 2.3900003, z: -2.904}
   m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6666,14 +6666,14 @@ BoxCollider:
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.98, y: 0.89, z: 1.08}
-  m_Center: {x: 0, y: 0.1, z: 0}
+  m_Size: {x: 0.98, y: 1.24, z: 1.08}
+  m_Center: {x: 0, y: 0.35, z: 0}
 --- !u!195 &750184810
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -11591,7 +11591,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 916b4673fbaba8e4eb8aeece8e233da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStateMachine
-  maxHP: 1
+  maxHP: 20
   _enemyRenderer: {fileID: 1197713931}
   _agent: {fileID: 750184810}
   _player: {fileID: 66839948}
@@ -11607,6 +11607,7 @@ MonoBehaviour:
   _attackRange: 1
   _walkPointRange: 10
   _selfTransform: {fileID: 750184818}
+  _attackHitbox: {fileID: 750184820}
 --- !u!4 &750184818 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -3910990755373119420, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
@@ -11639,6 +11640,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!65 &750184820
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 750184806}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 0.62, y: 0.42, z: 0.56}
+  m_Center: {x: 0, y: 0.17, z: 0.36}
 --- !u!1 &762957125
 GameObject:
   m_ObjectHideFlags: 0
@@ -14759,7 +14781,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.RawImage
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.6862745}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -17150,7 +17172,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3910990755373119420, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -9.75
+      value: -4.46
       objectReference: {fileID: 0}
     - target: {fileID: -3910990755373119420, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
       propertyPath: m_LocalPosition.y
@@ -17158,7 +17180,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -3910990755373119420, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 4.75
+      value: -4.46
       objectReference: {fileID: 0}
     - target: {fileID: -3910990755373119420, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
       propertyPath: m_LocalRotation.w
@@ -17189,8 +17211,16 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3715687611939689904, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -3715687611939689904, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 87.85074
+      objectReference: {fileID: 0}
+    - target: {fileID: -3715687611939689904, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -3566261125414426050, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -17450,6 +17480,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8771091787928289351, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
       insertIndex: -1
       addedObject: {fileID: 750184819}
+    - targetCorrespondingSourceObject: {fileID: 8771091787928289351, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 750184820}
   m_SourcePrefab: {fileID: -4161369568681901532, guid: f591ec77b749b484b9a4915071bde25d, type: 3}
 --- !u!137 &1197713931 stripped
 SkinnedMeshRenderer:
@@ -21524,6 +21557,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4d64ef22333c38b4caaa6dc92ca1c7f7, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1599585879}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4d64ef22333c38b4caaa6dc92ca1c7f7, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1599585882}
   m_SourcePrefab: {fileID: 100100000, guid: 4d64ef22333c38b4caaa6dc92ca1c7f7, type: 3}
 --- !u!4 &1599585875 stripped
 Transform:
@@ -21564,7 +21600,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a5016e215294d4c498c449ba5bdea774, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MeleeWeapon
-  attackDistance: 3
   attackDelay: 0.4
   attackSpeed: 1
   attackDamage: 1
@@ -21572,8 +21607,30 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1088
   swingSound: {fileID: 1053352817}
-  hitSound: {fileID: 0}
-  animator: {fileID: 1599585878}
+  weaponCollider: {fileID: 1599585882}
+  knifeAnimator: {fileID: 1599585878}
+  cameraAnimator: {fileID: 1965389554}
+--- !u!65 &1599585882
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1085815788}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 0
+  serializedVersion: 3
+  m_Size: {x: 0.22, y: 1.05, z: 0.27}
+  m_Center: {x: -0.007920994, y: 0.26350126, z: 0.00006266882}
 --- !u!1 &1604985155
 GameObject:
   m_ObjectHideFlags: 0
