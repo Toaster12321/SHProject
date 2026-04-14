@@ -5,7 +5,6 @@ public class EnemyStateAttack : EnemyState
 {
     private float _attackCooldown = 2f;//how long before damage is applied again
     private float _lastAttackTime;
-    private bool _isAttacking;
 
     public EnemyStateAttack( EnemyStateContext context, EnemyStateMachine.EEnemyState estate) : base(context, estate)
     {
@@ -14,7 +13,6 @@ public class EnemyStateAttack : EnemyState
 
     public override void EnterState()
     {
-        _isAttacking = true;
         _lastAttackTime = 0f;
 
         Context.Animator.SetBool("attacking", true);
@@ -23,15 +21,12 @@ public class EnemyStateAttack : EnemyState
 
     public override void ExitState()
     {
-        _isAttacking = false;
         Context.Agent.isStopped = false;
         Context.Animator.SetBool("attacking", false);
     }
 
     public override void UpdateState()
     {
-        if (_isAttacking)
-            Context.Animator.SetBool("attacking", true);
     }
 
     public override EnemyStateMachine.EEnemyState GetNextState()
