@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2377121766287476398
+--- !u!1 &3648874593353067699
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,46 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 7217961310836698015}
-  - component: {fileID: 1659044228810551511}
-  - component: {fileID: 1923901303158173968}
+  - component: {fileID: 2564862106573641495}
+  - component: {fileID: 136508243192129917}
+  - component: {fileID: 4780772000846186429}
+  - component: {fileID: 4079387288388176271}
   m_Layer: 0
-  m_Name: StandingLamo
+  m_Name: BathroomTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &7217961310836698015
+--- !u!4 &2564862106573641495
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2377121766287476398}
+  m_GameObject: {fileID: 3648874593353067699}
   serializedVersion: 2
-  m_LocalRotation: {x: -1.0376815e-14, y: 0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.099635005, y: -0.29403198, z: -0.12227162}
-  m_LocalScale: {x: 0.34237033, y: 0.34237033, z: 0.34237033}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -124.06348, y: 0.4050247, z: -64.45839}
+  m_LocalScale: {x: 0.67, y: 1, z: 1.02}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &1659044228810551511
+--- !u!33 &136508243192129917
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2377121766287476398}
-  m_Mesh: {fileID: -7928147195859084625, guid: 93515b10aabfff549a13b1fd715e7916, type: 3}
---- !u!23 &1923901303158173968
+  m_GameObject: {fileID: 3648874593353067699}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &4780772000846186429
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2377121766287476398}
+  m_GameObject: {fileID: 3648874593353067699}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -66,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5e5b86801f131694f97f8bf454de22b0, type: 2}
+  - {fileID: 2100000, guid: 35356e50d32a9ae4682c6917be09b6d5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -90,3 +91,25 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &4079387288388176271
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3648874593353067699}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
