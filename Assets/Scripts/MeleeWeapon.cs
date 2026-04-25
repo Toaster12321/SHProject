@@ -53,9 +53,6 @@ public class MeleeWeapon : MonoBehaviour
 
         Invoke(nameof(ResetAttack), attackSpeed); //calls reset attack function after 1s(attack speed)
 
-        swingSound.pitch = Random.Range(0.7f, 0.9f);
-        swingSound.Play();
-
         if (attackCount == 0)
         {
             knifeAnimator.SetTrigger("swinging");
@@ -94,6 +91,8 @@ public class MeleeWeapon : MonoBehaviour
     public void EnableWeaponCollider() //enable/disable collider for animation events
     {
         weaponCollider.enabled = true;
+        swingSound.pitch = Random.Range(0.7f, 0.9f);
+        swingSound.Play();
     }
 
     public void DisableWeaponCollider()
