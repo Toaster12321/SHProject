@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7760722854654241386}
   - component: {fileID: 2546644891600315176}
   m_Layer: 0
-  m_Name: Lightbulb
+  m_Name: LightbulbOff
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -4590822995198620427, guid: 93515b10aabfff549a13b1fd715e7916, type: 3}
+  - {fileID: 2100000, guid: a6f0d8035a35902479ccb0b49a6b086c, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
