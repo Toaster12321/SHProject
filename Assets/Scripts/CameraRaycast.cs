@@ -27,7 +27,7 @@ public class CameraRaycast : MonoBehaviour
 
     private void Update()
     {
-        Ray ray = new Ray(transform.position, transform.forward);
+        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f)); //raycast is casted at center of viewport, (0.5,0.5) = 50%x and 50%y
 
         if (Physics.Raycast(ray, out RaycastHit hitObject, interactDistance))
         {
@@ -50,6 +50,6 @@ public class CameraRaycast : MonoBehaviour
 
     private void Interact(InputAction.CallbackContext ctx)
     {
-        currentObject?.Interact(); //call objects interact function if its not null
+        currentObject?.OpenClose(); //call objects open close function if its not null
     }
 }
