@@ -27,7 +27,7 @@ public class OpenCloseObject : MonoBehaviour
 
         if (XComparison) //compare x axis
         {
-            if (localPlayerPos.x > 0 || objectAnimator.GetBool("openObject")) //if the player is above 0 we are outside, if we triggered a bool play "close" in the animation state tree regardless of comparison
+            if ((localPlayerPos.x > 0 || objectAnimator.GetBool("openObject")) && objectAnimator.GetBool("openObjectInside") != true) //if the player is above 0 we are outside, if we triggered a bool play "close" in the animation state tree regardless of comparison
             {
                 objectAnimator.SetBool("openObject", isOpen);
             }
@@ -38,7 +38,7 @@ public class OpenCloseObject : MonoBehaviour
         }
         else if (ZComparison) //compare z axis
         {
-            if (localPlayerPos.z > 0)
+            if ((localPlayerPos.z > 0 || objectAnimator.GetBool("openObject")) && objectAnimator.GetBool("openObjectInside") != true)
             {
                 objectAnimator.SetBool("openObject", isOpen);
             }
@@ -48,6 +48,10 @@ public class OpenCloseObject : MonoBehaviour
                 
             }
         }
+        else
+        {
+            objectAnimator.SetBool("openObject", isOpen);
+        }    
 
          
     }

@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 4380424451055307738}
   - component: {fileID: 1847520563592591319}
   - component: {fileID: 1416734211267166582}
-  m_Layer: 0
+  - component: {fileID: 710730820688043565}
+  - component: {fileID: 2099908369702795350}
+  m_Layer: 13
   m_Name: PantryDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -91,3 +93,42 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!64 &710730820688043565
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4843073941652082276}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 702973119381661345, guid: 93515b10aabfff549a13b1fd715e7916, type: 3}
+--- !u!114 &2099908369702795350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4843073941652082276}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afb65592a3cfe24d815834723a98585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OpenCloseObject
+  screenText: Interact (E)
+  player: {fileID: 0}
+  objectAnimator: {fileID: 0}
+  XComparison: 0
+  ZComparison: 0

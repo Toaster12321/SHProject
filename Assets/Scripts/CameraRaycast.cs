@@ -5,6 +5,7 @@ using static UnityEngine.GraphicsBuffer;
 public class CameraRaycast : MonoBehaviour
 {
     [SerializeField] private float interactDistance = 3f; //how far raycast stretches out
+    [SerializeField] private LayerMask interactLayer;
     private PlayerControls playerControls;
     private OpenCloseObject currentObject;
 
@@ -29,9 +30,10 @@ public class CameraRaycast : MonoBehaviour
     {
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f)); //raycast is casted at center of viewport, (0.5,0.5) = 50%x and 50%y
 
-        if (Physics.Raycast(ray, out RaycastHit hitObject, interactDistance))
+        if (Physics.Raycast(ray, out RaycastHit hitObject, interactDistance, interactLayer))
         {
-            OpenCloseObject interactableObject = hitObject.collider.GetComponent<OpenCloseObject>(); //get an object that has the open close script
+            Debug.Log(hitObject.collider.name);
+            OpenCloseObject interactableObject = hitObject.collider.GetComponentInParent<OpenCloseObject>(); //get an object that has the open close script
 
             if (interactableObject != null)
             {

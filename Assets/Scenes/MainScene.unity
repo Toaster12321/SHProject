@@ -2769,7 +2769,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2.12
-  m_Radius: 0.4
+  m_Radius: 0.25
   m_SlopeLimit: 30
   m_StepOffset: 0.4
   m_SkinWidth: 0.04
@@ -4932,6 +4932,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 158339043}
+  - component: {fileID: 158339045}
+  - component: {fileID: 158339046}
   m_Layer: 0
   m_Name: FridgePivot
   m_TagString: Untagged
@@ -4955,6 +4957,45 @@ Transform:
   - {fileID: 649990498}
   m_Father: {fileID: 1442790409}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 18.63}
+--- !u!95 &158339045
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158339042}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3fa655ced1b0dbb46b804a624a45850f, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &158339046
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 158339042}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afb65592a3cfe24d815834723a98585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OpenCloseObject
+  screenText: Interact (E)
+  player: {fileID: 66839948}
+  objectAnimator: {fileID: 158339045}
+  XComparison: 0
+  ZComparison: 0
 --- !u!4 &162522346 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3822852562665795733, guid: 89d953efd47874243b324517cb173b3c, type: 3}
@@ -10237,6 +10278,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 120363073}
     m_Modifications:
+    - target: {fileID: 2099908369702795350, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 66839948}
+    - target: {fileID: 2099908369702795350, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+      propertyPath: objectAnimator
+      value: 
+      objectReference: {fileID: 1940002858}
     - target: {fileID: 4380424451055307738, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.1929998
@@ -10300,7 +10349,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4843073941652082276, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1940002858}
   m_SourcePrefab: {fileID: 100100000, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
 --- !u!4 &349705955 stripped
 Transform:
@@ -12339,6 +12391,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2215381997801214387, guid: 2956686690332d44bbb611407cc8a9cc, type: 3}
   m_PrefabInstance: {fileID: 428685317}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &430584616 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5625720008522012022, guid: 73ef9ddcbd7da1642a6e1724dee3cb4a, type: 3}
+  m_PrefabInstance: {fileID: 649990497}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &433335297
 PrefabInstance:
@@ -18062,6 +18119,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FridgeDoor
       objectReference: {fileID: 0}
+    - target: {fileID: 5625720008522012022, guid: 73ef9ddcbd7da1642a6e1724dee3cb4a, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     - target: {fileID: 5867679921723520712, guid: 73ef9ddcbd7da1642a6e1724dee3cb4a, type: 3}
       propertyPath: 'm_Materials.Array.data[0]'
       value: 
@@ -18121,13 +18182,37 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5625720008522012022, guid: 73ef9ddcbd7da1642a6e1724dee3cb4a, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 649990502}
   m_SourcePrefab: {fileID: 100100000, guid: 73ef9ddcbd7da1642a6e1724dee3cb4a, type: 3}
 --- !u!4 &649990498 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7804739908298024958, guid: 73ef9ddcbd7da1642a6e1724dee3cb4a, type: 3}
   m_PrefabInstance: {fileID: 649990497}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &649990502
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430584616}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0023811571, y: 0.007859605, z: 0.005143955}
+  m_Center: {x: 0.0005872567, y: 0.0038848063, z: -0.00001406156}
 --- !u!1001 &651107429
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -21073,6 +21158,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 781817105}
   m_LocalEulerAnglesHint: {x: 10.916, y: 23.304, z: 82.864}
+--- !u!1 &735607891 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4843073941652082276, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+  m_PrefabInstance: {fileID: 760351207}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &736471356
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28409,16 +28499,66 @@ PrefabInstance:
       propertyPath: m_Name
       value: PantryDoor
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    - target: {fileID: 4843073941652082276, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 2099908369702795350, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4843073941652082276, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 760351211}
+    - targetCorrespondingSourceObject: {fileID: 4843073941652082276, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 760351214}
   m_SourcePrefab: {fileID: 100100000, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
 --- !u!4 &760351208 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4380424451055307738, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
   m_PrefabInstance: {fileID: 760351207}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &760351211
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735607891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afb65592a3cfe24d815834723a98585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OpenCloseObject
+  screenText: Interact (E)
+  player: {fileID: 66839948}
+  objectAnimator: {fileID: 760351214}
+  XComparison: 0
+  ZComparison: 0
+--- !u!95 &760351214
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735607891}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a826546648bfcf14aa07b8e9ca72ed98, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &762957125
 GameObject:
   m_ObjectHideFlags: 0
@@ -34024,7 +34164,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 2039
+    m_Bits: 10231
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -42227,6 +42367,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1220994195}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1222129245 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4843073941652082276, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+  m_PrefabInstance: {fileID: 2036952878}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1222237341
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -50490,7 +50635,7 @@ GameObject:
   - component: {fileID: 1544555964}
   - component: {fileID: 1544555965}
   - component: {fileID: 1544555966}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: DoorContainer
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -50546,7 +50691,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5afb65592a3cfe24d815834723a98585, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::OpenCloseObject
-  screenText: Open (E)
+  screenText: Interact (E)
   player: {fileID: 66839948}
   objectAnimator: {fileID: 1544555966}
   XComparison: 1
@@ -57550,6 +57695,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::CameraRaycast
   interactDistance: 3
+  interactLayer:
+    serializedVersion: 2
+    m_Bits: 8192
 --- !u!1 &1784449475
 GameObject:
   m_ObjectHideFlags: 0
@@ -63439,6 +63587,33 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1740011973357139537, guid: 7f66f922cc92be847af2bada1ddd36c1, type: 3}
   m_PrefabInstance: {fileID: 1939319146}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1940002853 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4843073941652082276, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+  m_PrefabInstance: {fileID: 349705954}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1940002858
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940002853}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9c1fb3a7e48113b4e81e620e20a6be54, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1942498855
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -64926,6 +65101,11 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!1 &1968086452 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4843073941652082276, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+  m_PrefabInstance: {fileID: 2138171014}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1969404286
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -66889,16 +67069,62 @@ PrefabInstance:
       propertyPath: m_Name
       value: PantryDoor (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2099908369702795350, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4843073941652082276, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2036952884}
+    - targetCorrespondingSourceObject: {fileID: 4843073941652082276, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2036952885}
   m_SourcePrefab: {fileID: 100100000, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
 --- !u!4 &2036952879 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4380424451055307738, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
   m_PrefabInstance: {fileID: 2036952878}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &2036952884
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222129245}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 9c1fb3a7e48113b4e81e620e20a6be54, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2036952885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1222129245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afb65592a3cfe24d815834723a98585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OpenCloseObject
+  screenText: Interact (E)
+  player: {fileID: 66839948}
+  objectAnimator: {fileID: 2036952884}
+  XComparison: 0
+  ZComparison: 0
 --- !u!4 &2041885441 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7785022667653128124, guid: 1f3f88447d3ecf0449c2b247a1f52fb3, type: 3}
@@ -67792,9 +68018,13 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 1206544237157807574, guid: d94314c9e9fc59f478cc4bd29bdd2a36, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5062136721038548524, guid: d94314c9e9fc59f478cc4bd29bdd2a36, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.04
+      value: 1.05
       objectReference: {fileID: 0}
     - target: {fileID: 5062136721038548524, guid: d94314c9e9fc59f478cc4bd29bdd2a36, type: 3}
       propertyPath: m_LocalScale.y
@@ -67806,15 +68036,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5062136721038548524, guid: d94314c9e9fc59f478cc4bd29bdd2a36, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.00021766126
+      value: 0.00022
       objectReference: {fileID: 0}
     - target: {fileID: 5062136721038548524, guid: d94314c9e9fc59f478cc4bd29bdd2a36, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.001380019
+      value: -0.00121
       objectReference: {fileID: 0}
     - target: {fileID: 5062136721038548524, guid: d94314c9e9fc59f478cc4bd29bdd2a36, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0.000019960222
+      value: -0.00005
       objectReference: {fileID: 0}
     - target: {fileID: 5062136721038548524, guid: d94314c9e9fc59f478cc4bd29bdd2a36, type: 3}
       propertyPath: m_LocalRotation.w
@@ -67844,7 +68074,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 180
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7496559926995410086, guid: d94314c9e9fc59f478cc4bd29bdd2a36, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -70090,6 +70321,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 120363073}
     m_Modifications:
+    - target: {fileID: 2099908369702795350, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 66839948}
+    - target: {fileID: 2099908369702795350, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+      propertyPath: objectAnimator
+      value: 
+      objectReference: {fileID: 2138171020}
     - target: {fileID: 4380424451055307738, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
       propertyPath: m_LocalScale.x
       value: 2.193
@@ -70153,13 +70392,38 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4843073941652082276, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2138171020}
   m_SourcePrefab: {fileID: 100100000, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
 --- !u!4 &2138171015 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4380424451055307738, guid: 6678ed37dc46df04a8712940128905bd, type: 3}
   m_PrefabInstance: {fileID: 2138171014}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &2138171020
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968086452}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: a826546648bfcf14aa07b8e9ca72ed98, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &2138941679
 GameObject:
   m_ObjectHideFlags: 0
