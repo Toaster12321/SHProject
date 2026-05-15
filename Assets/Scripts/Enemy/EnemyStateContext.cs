@@ -3,7 +3,8 @@ using UnityEngine.AI;
 
 public class EnemyStateContext
 {
-    private SkinnedMeshRenderer _enemyRenderer;
+    private EnemyStateMachine.EnemyType _enemyType;
+    private Material _enemyRenderer;
     private Color _originalColor;
     private NavMeshAgent _agent; //navmesh agent reference
     private Transform _player; //player position reference
@@ -15,9 +16,10 @@ public class EnemyStateContext
     private Collider _attackHitbox;
 
 
-    public EnemyStateContext(SkinnedMeshRenderer enemyRenderer, Color originalColor, NavMeshAgent agent, Transform player, LayerMask whatIsGround, Collider attackHitbox,
+    public EnemyStateContext(EnemyStateMachine.EnemyType enemyType, Material enemyRenderer, Color originalColor, NavMeshAgent agent, Transform player, LayerMask whatIsGround, Collider attackHitbox,
         LayerMask whatIsPlayer, Animator animator, ParticleSystem particleEmitter, float sightRange, float attackRange, float walkPointRange, Transform selfTransform)
     {
+        _enemyType = enemyType;
         _enemyRenderer = enemyRenderer;
         _originalColor = originalColor;
         _agent = agent;
@@ -33,7 +35,8 @@ public class EnemyStateContext
         _selfTransform = selfTransform;
     }
 
-    public SkinnedMeshRenderer EnemyRenderer => _enemyRenderer;
+    public EnemyStateMachine.EnemyType EnemyType => _enemyType;
+    public Material EnemyRenderer => _enemyRenderer;
     public Color OriginalColor => _originalColor;
     public NavMeshAgent Agent => _agent;
     public Transform Player => _player;

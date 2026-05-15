@@ -11,32 +11,45 @@ public class EnemyStateIdle : EnemyState
 
     public override void EnterState()
     {
-        _idleTimer = 0f;
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+        {
+            _idleTimer = 0f;
 
-        Context.Animator.SetBool("walking", false); //set walking to false just in case, idle animation autoloads by default
-        Context.Agent.isStopped = true; //stop moving
+            Context.Animator.SetBool("walking", false); //set walking to false just in case, idle animation autoloads by default
+            Context.Agent.isStopped = true; //stop moving
+        }
     }
 
     public override void ExitState()
     {
-        Context.Agent.isStopped = false; //resume movement
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+            Context.Agent.isStopped = false; //resume movement
     }
 
     public override void UpdateState()
     {
-        _idleTimer += Time.deltaTime; //start timer
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+            _idleTimer += Time.deltaTime; //start timer
     }
 
     public override EnemyStateMachine.EEnemyState GetNextState()
     {
-        if (Context.PlayerInSightRange) //if player enters vision radius -> chase
-            return EnemyStateMachine.EEnemyState.Chase;
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+        {
+            if (Context.PlayerInSightRange) //if player enters vision radius -> chase
+                return EnemyStateMachine.EEnemyState.Chase;
 
-        if (Context.PlayerInAttackRange) //if player enters attack radius -> attack
-            return EnemyStateMachine.EEnemyState.Attack;
+            if (Context.PlayerInAttackRange) //if player enters attack radius -> attack
+                return EnemyStateMachine.EEnemyState.Attack;
 
-        if (_idleTimer >= _idleDuration) //once timer is over start patrolling
-            return EnemyStateMachine.EEnemyState.Patrol;
+            if (_idleTimer >= _idleDuration) //once timer is over start patrolling
+                return EnemyStateMachine.EEnemyState.Patrol;
+        }
+        else if (Context.EnemyType == EnemyStateMachine.EnemyType.CarnPlant)
+        {
+            if (Context.PlayerInAttackRange) //if player enters attack radius -> attack
+                return EnemyStateMachine.EEnemyState.Attack;
+        }
 
         return StateKey; //returns self
     }

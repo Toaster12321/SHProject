@@ -14,14 +14,17 @@ public class EnemyStateAttack : EnemyState
     public override void EnterState()
     {
         _lastAttackTime = 0f;
-
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+        {
+            Context.Agent.SetDestination(Context.SelfTransform.position);
+        }
         Context.Animator.SetBool("attacking", true);
-        Context.Agent.SetDestination(Context.SelfTransform.position);
     }
 
     public override void ExitState()
     {
-        Context.Agent.isStopped = false;
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+            Context.Agent.isStopped = false;
         Context.Animator.SetBool("attacking", false);
     }
 
@@ -32,7 +35,8 @@ public class EnemyStateAttack : EnemyState
     public override EnemyStateMachine.EEnemyState GetNextState()
     {
 
-        if (Context.PlayerInSightRange && !Context.PlayerInAttackRange) //if player enters vision radius -> chase
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+            if (Context.PlayerInSightRange && !Context.PlayerInAttackRange) //if player enters vision radius -> chase
             return EnemyStateMachine.EEnemyState.Chase;
 
         return StateKey;
@@ -45,12 +49,11 @@ public class EnemyStateAttack : EnemyState
 
     public override void OnTriggerExit(Collider other)
     {
-        
+
     }
 
     public override void OnTriggerStay(Collider other)
     {
-        
         Player _player = other.GetComponent<Player>();
 
         if (_player == null) //do nothing if not player collider
@@ -61,6 +64,7 @@ public class EnemyStateAttack : EnemyState
             Context.Player.GetComponentInParent<Player>().TakeDamage(1); //apply damage
             _lastAttackTime = Time.time;
         }
+
 
     }
 

@@ -36,29 +36,32 @@ public class EnemyStateDie : EnemyState
 
     public override void UpdateState()
     {
-        _timer += Time.deltaTime;
-
-        if (_timer >= _explosionAnimationTime && !_explosionStarted) //wait for explosion animation to finish
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
         {
-            Context.ParticleEmitter.Play(); //play gas explosion effect and turn off sprite
-            Context.EnemyRenderer.enabled = false;
-            _explosionStarted = true;
-        }
+            _timer += Time.deltaTime;
 
-        if (_explosionStarted && _timer <= _totalAnimationTime) //if explosion has started and the gas duration is still active -> do damage
-        { 
-            _tickRate += Time.deltaTime;
-
-            if (_tickRate >= 1f) //every 1 seconds call explosion for DOT
+            if (_timer >= _explosionAnimationTime && !_explosionStarted) //wait for explosion animation to finish
             {
-                Explosion();
-                _tickRate = 0f;
+                Context.ParticleEmitter.Play(); //play gas explosion effect and turn off sprite
+                Context.Agent.GetComponentInChildren<SkinnedMeshRenderer>().enabled = false;
+                _explosionStarted = true;
             }
-        }
-        
-        if (_timer >= _totalAnimationTime) //if the timer is over the gas duration destroy object
-        {
-            GameObject.Destroy(Context.Agent.gameObject);
+
+            if (_explosionStarted && _timer <= _totalAnimationTime) //if explosion has started and the gas duration is still active -> do damage
+            {
+                _tickRate += Time.deltaTime;
+
+                if (_tickRate >= 1f) //every 1 seconds call explosion for DOT
+                {
+                    Explosion();
+                    _tickRate = 0f;
+                }
+            }
+
+            if (_timer >= _totalAnimationTime) //if the timer is over the gas duration destroy object
+            {
+                GameObject.Destroy(Context.Agent.gameObject);
+            }
         }
     }
 

@@ -13,13 +13,20 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
         Die,
     }
 
-    private EnemyStateContext _context;
+    public enum EnemyType
+    {
+        Scab,
+        CarnPlant
+    }
 
+    private EnemyStateContext _context;
     [SerializeField] private float maxHP;
     private float currentHP;
+
     public bool isDead {  get; private set; }
 
-    [SerializeField] private SkinnedMeshRenderer _enemyRenderer;
+    [SerializeField] private EnemyType _enemyType;
+    [SerializeField] private Material _enemyRenderer;
     [SerializeField] private NavMeshAgent _agent; //navmesh agent reference
     [SerializeField] private Transform _player; //player position reference
     [SerializeField] private LayerMask _whatIsGround, _whatIsPlayer; //layers for ground and player
@@ -34,7 +41,7 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
 
     private void Start()
     {
-        _originalColor = _enemyRenderer.material.color;
+        _originalColor = _enemyRenderer.color;
         currentHP = maxHP; //make sure enemy starts with max HP
     }
 
@@ -43,7 +50,8 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
         if (isDead) return;
 
         currentHP -= amount;
-        StartCoroutine(FlashRed());
+        if (_enemyRenderer != null)
+            StartCoroutine(FlashRed());
         TransitionToState(EEnemyState.Chase);
 
         if (currentHP <= 0)
@@ -55,7 +63,7 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
 
     private void Awake()
     {
-        _context = new EnemyStateContext(_enemyRenderer, _originalColor, _agent, _player, _whatIsGround, _attackHitbox, _whatIsPlayer, _animator, _particleEmitter, _sightRange,
+        _context = new EnemyStateContext(_enemyType, _enemyRenderer, _originalColor, _agent, _player, _whatIsGround, _attackHitbox, _whatIsPlayer, _animator, _particleEmitter, _sightRange,
             _attackRange, _walkPointRange, _selfTransform);
         InitializeStates();
     }
@@ -72,9 +80,9 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
 
     IEnumerator FlashRed() //coroutine to set red flash as indicator for damage for 0.1s
     {
-        _enemyRenderer.material.color = Color.red;
+        _enemyRenderer.color = Color.red;
         yield return new WaitForSeconds(0.1f);
-        _enemyRenderer.material.color = _originalColor;
+        _enemyRenderer.color = _originalColor;
     }
 
     public void EnableAttackHitbox()
