@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5261860915410344646}
   - component: {fileID: 7906498319197138228}
   - component: {fileID: 5908986799232978179}
+  - component: {fileID: 2661210037025574038}
   m_Layer: 0
   m_Name: Base
   m_TagString: Untagged
@@ -90,6 +91,27 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &2661210037025574038
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1677409545655075110}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.02, y: 0.03, z: 0.013174174}
+  m_Center: {x: 0, y: -0.000081348226, z: 0.004208562}
 --- !u!1 &2599755953452981358
 GameObject:
   m_ObjectHideFlags: 0
@@ -192,6 +214,7 @@ GameObject:
   - component: {fileID: 2575902591289759203}
   - component: {fileID: 1141887581431864867}
   - component: {fileID: 5461230316525718464}
+  - component: {fileID: 6723871753850888147}
   m_Layer: 0
   m_Name: UpperJaw
   m_TagString: Untagged
@@ -293,6 +316,27 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.0087324185, y: 0.015356137, z: 0.009319166}
   m_Center: {x: -0.00009108637, y: -0.016270548, z: 0.025913306}
+--- !u!65 &6723871753850888147
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3613378797742168126}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.0087324185, y: 0.015356133, z: 0.009319163}
+  m_Center: {x: -0.00009108637, y: -0.016270602, z: 0.025913253}
 --- !u!1 &4407013532405451918
 GameObject:
   m_ObjectHideFlags: 0
@@ -484,6 +528,7 @@ GameObject:
   - component: {fileID: 6490648502864257868}
   - component: {fileID: 5306235366060362391}
   - component: {fileID: 7576697131530233038}
+  - component: {fileID: 6027104775948221699}
   m_Layer: 0
   m_Name: Stem
   m_TagString: Untagged
@@ -565,6 +610,27 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &6027104775948221699
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5464194062947648957}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.01, y: 0.01, z: 0.02439757}
+  m_Center: {x: -0.000012419535, y: 0.000057631634, z: 0.020745216}
 --- !u!1 &7780945632123114377
 GameObject:
   m_ObjectHideFlags: 0
@@ -575,7 +641,6 @@ GameObject:
   m_Component:
   - component: {fileID: 7357762269123973439}
   - component: {fileID: 5252836612805697183}
-  - component: {fileID: 1853660809210469568}
   - component: {fileID: 3966094437196744121}
   m_Layer: 0
   m_Name: CarnivorousPlant
@@ -625,28 +690,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!64 &1853660809210469568
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7780945632123114377}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!114 &3966094437196744121
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -659,8 +702,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 916b4673fbaba8e4eb8aeece8e233da3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyStateMachine
-  _enemyType: 1
   maxHP: 5
+  _enemyType: 1
   _enemyRenderer: {fileID: 0}
   _agent: {fileID: 0}
   _player: {fileID: 0}

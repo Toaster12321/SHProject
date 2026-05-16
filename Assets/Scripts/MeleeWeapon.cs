@@ -84,7 +84,9 @@ public class MeleeWeapon : MonoBehaviour
         EnemyStateMachine enemy = other.GetComponentInParent<EnemyStateMachine>();
         if (enemy)
         {
+            print("hit");
             enemy.TakeDamage(attackDamage);
+
         }
     }
 

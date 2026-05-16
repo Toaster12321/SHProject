@@ -22,7 +22,8 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     private EnemyStateContext _context;
     [SerializeField] private float maxHP;
     private float currentHP;
-
+    private float _invulnDuration = 0.2f;
+    private float _lastTimeHit;
     public bool isDead {  get; private set; }
 
     [SerializeField] private EnemyType _enemyType;
@@ -35,6 +36,7 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     [SerializeField] private float _sightRange, _attackRange, _walkPointRange;
     [SerializeField] private Transform _selfTransform;
     [SerializeField] private Collider _attackHitbox;
+    private bool _isRotatingEnabled = true;
     private Color _originalColor;
 
 
@@ -46,15 +48,22 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     }
 
     public void TakeDamage(float amount)
-    {
+    { 
+
         if (isDead) return;
 
+        if (Time.time < _lastTimeHit + _invulnDuration) //apply invulnerability for 0.2s to prevent multiple instances of damage
+            return;
+
         currentHP -= amount;
+        _lastTimeHit = Time.time;
+
         if (_enemyRenderer != null)
             StartCoroutine(FlashRed());
-        TransitionToState(EEnemyState.Chase);
+        if (_enemyType == EnemyType.Scab)
+            TransitionToState(EEnemyState.Chase);
 
-        if (currentHP <= 0)
+        if (currentHP <= 0 && _enemyType == EnemyType.Scab)
         {
             isDead = true;
             TransitionToState(EEnemyState.Die);
@@ -64,7 +73,7 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     private void Awake()
     {
         _context = new EnemyStateContext(_enemyType, _enemyRenderer, _originalColor, _agent, _player, _whatIsGround, _attackHitbox, _whatIsPlayer, _animator, _particleEmitter, _sightRange,
-            _attackRange, _walkPointRange, _selfTransform);
+            _attackRange, _walkPointRange, _selfTransform, _isRotatingEnabled);
         InitializeStates();
     }
 
@@ -95,4 +104,13 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
         _attackHitbox.enabled = false;
     }
 
+    public void DisableRotation() //used for stopping rotation of carn plant when attacking
+    {
+        _context.IsRotatingEnabled = false;
+    }
+
+    public void EnableRotation()
+    {
+        _context.IsRotatingEnabled = true;
+    }
 }
