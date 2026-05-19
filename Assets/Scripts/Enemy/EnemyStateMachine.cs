@@ -63,7 +63,7 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
         if (_enemyType == EnemyType.Scab)
             TransitionToState(EEnemyState.Chase);
 
-        if (currentHP <= 0 && _enemyType == EnemyType.Scab)
+        if (currentHP <= 0)
         {
             isDead = true;
             TransitionToState(EEnemyState.Die);
@@ -112,5 +112,10 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     public void EnableRotation()
     {
         _context.IsRotatingEnabled = true;
+    }
+
+    private void DestroyEnemy() //called via animation events
+    {
+        GameObject.Destroy(gameObject);
     }
 }

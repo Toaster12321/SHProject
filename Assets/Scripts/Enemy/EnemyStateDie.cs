@@ -17,16 +17,20 @@ public class EnemyStateDie : EnemyState
     public override void EnterState()
     {
         Context.Animator.SetTrigger("no_hp");
-        Context.Agent.GetComponent<BoxCollider>().enabled = false;
 
-        Context.Agent.isStopped = true; //turn off navmesh functions
-        Context.Agent.ResetPath();
-        Context.Agent.enabled = false;
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+        {
+            Context.Agent.GetComponent<BoxCollider>().enabled = false;
 
-        _timer = 0f;
-        _tickRate = 0f;
-        _explosionAnimationTime = 1.25f;
-        _totalAnimationTime = _explosionAnimationTime + _gasDuration;
+            Context.Agent.isStopped = true; //turn off navmesh functions
+            Context.Agent.ResetPath();
+            Context.Agent.enabled = false;
+
+            _timer = 0f;
+            _tickRate = 0f;
+            _explosionAnimationTime = 1.25f;
+            _totalAnimationTime = _explosionAnimationTime + _gasDuration;
+        }
     }
 
     public override void ExitState()

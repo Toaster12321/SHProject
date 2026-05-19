@@ -9,6 +9,11 @@ ModelImporter:
       assembly: UnityEngine.CoreModule
       name: Plant
     second: {fileID: 2100000, guid: 31a61915d8615c3498a97806e9028dfe, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Plant_transparent
+    second: {fileID: 2100000, guid: 4feb5e66a3611f44d9556c022a46fb90, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
