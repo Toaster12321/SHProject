@@ -7,7 +7,7 @@ public class CameraRaycast : MonoBehaviour
     [SerializeField] private float interactDistance = 3f; //how far raycast stretches out
     [SerializeField] private LayerMask interactLayer;
     private PlayerControls playerControls;
-    private OpenCloseObject currentObject;
+    private InteractObject currentObject;
 
     private void Awake()
     {
@@ -33,7 +33,7 @@ public class CameraRaycast : MonoBehaviour
         if (Physics.Raycast(ray, out RaycastHit hitObject, interactDistance, interactLayer))
         {
             Debug.Log(hitObject.collider.name);
-            OpenCloseObject interactableObject = hitObject.collider.GetComponentInParent<OpenCloseObject>(); //get an object that has the open close script
+            InteractObject interactableObject = hitObject.collider.GetComponentInParent<InteractObject>(); //get an object that has the open close script
 
             if (interactableObject != null)
             {
@@ -52,6 +52,14 @@ public class CameraRaycast : MonoBehaviour
 
     private void Interact(InputAction.CallbackContext ctx)
     {
-        currentObject?.OpenClose(); //call objects open close function if its not null
+        if (currentObject == null)
+            return;
+
+        if (currentObject.objectType == InteractObject.InteractObjectType.Door)
+            currentObject.OpenClose(); //call objects open close function if its not null
+        else if (currentObject.objectType == InteractObject.InteractObjectType.Switch)
+            currentObject.TurnOnOff();
+        else
+            return;
     }
 }

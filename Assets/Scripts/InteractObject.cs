@@ -1,17 +1,28 @@
-using GLTFast.Schema;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class OpenCloseObject : MonoBehaviour
+public class InteractObject : MonoBehaviour
 {
+    public enum InteractObjectType
+    {
+        Door,
+        Switch
+    }
+
+    [SerializeField] public InteractObjectType objectType;
     [SerializeField] private string screenText;
     [SerializeField] private Transform player;
     [SerializeField] private Animator objectAnimator;
     [SerializeField] private bool XComparison; //choose x or z based on arrows in editor on open/close object to compare player position to 
     [SerializeField] private bool ZComparison;
 
+    [Header("Light Switch")]
+    [SerializeField] private GameObject switchObject;
+    [SerializeField] private Material emissiveMaterial;
+
     private bool isOpen = false;
+    private bool isOn = false;
 
     public string GetInteractText()
     {
@@ -52,7 +63,17 @@ public class OpenCloseObject : MonoBehaviour
         {
             objectAnimator.SetBool("openObject", isOpen);
         }    
-
-         
     }
+
+    public void TurnOnOff()
+    {
+        isOn = !isOn; //set is on to the opposite of what it previously was (always started off -> on(true))
+        var light = switchObject.GetComponent<Light>();
+        light.enabled = isOn;
+
+        if (light.enabled)
+            emissiveMaterial.EnableKeyword("_EMISSION");
+        else
+            emissiveMaterial.DisableKeyword("_EMISSION");
+    }    
 }
