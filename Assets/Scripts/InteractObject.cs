@@ -18,7 +18,7 @@ public class InteractObject : MonoBehaviour
     [SerializeField] private bool ZComparison;
 
     [Header("Light Switch")]
-    [SerializeField] private GameObject switchObject;
+    [SerializeField] private GameObject lightObject;
     [SerializeField] private Material emissiveMaterial;
 
     private bool isOpen = false;
@@ -68,7 +68,7 @@ public class InteractObject : MonoBehaviour
     public void TurnOnOff()
     {
         isOn = !isOn; //set is on to the opposite of what it previously was (always started off -> on(true))
-        var light = switchObject.GetComponent<Light>();
+        var light = lightObject.GetComponent<Light>();
         light.enabled = isOn;
 
         if (light.enabled)
