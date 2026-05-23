@@ -11,12 +11,12 @@ public class GridInteract : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
         itemGrid = GetComponent<ItemGrid>();
     }
 
-    public void OnPointerEnter(PointerEventData eventData)
+    public void OnPointerEnter(PointerEventData eventData) //trigger event when cursor enters itemGrid
     {
         inventoryManager.selectedItemGrid = itemGrid;
     }
 
-    public void OnPointerExit(PointerEventData eventData)
+    public void OnPointerExit(PointerEventData eventData) //trigger event when cursor exits itemGrid
     {
         inventoryManager.selectedItemGrid = null;
     }
