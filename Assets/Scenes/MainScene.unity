@@ -34741,6 +34741,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
   selectedItemGrid: {fileID: 0}
+  items:
+  - {fileID: 11400000, guid: a7f7e3af4b5d529468736e5f8d21bd43, type: 2}
+  itemPrefab: {fileID: 7501536637557796131, guid: 65e3d4ae48be42c48a297c37a70fed95, type: 3}
+  canvasTransform: {fileID: 185945935}
 --- !u!4 &965111543 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3837487946388311339, guid: 369f41f825a0a904b9ef5c835c13e209, type: 3}
@@ -55710,7 +55714,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemGrid
   gridSizeWidth: 10
   gridSizeHeight: 5
-  inventoryItemPrefab: {fileID: 7501536637557796131, guid: 65e3d4ae48be42c48a297c37a70fed95, type: 3}
 --- !u!114 &1675031184
 MonoBehaviour:
   m_ObjectHideFlags: 0

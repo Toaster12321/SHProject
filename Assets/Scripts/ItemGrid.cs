@@ -1,11 +1,12 @@
+using NUnit.Framework.Interfaces;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
 public class ItemGrid : MonoBehaviour
 {
-    const float tileSizeWidth = 64; //grid boxes have size of 64x64px
-    const float tileSizeHeight = 64;
+    public const float tileSizeWidth = 64; //grid boxes have size of 64x64px
+    public const float tileSizeHeight = 64;
 
     InventoryItem[,] inventoryItemSlot;
 
@@ -14,21 +15,27 @@ public class ItemGrid : MonoBehaviour
     [SerializeField] int gridSizeWidth; //change to resize grid (i.e. 5 x 10) = (320 x 640px)
     [SerializeField] int gridSizeHeight;
 
-    [SerializeField] GameObject inventoryItemPrefab;
-
     private void Start()
     {
         rectTransform = GetComponent<RectTransform>();
         Init(gridSizeWidth, gridSizeHeight);
-
-        InventoryItem inventoryItem = Instantiate(inventoryItemPrefab).GetComponent<InventoryItem>();
-        PlaceItem(inventoryItem, 1, 1);
     }
 
     public InventoryItem PickUpItem(int x, int y)
     {
         InventoryItem pickedUpItem = inventoryItemSlot[x, y]; //get the location where the item was picked up
-        inventoryItemSlot[x, y] = null; //reset variable
+
+        if (pickedUpItem == null)
+            return null;
+
+        for (int ix = 0; ix < pickedUpItem.itemData.width; ix++) //go through all tiles in item data size
+        {
+            for (int iy = 0; iy < pickedUpItem.itemData.height; iy++)
+            {
+                inventoryItemSlot[pickedUpItem.onGridPositionX + ix, pickedUpItem.onGridPositionY + iy] = null; //reset variable on all tiles
+            }
+        }
+  
         return pickedUpItem; //return the location where picked up
     }
 
@@ -52,16 +59,59 @@ public class ItemGrid : MonoBehaviour
         return tileGridPosition;
     }
 
-    public void PlaceItem(InventoryItem inventoryItem, int posX, int posY) //places item at an x an y pos on the grid
+    public bool PlaceItem(InventoryItem inventoryItem, int posX, int posY) //places item at an x an y pos on the grid
     {
+        if (BoundraryCheck(posX, posY, inventoryItem.itemData.width, inventoryItem.itemData.height) == false)
+        {
+            return false; //not able to place item
+        }
+
         RectTransform rectTransform = inventoryItem.GetComponent<RectTransform>();
         rectTransform.SetParent(this.rectTransform);
-        inventoryItemSlot[posX, posY] = inventoryItem;
+
+        for(int x = 0; x < inventoryItem.itemData.width; x++) //go through all tiles in the grid based off the size of the item, allow all tiles to be selected
+        {
+            for(int y = 0; y < inventoryItem.itemData.height; y++)
+            {
+                inventoryItemSlot[posX + x , posY + y] = inventoryItem;
+            }
+        }
+        
+        inventoryItem.onGridPositionX = posX;
+        inventoryItem.onGridPositionY = posY;
 
         Vector2 position = new Vector2();
-        position.x = posX * tileSizeWidth / 2 + tileSizeWidth / 4; //working with 32px asset but scaled 2x so visually 64px requires /2 and /4 for mouse to grid conversion
-        position.y = -(posY * tileSizeHeight / 2 + tileSizeHeight / 4);
+        position.x = posX * tileSizeWidth / 2 + tileSizeWidth * inventoryItem.itemData.width / 4; //working with 32px asset but scaled 2x so visually 64px requires /2 and /4 for mouse to grid conversion
+        position.y = -(posY * tileSizeHeight / 2 + tileSizeHeight * inventoryItem.itemData.height / 4);
 
         rectTransform.localPosition = position;
+
+        return true; //able to place item
+    }
+
+    bool PositionCheck(int posX, int posY)
+    {
+        if(posX < 0 || posY < 0) //item is outside the boundraries for placement (negative number)
+            return false;
+
+        if (posX >= gridSizeWidth || posY >= gridSizeHeight) //item is too big for the grid, cant place
+            return false;
+
+        return true;
+    }
+
+    bool BoundraryCheck(int posX, int posY, int itemWidth, int itemHeight)
+    {
+        if (PositionCheck(posX, posY) == false) //check if the position is eligible first (checks top left tile of item)
+            return false;
+
+        posX += itemWidth - 1; //add item tiles to positions to get bottom right tile (min size is 1 so -> -1)
+        posY += itemHeight - 1;
+
+        if (PositionCheck(posX, posY) == false)
+            return false;
+
+
+        return true;
     }
 }
