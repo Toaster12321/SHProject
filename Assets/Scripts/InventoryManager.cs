@@ -9,6 +9,7 @@ public class InventoryManager : MonoBehaviour
     public ItemGrid selectedItemGrid;
 
     InventoryItem selectedItem;
+    InventoryItem overlappedItem;
     Vector2Int tileGridPosition;
 
     RectTransform rectTransform;
@@ -48,27 +49,44 @@ public class InventoryManager : MonoBehaviour
 
     private void LeftMouseButtonPress()
     {
-        tileGridPosition = selectedItemGrid.GetTileGridPosition(Mouse.current.position.ReadValue()); //reads which grid was pressed based on mouse input
+        Vector2 cursorPosition = Mouse.current.position.ReadValue();
+
+        if (selectedItem != null) //offsets cursor position based on item size when placing items
+        {
+            cursorPosition.x -= (selectedItem.itemData.width - 2) * ItemGrid.tileSizeWidth / 4;
+            cursorPosition.y += (selectedItem.itemData.height - 2) * ItemGrid.tileSizeHeight / 4;
+        }
+
+        tileGridPosition = selectedItemGrid.GetTileGridPosition(cursorPosition); //reads which grid was pressed based on mouse input
 
         if (selectedItem == null) //if we dont have an item picked up, pick one up
         {
-            PickUpItem();
+            PickUpItem(tileGridPosition);
         }
         else //otherwise an item is already picked up so place it at a location
         {
-            PlaceItem();
+            PlaceItem(tileGridPosition);
         }
     }
 
-    private void PlaceItem()
+    private void PlaceItem(Vector2Int tileGridPosition)
     {
-        bool complete = selectedItemGrid.PlaceItem(selectedItem, tileGridPosition.x, tileGridPosition.y);
-        if (complete)
+        bool placementAllowed = selectedItemGrid.PlaceItem(selectedItem, tileGridPosition.x, tileGridPosition.y, ref overlappedItem);
+        if (placementAllowed)
+        {
             selectedItem = null; //reset item
+            if (overlappedItem != null)
+            {
+                selectedItem = overlappedItem;
+                overlappedItem = null;
+                rectTransform = selectedItem.GetComponent<RectTransform>();
+            }
+        }
+            
 
     }
 
-    private void PickUpItem()
+    private void PickUpItem(Vector2Int tileGridPosition)
     {
         selectedItem = selectedItemGrid.PickUpItem(tileGridPosition.x, tileGridPosition.y);
         if (selectedItem != null)

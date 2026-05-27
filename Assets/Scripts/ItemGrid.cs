@@ -1,4 +1,5 @@
 using NUnit.Framework.Interfaces;
+using System;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -27,7 +28,13 @@ public class ItemGrid : MonoBehaviour
 
         if (pickedUpItem == null)
             return null;
+        CleanGridReferences(pickedUpItem);
 
+        return pickedUpItem; //return the location where picked up
+    }
+
+    private void CleanGridReferences(InventoryItem pickedUpItem)
+    {
         for (int ix = 0; ix < pickedUpItem.itemData.width; ix++) //go through all tiles in item data size
         {
             for (int iy = 0; iy < pickedUpItem.itemData.height; iy++)
@@ -35,8 +42,6 @@ public class ItemGrid : MonoBehaviour
                 inventoryItemSlot[pickedUpItem.onGridPositionX + ix, pickedUpItem.onGridPositionY + iy] = null; //reset variable on all tiles
             }
         }
-  
-        return pickedUpItem; //return the location where picked up
     }
 
     private void Init(int width, int height) //function to resize the grid height/width boxes and item sizes
@@ -59,11 +64,22 @@ public class ItemGrid : MonoBehaviour
         return tileGridPosition;
     }
 
-    public bool PlaceItem(InventoryItem inventoryItem, int posX, int posY) //places item at an x an y pos on the grid
+    public bool PlaceItem(InventoryItem inventoryItem, int posX, int posY, ref InventoryItem overlappedItem) //places item at an x an y pos on the grid
     {
         if (BoundraryCheck(posX, posY, inventoryItem.itemData.width, inventoryItem.itemData.height) == false)
         {
             return false; //not able to place item
+        }
+
+        if (OverlapCheck(posX, posY, inventoryItem.itemData.width, inventoryItem.itemData.height, ref overlappedItem) == false)
+        {
+            overlappedItem = null; //reset item stored
+            return false;
+        }
+
+        if (overlappedItem != null)
+        {
+            CleanGridReferences(overlappedItem);
         }
 
         RectTransform rectTransform = inventoryItem.GetComponent<RectTransform>();
@@ -87,6 +103,30 @@ public class ItemGrid : MonoBehaviour
         rectTransform.localPosition = position;
 
         return true; //able to place item
+    }
+
+    private bool OverlapCheck(int posX, int posY, int itemWidth, int itemHeight, ref InventoryItem overlappedItem)
+    {
+        for (int x = 0; x < itemWidth; x++) //go through all tiles on an item's data
+        {
+            for (int y = 0; y < itemHeight; y++)
+            {
+                if (inventoryItemSlot[posX + x , posY + y] != null) //if there is not an item located on one of the grids
+                {
+                    if (overlappedItem == null) //if an overlapped item is not already stored set one to a location
+                    {
+                        overlappedItem = inventoryItemSlot[posX + x, posY + y];
+                    }
+                    else
+                    {
+                        if (overlappedItem != inventoryItemSlot[posX + x, posY + y])
+                            return false;
+                    }
+                }
+            }
+        }
+
+        return true;
     }
 
     bool PositionCheck(int posX, int posY)
