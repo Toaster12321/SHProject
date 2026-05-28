@@ -85,24 +85,29 @@ public class ItemGrid : MonoBehaviour
         RectTransform rectTransform = inventoryItem.GetComponent<RectTransform>();
         rectTransform.SetParent(this.rectTransform);
 
-        for(int x = 0; x < inventoryItem.itemData.width; x++) //go through all tiles in the grid based off the size of the item, allow all tiles to be selected
+        for (int x = 0; x < inventoryItem.itemData.width; x++) //go through all tiles in the grid based off the size of the item, allow all tiles to be selected
         {
-            for(int y = 0; y < inventoryItem.itemData.height; y++)
+            for (int y = 0; y < inventoryItem.itemData.height; y++)
             {
-                inventoryItemSlot[posX + x , posY + y] = inventoryItem;
+                inventoryItemSlot[posX + x, posY + y] = inventoryItem;
             }
         }
-        
+
         inventoryItem.onGridPositionX = posX;
         inventoryItem.onGridPositionY = posY;
-
-        Vector2 position = new Vector2();
-        position.x = posX * tileSizeWidth / 2 + tileSizeWidth * inventoryItem.itemData.width / 4; //working with 32px asset but scaled 2x so visually 64px requires /2 and /4 for mouse to grid conversion
-        position.y = -(posY * tileSizeHeight / 2 + tileSizeHeight * inventoryItem.itemData.height / 4);
+        Vector2 position = CalculatePositionOnGrid(inventoryItem, posX, posY);
 
         rectTransform.localPosition = position;
 
         return true; //able to place item
+    }
+
+    public Vector2 CalculatePositionOnGrid(InventoryItem inventoryItem, int posX, int posY)
+    {
+        Vector2 position = new Vector2();
+        position.x = posX * tileSizeWidth / 2 + tileSizeWidth * inventoryItem.itemData.width / 4; //working with 32px asset but scaled 2x so visually 64px requires /2 and /4 for mouse to grid conversion
+        position.y = -(posY * tileSizeHeight / 2 + tileSizeHeight * inventoryItem.itemData.height / 4);
+        return position;
     }
 
     private bool OverlapCheck(int posX, int posY, int itemWidth, int itemHeight, ref InventoryItem overlappedItem)
@@ -140,7 +145,7 @@ public class ItemGrid : MonoBehaviour
         return true;
     }
 
-    bool BoundraryCheck(int posX, int posY, int itemWidth, int itemHeight)
+    public bool BoundraryCheck(int posX, int posY, int itemWidth, int itemHeight)
     {
         if (PositionCheck(posX, posY) == false) //check if the position is eligible first (checks top left tile of item)
             return false;
@@ -153,5 +158,16 @@ public class ItemGrid : MonoBehaviour
 
 
         return true;
+    }
+
+    public InventoryItem GetItem(int x, int y)
+    {
+        if (x < 0 || y < 0)
+            return null;
+
+        if (x >= gridSizeWidth || y >= gridSizeHeight)
+            return null;
+
+        return inventoryItemSlot[x, y];
     }
 }

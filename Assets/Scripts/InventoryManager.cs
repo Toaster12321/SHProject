@@ -6,17 +6,30 @@ using UnityEngine.InputSystem;
 public class InventoryManager : MonoBehaviour
 {
     [HideInInspector]
-    public ItemGrid selectedItemGrid;
+    private ItemGrid selectedItemGrid;
+    public ItemGrid SelectedItemGrid { get => selectedItemGrid; 
+        set 
+        { 
+            selectedItemGrid = value; 
+            inventoryHighlight.SetParent(value); //sets parent to selectedItemGrid whenever setting selectedItemGrid
+        } }
 
     InventoryItem selectedItem;
     InventoryItem overlappedItem;
-    Vector2Int tileGridPosition;
 
     RectTransform rectTransform;
 
     [SerializeField] List<ItemData> items;
     [SerializeField] GameObject itemPrefab;
     [SerializeField] Transform canvasTransform;
+
+    InventoryHighlight inventoryHighlight;
+
+    private void Awake()
+    {
+        inventoryHighlight = GetComponent<InventoryHighlight>();
+    }
+
     private void Update()
     {
         ItemIconDrag();
@@ -27,11 +40,54 @@ public class InventoryManager : MonoBehaviour
         }
 
         if (selectedItemGrid == null)
+        {
+            inventoryHighlight.Show(false);
             return;
+        }
+           
+
+        HandleHighlight();
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             LeftMouseButtonPress();
+        }
+    }
+
+    Vector2Int oldItemPosition;
+    InventoryItem itemToHighlight;
+    private void HandleHighlight()
+    {
+        Vector2Int positionOnGrid = GetTileGridPosition();
+
+        if (oldItemPosition == positionOnGrid)
+            return;
+
+        oldItemPosition = positionOnGrid;
+        if (selectedItem == null) //nothing is picked up
+        {
+            itemToHighlight = selectedItemGrid.GetItem(positionOnGrid.x, positionOnGrid.y); //get hovered item's location
+
+            if (itemToHighlight != null) //if there is an item to highlight, show with same size as the item's width and height
+            {
+                inventoryHighlight.Show(true);
+                inventoryHighlight.SetSize(itemToHighlight);
+                inventoryHighlight.SetPosition(selectedItemGrid, itemToHighlight);
+            }
+            else
+                inventoryHighlight.Show(false);
+        }
+        else //item is picked up
+        {
+            inventoryHighlight.Show(selectedItemGrid.BoundraryCheck( //boundrary check to make sure grids dont show outside of grid space
+                positionOnGrid.x, 
+                positionOnGrid.y, 
+                selectedItem.itemData.width, 
+                selectedItem.itemData.height
+                )); //show highlight on empty grids to show space taken up
+
+            inventoryHighlight.SetSize(selectedItem);
+            inventoryHighlight.SetPosition(selectedItemGrid, selectedItem, positionOnGrid.x, positionOnGrid.y);
         }
     }
 
@@ -49,15 +105,7 @@ public class InventoryManager : MonoBehaviour
 
     private void LeftMouseButtonPress()
     {
-        Vector2 cursorPosition = Mouse.current.position.ReadValue();
-
-        if (selectedItem != null) //offsets cursor position based on item size when placing items
-        {
-            cursorPosition.x -= (selectedItem.itemData.width - 2) * ItemGrid.tileSizeWidth / 4;
-            cursorPosition.y += (selectedItem.itemData.height - 2) * ItemGrid.tileSizeHeight / 4;
-        }
-
-        tileGridPosition = selectedItemGrid.GetTileGridPosition(cursorPosition); //reads which grid was pressed based on mouse input
+        Vector2Int tileGridPosition = GetTileGridPosition();
 
         if (selectedItem == null) //if we dont have an item picked up, pick one up
         {
@@ -67,6 +115,20 @@ public class InventoryManager : MonoBehaviour
         {
             PlaceItem(tileGridPosition);
         }
+    }
+
+    private Vector2Int GetTileGridPosition()
+    {
+        Vector2 cursorPosition = Mouse.current.position.ReadValue();
+
+        if (selectedItem != null) //offsets cursor position based on item size when placing items
+        {
+            cursorPosition.x -= (selectedItem.itemData.width - 2) * ItemGrid.tileSizeWidth / 4;
+            cursorPosition.y += (selectedItem.itemData.height - 2) * ItemGrid.tileSizeHeight / 4;
+        }
+
+        print(selectedItemGrid.GetTileGridPosition(cursorPosition));
+        return selectedItemGrid.GetTileGridPosition(cursorPosition);
     }
 
     private void PlaceItem(Vector2Int tileGridPosition)
