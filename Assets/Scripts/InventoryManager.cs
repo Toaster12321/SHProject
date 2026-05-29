@@ -36,7 +36,18 @@ public class InventoryManager : MonoBehaviour
 
         if( Keyboard.current.qKey.wasPressedThisFrame)
         {
-            CreateRandomItem();
+            if (selectedItem == null)
+                CreateRandomItem();
+        }
+
+        if (Keyboard.current.vKey.wasPressedThisFrame)
+        {
+            InsertRandomItem();
+        }
+
+        if (Keyboard.current.rKey.wasPressedThisFrame)
+        {
+            RotateItem();
         }
 
         if (selectedItemGrid == null)
@@ -52,6 +63,43 @@ public class InventoryManager : MonoBehaviour
         {
             LeftMouseButtonPress();
         }
+    }
+
+    private void RotateItem()
+    {
+        if (selectedItem == null)
+            return;
+
+        selectedItem.Rotate();
+
+        //reset old position so highlight can switch to new grids when rotated
+        oldItemPosition = new Vector2Int(-1, -1);
+        HandleHighlight();
+    }
+
+    private void InsertRandomItem()
+    {
+        if (selectedItemGrid == null)
+            return;
+
+        CreateRandomItem();
+        InventoryItem itemToInsert = selectedItem;
+        selectedItem = null;
+        InsertItem(itemToInsert);
+    }
+
+    private void InsertItem(InventoryItem itemToInsert)
+    {
+        Vector2Int? posOnGrid = selectedItemGrid.FindSpaceForObject(itemToInsert);
+
+        if (posOnGrid == null) //no space on grid
+        {
+            print("no space");
+            // HANDLE NO SPACE CLAUSE
+            return;
+        }
+
+        selectedItemGrid.PlaceItem(itemToInsert, posOnGrid.Value.x, posOnGrid.Value.y);
     }
 
     Vector2Int oldItemPosition;
@@ -79,11 +127,11 @@ public class InventoryManager : MonoBehaviour
         }
         else //item is picked up
         {
-            inventoryHighlight.Show(selectedItemGrid.BoundraryCheck( //boundrary check to make sure grids dont show outside of grid space
+            inventoryHighlight.Show(selectedItemGrid.BoundraryCheck( //boundrary check bool to make sure grids dont show outside of grid space
                 positionOnGrid.x, 
                 positionOnGrid.y, 
-                selectedItem.itemData.width, 
-                selectedItem.itemData.height
+                selectedItem.WIDTH, 
+                selectedItem.HEIGHT
                 )); //show highlight on empty grids to show space taken up
 
             inventoryHighlight.SetSize(selectedItem);
@@ -98,6 +146,7 @@ public class InventoryManager : MonoBehaviour
 
         rectTransform = inventoryItem.GetComponent<RectTransform>();
         rectTransform.SetParent(canvasTransform);
+        rectTransform.SetAsLastSibling();
 
         int selectedItemID = Random.Range(0, items.Count);
         inventoryItem.Set(items[selectedItemID]);
@@ -123,11 +172,10 @@ public class InventoryManager : MonoBehaviour
 
         if (selectedItem != null) //offsets cursor position based on item size when placing items
         {
-            cursorPosition.x -= (selectedItem.itemData.width - 2) * ItemGrid.tileSizeWidth / 4;
-            cursorPosition.y += (selectedItem.itemData.height - 2) * ItemGrid.tileSizeHeight / 4;
+            cursorPosition.x -= (selectedItem.WIDTH - 2) * ItemGrid.tileSizeWidth / 4;
+            cursorPosition.y += (selectedItem.HEIGHT - 2) * ItemGrid.tileSizeHeight / 4;
         }
 
-        print(selectedItemGrid.GetTileGridPosition(cursorPosition));
         return selectedItemGrid.GetTileGridPosition(cursorPosition);
     }
 
@@ -142,6 +190,7 @@ public class InventoryManager : MonoBehaviour
                 selectedItem = overlappedItem;
                 overlappedItem = null;
                 rectTransform = selectedItem.GetComponent<RectTransform>();
+                rectTransform.SetAsLastSibling();
             }
         }
             

@@ -34743,6 +34743,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::InventoryManager
   items:
   - {fileID: 11400000, guid: a7f7e3af4b5d529468736e5f8d21bd43, type: 2}
+  - {fileID: 11400000, guid: 15f068800e9d58149a98c9856e8a3ffe, type: 2}
   itemPrefab: {fileID: 7501536637557796131, guid: 65e3d4ae48be42c48a297c37a70fed95, type: 3}
   canvasTransform: {fileID: 185945935}
 --- !u!114 &963194231
