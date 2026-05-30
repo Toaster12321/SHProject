@@ -3,9 +3,12 @@ using UnityEngine.InputSystem;
 
 public class FirstPersonController : MonoBehaviour
 {
-    public bool CanMove {  get; private set; } = true; //can the player move
+    public static FirstPersonController instance;
+    public static PlayerInput playerInput;
+    public bool canMove = true; //can the player move
     public bool isDashing = false;
     public bool dashCoolingDown = false;
+    public bool MenuOpenInput { get; private set; }
 
     [Header("Movement Parameters")]
     [SerializeField] private float walkSpeed = 3f;
@@ -34,14 +37,17 @@ public class FirstPersonController : MonoBehaviour
 
     [SerializeField] private InputActionReference moveInput; //references for input system controls
     [SerializeField] private InputActionReference lookInput;
+    [SerializeField] private InputActionReference _menuOpenAction;
 
     void Awake()
     {
         playerCamera = GetComponentInChildren<Camera>(); //assign references
         characterController = GetComponent<CharacterController>();
 
-        //Cursor.lockState = CursorLockMode.Locked;//lock and hide cursor
-        //Cursor.visible = false;
+        if (instance == null)
+            instance = this;
+        Cursor.lockState = CursorLockMode.Locked;//lock and hide cursor
+        Cursor.visible = false;
     }
 
     
@@ -55,7 +61,7 @@ public class FirstPersonController : MonoBehaviour
 
         //);
 
-        if (CanMove) //if we can move run each function per frame
+        if (canMove) //if we can move run each function per frame
         {   
             HandleMovementInput();
             HandleMouseLook();
@@ -68,6 +74,8 @@ public class FirstPersonController : MonoBehaviour
 
         if (Time.time >= lastDashTime + dashCooldown)//reset cooldown for dash
             dashCoolingDown = false;
+
+        MenuOpenInput = _menuOpenAction.action.WasPressedThisFrame();
     }
 
     private void HandleMovementInput()

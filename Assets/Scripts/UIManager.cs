@@ -7,12 +7,19 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] GameObject interactTextBox;
     [SerializeField] GameObject interactionCrosshair;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    // Update is called once per frame
+    [SerializeField] GameObject pauseMenu;
+
+    private void Start()
+    {
+        interactTextBox.SetActive(false);
+        interactionCrosshair.SetActive(false);
+        pauseMenu.SetActive(false);
+    }
 
     void Update()
     {
-        if (uiActive == true)
+        //INTERACTIONS
+        if (uiActive == true) //set in different scripts (camera raycast)
         {
             interactTextBox.SetActive(true); //show UI text
             interactionCrosshair.SetActive(true);
@@ -23,5 +30,34 @@ public class UIManager : MonoBehaviour
             interactTextBox.SetActive(false);
             interactionCrosshair.SetActive(false);
         }
+
+        //PAUSE MENU FUNCTIONS
+        if (FirstPersonController.instance.MenuOpenInput)
+        {
+            if (!PauseManager.instance.isPaused)
+            {
+                PauseGame();
+            }
+            else
+            {
+                UnpauseGame();
+            }
+        }
+    }
+
+    public void PauseGame()
+    {
+        PauseManager.instance.PauseGame();
+        pauseMenu.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;//unlock and show cursor
+        Cursor.visible = true;
+    }
+
+    public void UnpauseGame()
+    {
+        PauseManager.instance.UnpauseGame();
+        pauseMenu.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;//lock and hide cursor
+        Cursor.visible = false;
     }
 }
