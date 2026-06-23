@@ -14,11 +14,12 @@ public class Revolver : MonoBehaviour
     public Animator cameraAnimator;
 
     private float currentCooldown;
-    private PlayerControls playerControls;
+    private InputAction attackAction;
 
     private void Awake()
     {
-        playerControls = new PlayerControls();
+        AssignInput();
+        attackAction = FirstPersonController.playerInput.actions["Attack"];
     }
 
     void Start()
@@ -31,32 +32,26 @@ public class Revolver : MonoBehaviour
         currentCooldown -= Time.deltaTime; //start timer
     }
 
-    private void Shoot( InputAction.CallbackContext ctx )
+    private void Shoot()
     {
         if (currentCooldown <= 0f)
         {
             gunAnimator.SetTrigger("fire");
-            cameraAnimator.SetTrigger("recoil"); 
+            cameraAnimator.SetTrigger("recoil");
             if (!gunshot.isPlaying)
                 gunshot.Play();
 
             onGunShoot?.Invoke(); //event that fires on shoot
             currentCooldown = fireCooldown; //reset cooldown
-            StartCoroutine( PlayCocking() );
+            StartCoroutine(PlayCocking());
         }
     }
 
-    private void OnEnable()
+    private void AssignInput()
     {
-        playerControls.Player.Attack.performed += Shoot;
-        playerControls.Enable();
+        attackAction.performed += ctx => Shoot();
     }
 
-    private void OnDisable()
-    {
-        playerControls.Player.Attack.performed -= Shoot;
-        playerControls.Disable();
-    }
 
     IEnumerator PlayCocking()
     {

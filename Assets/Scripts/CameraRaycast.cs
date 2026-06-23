@@ -1,29 +1,23 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static UnityEngine.GraphicsBuffer;
 
 public class CameraRaycast : MonoBehaviour
 {
     [SerializeField] private float interactDistance = 3f; //how far raycast stretches out
     [SerializeField] private LayerMask interactLayer;
-    private PlayerControls playerControls;
+    private InputAction interactAction;
     private InteractObject currentObject;
+
 
     private void Awake()
     {
-        playerControls = new PlayerControls();
+        interactAction = FirstPersonController.playerInput.actions["Interact"];
+        AssignInput();
     }
 
-    private void OnEnable()
+    private void AssignInput()
     {
-        playerControls.Player.Interact.performed += Interact;
-        playerControls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerControls.Player.Interact.performed -= Interact;
-        playerControls.Disable();
+        interactAction.performed += ctx => Interact();
     }
 
     private void Update()
@@ -50,7 +44,7 @@ public class CameraRaycast : MonoBehaviour
         UIManager.uiActive = false;
     }
 
-    private void Interact(InputAction.CallbackContext ctx)
+    private void Interact()
     {
         if (currentObject == null)
             return;

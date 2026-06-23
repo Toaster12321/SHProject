@@ -11,7 +11,7 @@ public class MeleeWeapon : MonoBehaviour
     public LayerMask attackLayer;
 
     public AudioSource swingSound;
-    private PlayerControls playerControls;
+    private InputAction attackAction;
     [SerializeField] private Collider weaponCollider;
 
     bool attacking = false;
@@ -24,24 +24,14 @@ public class MeleeWeapon : MonoBehaviour
 
     private void Awake()
     {
-        playerControls = new PlayerControls();
+        attackAction = FirstPersonController.playerInput.actions["Attack"];
         AssignInput();
     }
 
     private void Update()
     {
-        if (playerControls.Player.Attack.IsPressed()) //if player holds down attack, keep attacking
+        if (attackAction.IsPressed()) //if player holds down attack, keep attacking
             Swing();
-    }
-
-    private void OnEnable()
-    {
-        playerControls.Enable();
-    }
-
-    private void OnDisable()
-    {
-        playerControls.Disable();
     }
 
     public void Swing()
@@ -76,7 +66,7 @@ public class MeleeWeapon : MonoBehaviour
 
     void AssignInput()
     {
-        playerControls.Player.Attack.performed += ctx => Swing(); //call swing when attack is performed
+        attackAction.performed += ctx => Swing(); //call swing when attack is performed
     }
 
     private void OnTriggerEnter(Collider other) //when the collider connects with the enemy -> inflict damage

@@ -9,6 +9,7 @@ public class FirstPersonController : MonoBehaviour
     public bool isDashing = false;
     public bool dashCoolingDown = false;
     public bool MenuOpenInput { get; private set; }
+    public bool MenuCloseInput { get; private set; }
 
     [Header("Movement Parameters")]
     [SerializeField] private float walkSpeed = 3f;
@@ -38,11 +39,15 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private InputActionReference moveInput; //references for input system controls
     [SerializeField] private InputActionReference lookInput;
     [SerializeField] private InputActionReference _menuOpenAction;
+    [SerializeField] private InputActionReference _menuCloseAction;
+    private InputAction sprintAction;
 
     void Awake()
     {
+        playerInput = GetComponent<PlayerInput>(); 
         playerCamera = GetComponentInChildren<Camera>(); //assign references
         characterController = GetComponent<CharacterController>();
+        sprintAction = playerInput.actions["Sprint"];
 
         if (instance == null)
             instance = this;
@@ -53,14 +58,6 @@ public class FirstPersonController : MonoBehaviour
     
     void Update()
     {
-        //Vector2 mouseRelativeToCenter = new Vector2(
-
-        //    Input.mousePosition.x - Screen.width / 2,
-
-        //    Input.mousePosition.y - Screen.height / 2
-
-        //);
-
         if (canMove) //if we can move run each function per frame
         {   
             HandleMovementInput();
@@ -75,20 +72,21 @@ public class FirstPersonController : MonoBehaviour
         if (Time.time >= lastDashTime + dashCooldown)//reset cooldown for dash
             dashCoolingDown = false;
 
-        MenuOpenInput = _menuOpenAction.action.WasPressedThisFrame();
+        MenuOpenInput = _menuOpenAction.action.WasPressedThisFrame(); //assign inputs
+        MenuCloseInput = _menuCloseAction.action.WasPressedThisFrame();
     }
 
     private void HandleMovementInput()
     {
         currentInput = (moveInput.action.ReadValue<Vector2>()).normalized * walkSpeed; //reads up,down,left,right movement for walk speed (normalize so diag movement isnt faster)
-        if (Keyboard.current.shiftKey.wasPressedThisFrame && isDashing == false && !dashCoolingDown && currentInput != new Vector2(0,0))//while shift is held, dash cooldown is over and we are moving a direction
+        if (sprintAction.IsPressed() && isDashing == false && !dashCoolingDown && currentInput != new Vector2(0,0))//while shift is held, dash cooldown is over and we are moving a direction
         {
             walking.pitch = 1.6f; //speed up playback if running
             walkSpeed *= 2; //press shift to double move speed
             isDashing = true;
         }
 
-        if (Keyboard.current.shiftKey.wasReleasedThisFrame && isDashing == true) 
+        if (!sprintAction.IsPressed() && isDashing == true) 
         {
             walking.pitch = 0.8f; //reset pitch to normal walking playback
             dashTime = 0f; //reset dash time and move speed

@@ -10,17 +10,17 @@ public class PauseManager : MonoBehaviour
     {
         if (instance == null)
         {
-            instance = this;
+            instance = this; 
         }
     }
 
     public void PauseGame()
     {
         isPaused = true;
-        Time.timeScale = 0f;
-        FirstPersonController.instance.canMove = false;
-        FirstPersonController.playerInput.SwitchCurrentActionMap("UI");
-        print("pausing game");
+        Time.timeScale = 0f; //set time to 0 = game time paused
+        FirstPersonController.instance.canMove = false; //prevent all movement in input script
+        FirstPersonController.playerInput.SwitchCurrentActionMap("UI"); //switch to UI controls
+        AudioListener.pause = true; //pause all audio playing
     }
 
     public void UnpauseGame()
@@ -28,7 +28,7 @@ public class PauseManager : MonoBehaviour
         isPaused = false;
         Time.timeScale = 1f;
         FirstPersonController.instance.canMove = true;
-        FirstPersonController.playerInput.SwitchCurrentActionMap("Player");
-        print("unpausing game");
+        FirstPersonController.playerInput.SwitchCurrentActionMap("Player");//switch back to overworld controls
+        AudioListener.pause = false;
     }
 }

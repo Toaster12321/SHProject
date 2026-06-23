@@ -32,13 +32,16 @@ public class UIManager : MonoBehaviour
         }
 
         //PAUSE MENU FUNCTIONS
-        if (FirstPersonController.instance.MenuOpenInput)
+        if (FirstPersonController.instance.MenuOpenInput) //if open menu is pressed pause the game
         {
             if (!PauseManager.instance.isPaused)
             {
                 PauseGame();
             }
-            else
+        }
+        else if (FirstPersonController.instance.MenuCloseInput)//if the menu close input is pressed and we are paused unpause the game
+        {
+            if (PauseManager.instance.isPaused)
             {
                 UnpauseGame();
             }
