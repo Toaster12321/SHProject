@@ -16,7 +16,7 @@ public class ItemGrid : MonoBehaviour
     [SerializeField] int gridSizeWidth; //change to resize grid (i.e. 5 x 10) = (320 x 640px)
     [SerializeField] int gridSizeHeight;
 
-    private void Start()
+    private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         Init(gridSizeWidth, gridSizeHeight);
@@ -28,7 +28,7 @@ public class ItemGrid : MonoBehaviour
 
         if (pickedUpItem == null)
             return null;
-        CleanGridReferences(pickedUpItem);
+        CleanGridReferences(pickedUpItem); //clean reference on the tiles the item was located
 
         return pickedUpItem; //return the location where picked up
     }
@@ -55,6 +55,7 @@ public class ItemGrid : MonoBehaviour
     Vector2Int tileGridPosition = new Vector2Int();
     public Vector2Int GetTileGridPosition(Vector2 mousePosition)
     {
+        Debug.Log(rectTransform);
         positionOnTheGrid.x = mousePosition.x - rectTransform.position.x; //gets x and y location of mouse based on the rect transform of the grid
         positionOnTheGrid.y = rectTransform.position.y - mousePosition.y;
 
@@ -66,28 +67,28 @@ public class ItemGrid : MonoBehaviour
 
     public bool PlaceItem(InventoryItem inventoryItem, int posX, int posY, ref InventoryItem overlappedItem) //places item at an x an y pos on the grid
     {
-        if (BoundraryCheck(posX, posY, inventoryItem.WIDTH, inventoryItem.HEIGHT) == false)
+        if (BoundraryCheck(posX, posY, inventoryItem.WIDTH, inventoryItem.HEIGHT) == false)//check to make sure item fits current boundraries
         {
-            return false; //not able to place item
+            return false;
         }
 
-        if (OverlapCheck(posX, posY, inventoryItem.WIDTH, inventoryItem.HEIGHT, ref overlappedItem) == false)
+        if (OverlapCheck(posX, posY, inventoryItem.WIDTH, inventoryItem.HEIGHT, ref overlappedItem) == false)//check to see if there are any overlapping items
         {
             overlappedItem = null; //reset item stored
             return false;
         }
 
-        if (overlappedItem != null)
+        if (overlappedItem != null) // if there was an overlapped item on the placed location, clear all old references of the previous item
         {
-            CleanGridReferences(overlappedItem);
+            CleanGridReferences(overlappedItem); 
         }
 
-        PlaceItem(inventoryItem, posX, posY);
+        PlaceItemOnGrid(inventoryItem, posX, posY); //place the item at the intended location
 
         return true; //able to place item
     }
 
-    public void PlaceItem(InventoryItem inventoryItem, int posX, int posY)
+    public void PlaceItemOnGrid(InventoryItem inventoryItem, int posX, int posY)
     {
         RectTransform rectTransform = inventoryItem.GetComponent<RectTransform>();
         rectTransform.SetParent(this.rectTransform);
@@ -96,15 +97,15 @@ public class ItemGrid : MonoBehaviour
         {
             for (int y = 0; y < inventoryItem.HEIGHT; y++)
             {
-                inventoryItemSlot[posX + x, posY + y] = inventoryItem;
+                inventoryItemSlot[posX + x, posY + y] = inventoryItem; //get the slot location of where to place the item
             }
         }
 
-        inventoryItem.onGridPositionX = posX;
+        inventoryItem.onGridPositionX = posX; //convert from item slot location to grid location
         inventoryItem.onGridPositionY = posY;
         Vector2 position = CalculatePositionOnGrid(inventoryItem, posX, posY);
 
-        rectTransform.localPosition = position;
+        rectTransform.localPosition = position; //set the objects location to the intended rect transform spot on the grid
     }
 
     public Vector2 CalculatePositionOnGrid(InventoryItem inventoryItem, int posX, int posY)
@@ -139,7 +140,7 @@ public class ItemGrid : MonoBehaviour
         return true;
     }
 
-    private bool CheckAvailableSpaces(int posX, int posY, int itemWidth, int itemHeight)
+    private bool CheckAvailableSpaces(int posX, int posY, int itemWidth, int itemHeight) //checks all item spots and sees if the item can fit in a spot
     {
         for (int x = 0; x < itemWidth; x++) //go through all tiles on an item's data
         {
@@ -157,7 +158,7 @@ public class ItemGrid : MonoBehaviour
         return true;
     }
 
-    bool PositionCheck(int posX, int posY)
+    bool PositionCheck(int posX, int posY) //checks the current location of all tiles and makes sure they fit parameters
     {
         if(posX < 0 || posY < 0) //item is outside the boundraries for placement (negative number)
             return false;
@@ -168,22 +169,23 @@ public class ItemGrid : MonoBehaviour
         return true;
     }
 
-    public bool BoundraryCheck(int posX, int posY, int itemWidth, int itemHeight)
+    public bool BoundraryCheck(int posX, int posY, int itemWidth, int itemHeight) //checks to make sure an item can fit the grid
     {
         if (PositionCheck(posX, posY) == false) //check if the position is eligible first (checks top left tile of item)
             return false;
 
+
+
         posX += itemWidth - 1; //add item tiles to positions to get bottom right tile (min size is 1 so -> -1)
         posY += itemHeight - 1;
-
-        if (PositionCheck(posX, posY) == false)
+        if (PositionCheck(posX, posY) == false)  //check if the position is eligible first (checks bottom right tile of item)
             return false;
 
 
         return true;
     }
 
-    public InventoryItem GetItem(int x, int y)
+    public InventoryItem GetItem(int x, int y) //returns a slot location at passed in position
     {
         if (x < 0 || y < 0)
             return null;
@@ -198,13 +200,13 @@ public class ItemGrid : MonoBehaviour
     {
         int height = gridSizeHeight - itemToInsert.HEIGHT + 1;
         int width = gridSizeWidth - itemToInsert.WIDTH + 1;
-        for (int y = 0; y < height; y++)
+        for (int y = 0; y < height; y++) //go through all grids and check if a spot that matches the items dimensions can fit there
         {
             for (int x = 0; x < width; x++)
             {
                 if (CheckAvailableSpaces(x, y, itemToInsert.WIDTH, itemToInsert.HEIGHT) == true)
                 {
-                    return new Vector2Int(x, y);
+                    return new Vector2Int(x, y); //return the location where the item can fit
                 }
             }
         }

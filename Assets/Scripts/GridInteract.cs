@@ -13,7 +13,7 @@ public class GridInteract : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
 
     public void OnPointerEnter(PointerEventData eventData) //trigger event when cursor enters itemGrid
     {
-        inventoryManager.SelectedItemGrid = itemGrid;
+        inventoryManager.SelectedItemGrid = itemGrid; //set selected item grid in inventory manager only when hovered over it
     }
 
     public void OnPointerExit(PointerEventData eventData) //trigger event when cursor exits itemGrid

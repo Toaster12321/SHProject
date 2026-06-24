@@ -4,7 +4,7 @@ public class InventoryHighlight : MonoBehaviour
 {
     [SerializeField] RectTransform highlighter;
 
-    public void Show(bool b)
+    public void Show(bool b) //shows highlight
     {
         highlighter.gameObject.SetActive(b);
     }
@@ -31,10 +31,10 @@ public class InventoryHighlight : MonoBehaviour
         if (targetGrid == null)
             return;
 
-        highlighter.SetParent(targetGrid.GetComponent<RectTransform>());
+        highlighter.SetParent(targetGrid.GetComponent<RectTransform>()); //sets the highlighter as a child of the grid's rect transform
     }
 
-    public void SetPosition(ItemGrid targetGrid, InventoryItem targetItem, int posX, int posY)
+    public void SetPosition(ItemGrid targetGrid, InventoryItem targetItem, int posX, int posY) //sets location on grid for highlighter
     {
         Vector2 pos = targetGrid.CalculatePositionOnGrid(targetItem, posX, posY);
 

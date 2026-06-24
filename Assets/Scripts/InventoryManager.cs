@@ -5,8 +5,7 @@ using UnityEngine.InputSystem;
 
 public class InventoryManager : MonoBehaviour
 {
-    [HideInInspector]
-    private ItemGrid selectedItemGrid;
+    [SerializeField] private ItemGrid selectedItemGrid;
     public ItemGrid SelectedItemGrid { get => selectedItemGrid; 
         set 
         { 
@@ -22,6 +21,7 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] List<ItemData> items;
     [SerializeField] GameObject itemPrefab;
     [SerializeField] Transform canvasTransform;
+    [SerializeField] UIManager uiManager;
 
     InventoryHighlight inventoryHighlight;
 
@@ -32,36 +32,38 @@ public class InventoryManager : MonoBehaviour
 
     private void Update()
     {
-        ItemIconDrag();
-
-        if( Keyboard.current.qKey.wasPressedThisFrame)
+        if (uiManager.inventoryOpen)
         {
-            if (selectedItem == null)
-                CreateRandomItem();
-        }
+            ItemIconDrag();
 
-        if (Keyboard.current.vKey.wasPressedThisFrame)
-        {
-            InsertRandomItem();
-        }
+            if (Keyboard.current.qKey.wasPressedThisFrame)
+            {
+                if (selectedItem == null)
+                    CreateRandomItem();
+            }
 
-        if (Keyboard.current.rKey.wasPressedThisFrame)
-        {
-            RotateItem();
-        }
+            if (Keyboard.current.vKey.wasPressedThisFrame)
+            {
+                InsertRandomItem();
+            }
 
-        if (selectedItemGrid == null)
-        {
-            inventoryHighlight.Show(false);
-            return;
-        }
-           
+            if (Keyboard.current.rKey.wasPressedThisFrame)
+            {
+                RotateItem();
+            }
 
-        HandleHighlight();
+            if (selectedItemGrid == null)
+            {
+                inventoryHighlight.Show(false);
+                return;
+            }
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            LeftMouseButtonPress();
+            HandleHighlight();
+
+            if (Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                LeftMouseButtonPress();
+            }
         }
     }
 
@@ -88,7 +90,7 @@ public class InventoryManager : MonoBehaviour
         InsertItem(itemToInsert);
     }
 
-    private void InsertItem(InventoryItem itemToInsert)
+    public void InsertItem(InventoryItem itemToInsert)
     {
         Vector2Int? posOnGrid = selectedItemGrid.FindSpaceForObject(itemToInsert);
 
@@ -99,7 +101,7 @@ public class InventoryManager : MonoBehaviour
             return;
         }
 
-        selectedItemGrid.PlaceItem(itemToInsert, posOnGrid.Value.x, posOnGrid.Value.y);
+        selectedItemGrid.PlaceItemOnGrid(itemToInsert, posOnGrid.Value.x, posOnGrid.Value.y);
     }
 
     Vector2Int oldItemPosition;
@@ -144,13 +146,23 @@ public class InventoryManager : MonoBehaviour
         InventoryItem inventoryItem = Instantiate(itemPrefab).GetComponent<InventoryItem>();
         selectedItem = inventoryItem;
 
-        rectTransform = inventoryItem.GetComponent<RectTransform>();
+        rectTransform = inventoryItem.GetComponent<RectTransform>();//sets the current item to always show above the canvas and any items on it
         rectTransform.SetParent(canvasTransform);
         rectTransform.SetAsLastSibling();
 
         int selectedItemID = Random.Range(0, items.Count);
         inventoryItem.Set(items[selectedItemID]);
     }    
+
+    public void AddItem(ItemData itemData) //add's picked up item to inventory
+    {
+        if (selectedItemGrid  == null)
+            return; 
+
+        InventoryItem inventoryItem = Instantiate(itemPrefab).GetComponent<InventoryItem>();
+        inventoryItem.Set(itemData);
+        InsertItem(inventoryItem);
+    }
 
     private void LeftMouseButtonPress()
     {
@@ -185,15 +197,14 @@ public class InventoryManager : MonoBehaviour
         if (placementAllowed)
         {
             selectedItem = null; //reset item
-            if (overlappedItem != null)
+            if (overlappedItem != null) //if theres an overlapped item, pick up the item and set it to show on top of the canvas/item
             {
                 selectedItem = overlappedItem;
                 overlappedItem = null;
                 rectTransform = selectedItem.GetComponent<RectTransform>();
                 rectTransform.SetAsLastSibling();
             }
-        }
-            
+        } 
 
     }
 

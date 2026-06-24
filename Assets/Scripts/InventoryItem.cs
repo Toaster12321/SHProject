@@ -6,7 +6,7 @@ public class InventoryItem : MonoBehaviour
 {
     public ItemData itemData;
 
-    public int HEIGHT
+    public int HEIGHT //switch height/width based on object's rotation
     {
         get
         {
@@ -36,7 +36,7 @@ public class InventoryItem : MonoBehaviour
     public bool rotated = false;
 
    
-    internal void Set(ItemData itemData)
+    internal void Set(ItemData itemData) //sets the passed ItemData into the on-screen icon with its width and height
     {
         this.itemData = itemData;
 

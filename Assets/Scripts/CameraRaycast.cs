@@ -53,7 +53,8 @@ public class CameraRaycast : MonoBehaviour
             currentObject.OpenClose(); //call objects open close function if its not null
         else if (currentObject.objectType == InteractObject.InteractObjectType.Switch)
             currentObject.TurnOnOff();
-        else
+        else if (currentObject.objectType == InteractObject.InteractObjectType.PickableItem)
+            currentObject.AddItemToInventory();
             return;
     }
 }

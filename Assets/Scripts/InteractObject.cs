@@ -1,3 +1,4 @@
+using Mono.Cecil;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -7,7 +8,8 @@ public class InteractObject : MonoBehaviour
     public enum InteractObjectType
     {
         Door,
-        Switch
+        Switch,
+        PickableItem
     }
 
     [SerializeField] public InteractObjectType objectType;
@@ -21,9 +23,17 @@ public class InteractObject : MonoBehaviour
     [SerializeField] private GameObject lightObject;
     [SerializeField] private Material emissiveMaterial;
 
+    [Header("Pickable Item")]
+    [SerializeField] private ItemData itemResource;
+    private InventoryManager inventoryManager;
+
     private bool isOpen = false;
     private bool isOn = false;
 
+    public void Awake()
+    {
+        inventoryManager = player.GetComponentInChildren<InventoryManager>();
+    }
     public string GetInteractText()
     {
         return screenText;
@@ -76,4 +86,10 @@ public class InteractObject : MonoBehaviour
         else
             emissiveMaterial.DisableKeyword("_EMISSION");
     }    
+
+    public void AddItemToInventory()
+    {
+        inventoryManager.AddItem(itemResource);
+        Destroy(gameObject);
+    }
 }

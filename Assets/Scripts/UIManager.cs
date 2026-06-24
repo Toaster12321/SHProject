@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject interactionCrosshair;
     [SerializeField] GameObject pauseMenu;
 
+    public bool inventoryOpen = false;
+
     private void Start()
     {
         interactTextBox.SetActive(false);
@@ -50,6 +52,7 @@ public class UIManager : MonoBehaviour
 
     public void PauseGame()
     {
+        inventoryOpen = true;
         PauseManager.instance.PauseGame();
         pauseMenu.SetActive(true);
         Cursor.lockState = CursorLockMode.None;//unlock and show cursor
@@ -58,6 +61,7 @@ public class UIManager : MonoBehaviour
 
     public void UnpauseGame()
     {
+        inventoryOpen = false;
         PauseManager.instance.UnpauseGame();
         pauseMenu.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;//lock and hide cursor
