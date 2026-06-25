@@ -33,7 +33,6 @@ public class EnemyStateAttack : EnemyState
     {
         if (Context.EnemyType == EnemyStateMachine.EnemyType.CarnPlant && Context.IsRotatingEnabled)
         {
-            Debug.Log(Context.IsRotatingEnabled);
             var lookPos = Context.Player.position - Context.SelfTransform.position; //vector from enemy to player
             lookPos.y = 0; //ignore vertical rotation, only moving along y axis
             var lookRotation = Quaternion.LookRotation(lookPos); //turns Vector3 -> Quaternion with rotation
@@ -71,12 +70,12 @@ public class EnemyStateAttack : EnemyState
     public override void OnTriggerStay(Collider other)
     {
         Player _player = other.GetComponent<Player>();
-
         if (_player == null) //do nothing if not player collider
             return;
 
         if (Time.time >= _lastAttackTime + _attackCooldown)
         {
+            Debug.Log("take dmg");
             Context.Player.GetComponentInParent<Player>().TakeDamage(1); //apply damage
             _lastAttackTime = Time.time;
         }

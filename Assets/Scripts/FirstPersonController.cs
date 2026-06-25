@@ -18,6 +18,7 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private float gravity = 30.0f;
     [SerializeField] private AudioSource walking;
     [SerializeField] private AudioSource outOfBreath;
+    private Animator playerAnimator;
 
     [Header("Look Parameters")]
     [SerializeField, Range(0.1f, 10)] private float lookSpeedX = 2.0f;//speed at which the camera moves in x and y directions
@@ -44,6 +45,7 @@ public class FirstPersonController : MonoBehaviour
 
     void Awake()
     {
+        playerAnimator = GetComponent<Animator>();
         playerInput = GetComponent<PlayerInput>(); 
         playerCamera = GetComponentInChildren<Camera>(); //assign references
         characterController = GetComponent<CharacterController>();
@@ -79,14 +81,14 @@ public class FirstPersonController : MonoBehaviour
     private void HandleMovementInput()
     {
         currentInput = (moveInput.action.ReadValue<Vector2>()).normalized * walkSpeed; //reads up,down,left,right movement for walk speed (normalize so diag movement isnt faster)
-        if (sprintAction.IsPressed() && isDashing == false && !dashCoolingDown && currentInput != new Vector2(0,0))//while shift is held, dash cooldown is over and we are moving a direction
+        if (sprintAction.IsPressed() && isDashing == false && !dashCoolingDown && currentInput != Vector2.zero)//while shift is held, dash cooldown is over and we are moving a direction
         {
             walking.pitch = 1.6f; //speed up playback if running
             walkSpeed *= 2; //press shift to double move speed
             isDashing = true;
         }
 
-        if (!sprintAction.IsPressed() && isDashing == true) 
+        if ((!sprintAction.IsPressed() || currentInput == Vector2.zero) && isDashing) 
         {
             walking.pitch = 0.8f; //reset pitch to normal walking playback
             dashTime = 0f; //reset dash time and move speed
@@ -96,6 +98,7 @@ public class FirstPersonController : MonoBehaviour
         else if (dashTime >= dashDuration)
         {
             outOfBreath.Play(); //play SFX
+            walking.pitch = 0.8f;
             dashCoolingDown = true;
             dashTime = 0f; //reset dash time and move speed
             walkSpeed /= 2;
@@ -130,12 +133,11 @@ public class FirstPersonController : MonoBehaviour
 
     private void footstepsWalking()
     {
-        bool isMoving = 
-            currentInput != new Vector2(0, 0); //bool for movement 
+        bool isMoving = currentInput != Vector2.zero; //bool for movement 
 
-        if (isMoving && !walking.isPlaying && !isDashing) //play footsteps when walking and not dashing
+        if (isMoving && !walking.isPlaying) //play footsteps when walking and not dashing
             walking.Play();
-        else if (!isMoving)
+        else if (!isMoving && walking.isPlaying)
             walking.Stop();
     }
 

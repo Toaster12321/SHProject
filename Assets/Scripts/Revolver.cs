@@ -16,20 +16,28 @@ public class Revolver : MonoBehaviour
     private float currentCooldown;
     private InputAction attackAction;
 
+    private FirstPersonController firstPersonController;
+
     private void Awake()
     {
-        AssignInput();
-        attackAction = FirstPersonController.playerInput.actions["Attack"];
+        firstPersonController = GetComponentInParent<FirstPersonController>();
     }
 
     void Start()
     {
         currentCooldown = fireCooldown; //set cooldown
+        attackAction = FirstPersonController.playerInput.actions["Attack"];
+        AssignInput();
     }
 
     void Update()
     {
         currentCooldown -= Time.deltaTime; //start timer
+
+        if (firstPersonController.isDashing)
+            gunAnimator.SetBool("dashing", true);
+        else
+            gunAnimator.SetBool("dashing", false);
     }
 
     private void Shoot()

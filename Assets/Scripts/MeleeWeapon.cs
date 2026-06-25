@@ -22,7 +22,13 @@ public class MeleeWeapon : MonoBehaviour
     public Animator knifeAnimator;
     public Animator cameraAnimator;
 
+    private FirstPersonController firstPersonController;
+
     private void Awake()
+    {
+        firstPersonController = GetComponentInParent<FirstPersonController>();
+    }
+    private void Start()
     {
         attackAction = FirstPersonController.playerInput.actions["Attack"];
         AssignInput();
@@ -32,6 +38,11 @@ public class MeleeWeapon : MonoBehaviour
     {
         if (attackAction.IsPressed()) //if player holds down attack, keep attacking
             Swing();
+
+        if (firstPersonController.isDashing)
+            knifeAnimator.SetBool("dashing", true);
+        else
+            knifeAnimator.SetBool("dashing", false);
     }
 
     public void Swing()
@@ -45,12 +56,16 @@ public class MeleeWeapon : MonoBehaviour
 
         if (attackCount == 0)
         {
+            if (knifeAnimator.GetBool("dashing"))
+                knifeAnimator.SetBool("dashing", false);
             knifeAnimator.SetTrigger("swinging");
             cameraAnimator.SetTrigger("knife_recoil");
             attackCount++;
         }
         else
         {
+            if (knifeAnimator.GetBool("dashing"))
+                knifeAnimator.SetBool("dashing", false);
             knifeAnimator.SetTrigger("following_up");
             cameraAnimator.SetTrigger("knife_followup");
             attackCount = 0;
