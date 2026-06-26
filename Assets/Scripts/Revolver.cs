@@ -47,7 +47,7 @@ public class Revolver : MonoBehaviour
             gunAnimator.SetTrigger("fire");
             cameraAnimator.SetTrigger("recoil");
             if (!gunshot.isPlaying)
-                gunshot.Play();
+                StartCoroutine(PlayGunshot());
 
             onGunShoot?.Invoke(); //event that fires on shoot
             currentCooldown = fireCooldown; //reset cooldown
@@ -65,5 +65,11 @@ public class Revolver : MonoBehaviour
     {
         yield return new WaitForSeconds(0.2f); //delay to match when gunshot is over
         cocking.Play();
+    }
+
+    IEnumerator PlayGunshot()
+    {
+        yield return new WaitForSeconds(0.2f); //delay to match when gunshot is over
+        gunshot.Play();
     }
 }

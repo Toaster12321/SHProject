@@ -34,6 +34,11 @@ public class InteractObject : MonoBehaviour
     {
         inventoryManager = player.GetComponentInChildren<InventoryManager>();
     }
+    public void Start()
+    {
+        if (objectType == InteractObjectType.Switch)
+            emissiveMaterial.DisableKeyword("_EMISSION");
+    }
     public string GetInteractText()
     {
         return screenText;
