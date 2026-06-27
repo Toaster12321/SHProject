@@ -46,11 +46,11 @@ public class Revolver : MonoBehaviour
         {
             gunAnimator.SetTrigger("fire");
             cameraAnimator.SetTrigger("recoil");
+            onGunShoot?.Invoke(); //event that fires on shoot
+            currentCooldown = fireCooldown; //reset cooldown
             if (!gunshot.isPlaying)
                 StartCoroutine(PlayGunshot());
 
-            onGunShoot?.Invoke(); //event that fires on shoot
-            currentCooldown = fireCooldown; //reset cooldown
             StartCoroutine(PlayCocking());
         }
     }
