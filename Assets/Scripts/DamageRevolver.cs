@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,7 +13,6 @@ public class DamageRevolver : MonoBehaviour
 
     private void Start()
     {
-
         playerCamera = Camera.main.transform; //get camera's current spot
     }
 
