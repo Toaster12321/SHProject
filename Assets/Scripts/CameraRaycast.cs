@@ -1,3 +1,4 @@
+using System.Text.RegularExpressions;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -49,12 +50,27 @@ public class CameraRaycast : MonoBehaviour
         if (currentObject == null)
             return;
 
-        if (currentObject.objectType == InteractObject.InteractObjectType.Door)
-            currentObject.OpenClose(); //call objects open close function if its not null
-        else if (currentObject.objectType == InteractObject.InteractObjectType.Switch)
-            currentObject.TurnOnOff();
-        else if (currentObject.objectType == InteractObject.InteractObjectType.PickableItem)
-            currentObject.AddItemToInventory();
-            return;
+        switch(currentObject.objectType)
+        {
+            case InteractObject.InteractObjectType.Door:
+                currentObject.OpenClose(); //call objects open close function if its not null
+                break;
+
+            case InteractObject.InteractObjectType.Switch:
+                currentObject.AddItemToInventory();
+                break;
+
+            case InteractObject.InteractObjectType.PickableItem:
+                currentObject.AddItemToInventory();
+                break;
+
+            case InteractObject.InteractObjectType.AmmoRefill:
+                currentObject.AmmoRefill();
+                break;
+
+            default:
+                break;
+        }
     }
+
 }

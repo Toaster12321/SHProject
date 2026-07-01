@@ -9,7 +9,8 @@ public class InteractObject : MonoBehaviour
     {
         Door,
         Switch,
-        PickableItem
+        PickableItem,
+        AmmoRefill
     }
 
     [SerializeField] public InteractObjectType objectType;
@@ -26,6 +27,11 @@ public class InteractObject : MonoBehaviour
     [Header("Pickable Item")]
     [SerializeField] private ItemData itemResource;
     private InventoryManager inventoryManager;
+
+    [Header("Ammo Refill")]
+    [SerializeField] private Revolver gun;
+    [SerializeField] private GameObject ammoPlant;
+    [SerializeField] private int ammoGiven;
 
     private bool isOpen = false;
     private bool isOn = false;
@@ -96,5 +102,20 @@ public class InteractObject : MonoBehaviour
     {
         inventoryManager.AddItem(itemResource);
         Destroy(gameObject);
+    }
+
+    public void AmmoRefill()
+    {
+        bool ammoTaken = false;
+
+        if (!ammoTaken)
+        {
+            gun.reserveAmmoCount += ammoGiven;
+            ammoTaken = true;
+            Destroy(ammoPlant);
+            screenText = "";
+        }
+        else
+            return;
     }
 }
