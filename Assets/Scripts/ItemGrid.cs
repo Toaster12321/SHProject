@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class ItemGrid : MonoBehaviour
 {
-    public const float tileSizeWidth = 64; //grid boxes have size of 64x64px
-    public const float tileSizeHeight = 64;
+    public const float tileSizeWidth = 96; //grid boxes have size of 64x64px
+    public const float tileSizeHeight = 96;
 
     InventoryItem[,] inventoryItemSlot;
 
@@ -47,7 +47,7 @@ public class ItemGrid : MonoBehaviour
     private void Init(int width, int height) //function to resize the grid height/width boxes and item sizes
     {
         inventoryItemSlot = new InventoryItem[width, height];
-        Vector2 size = new Vector2((width * tileSizeWidth) / 2 , (height * tileSizeHeight) / 2); //divide by 2 since using 2x scaled texture 
+        Vector2 size = new Vector2((width * tileSizeWidth) / 3 , (height * tileSizeHeight) / 3); //divide by 3 since using 3x scaled texture 
         rectTransform.sizeDelta = size; //change rect transform of grid
     }
 
@@ -55,13 +55,16 @@ public class ItemGrid : MonoBehaviour
     Vector2Int tileGridPosition = new Vector2Int();
     public Vector2Int GetTileGridPosition(Vector2 mousePosition)
     {
-        Debug.Log(rectTransform);
+        
         positionOnTheGrid.x = mousePosition.x - rectTransform.position.x; //gets x and y location of mouse based on the rect transform of the grid
         positionOnTheGrid.y = rectTransform.position.y - mousePosition.y;
+
+        Debug.Log($"PositionOnGridPixels: {positionOnTheGrid}");
 
         tileGridPosition.x = (int)(positionOnTheGrid.x / tileSizeWidth); //sets which grid is being hovered using ints
         tileGridPosition.y = (int)(positionOnTheGrid.y / tileSizeHeight);
 
+        Debug.Log($"Tile: {tileGridPosition}");
         return tileGridPosition;
     }
 
@@ -111,8 +114,8 @@ public class ItemGrid : MonoBehaviour
     public Vector2 CalculatePositionOnGrid(InventoryItem inventoryItem, int posX, int posY)
     {
         Vector2 position = new Vector2();
-        position.x = posX * tileSizeWidth / 2 + tileSizeWidth * inventoryItem.WIDTH / 4; //working with 32px asset but scaled 2x so visually 64px requires /2 and /4 for mouse to grid conversion
-        position.y = -(posY * tileSizeHeight / 2 + tileSizeHeight * inventoryItem.HEIGHT / 4);
+        position.x = posX * tileSizeWidth / 3 + tileSizeWidth * inventoryItem.WIDTH / 6; //working with 32px asset but scaled 3x so visually 96px requires /3 and /6 for mouse to grid conversion
+        position.y = -(posY * tileSizeHeight / 3 + tileSizeHeight * inventoryItem.HEIGHT / 6);
         return position;
     }
 

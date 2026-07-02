@@ -11,6 +11,8 @@ public class InventoryManager : MonoBehaviour
         { 
             selectedItemGrid = value; 
             inventoryHighlight.SetParent(value); //sets parent to selectedItemGrid whenever setting selectedItemGrid
+
+            oldItemPosition = new Vector2Int(-999, -999); //reset oldItemPosition when grid is left and re-entered
         } }
 
     InventoryItem selectedItem;
@@ -76,7 +78,11 @@ public class InventoryManager : MonoBehaviour
 
         //reset old position so highlight can switch to new grids when rotated
         oldItemPosition = new Vector2Int(-1, -1);
-        HandleHighlight();
+
+        if (selectedItemGrid != null) //must be hovering grid to highlight
+        {
+            HandleHighlight();
+        }
     }
 
     private void InsertRandomItem()
@@ -184,8 +190,8 @@ public class InventoryManager : MonoBehaviour
 
         if (selectedItem != null) //offsets cursor position based on item size when placing items
         {
-            cursorPosition.x -= (selectedItem.WIDTH - 2) * ItemGrid.tileSizeWidth / 4;
-            cursorPosition.y += (selectedItem.HEIGHT - 2) * ItemGrid.tileSizeHeight / 4;
+            cursorPosition.x -= (selectedItem.WIDTH - 1) * ItemGrid.tileSizeWidth / 2;
+            cursorPosition.y += (selectedItem.HEIGHT - 1) * ItemGrid.tileSizeHeight / 2;
         }
 
         return selectedItemGrid.GetTileGridPosition(cursorPosition);
