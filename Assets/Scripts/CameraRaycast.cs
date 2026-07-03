@@ -27,7 +27,6 @@ public class CameraRaycast : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hitObject, interactDistance, interactLayer))
         {
-            Debug.Log(hitObject.collider.name);
             InteractObject interactableObject = hitObject.collider.GetComponentInParent<InteractObject>(); //get an object that has the open close script
 
             if (interactableObject != null)

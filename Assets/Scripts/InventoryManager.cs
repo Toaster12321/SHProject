@@ -6,10 +6,10 @@ using UnityEngine.InputSystem;
 public class InventoryManager : MonoBehaviour
 {
     [SerializeField] private ItemGrid selectedItemGrid;
-    public ItemGrid SelectedItemGrid { get => selectedItemGrid; 
+    public ItemGrid SelectedItemGrid { get => lastUsedGrid; 
         set 
-        { 
-            selectedItemGrid = value; 
+        {
+            lastUsedGrid = value; 
             inventoryHighlight.SetParent(value); //sets parent to selectedItemGrid whenever setting selectedItemGrid
 
             oldItemPosition = new Vector2Int(-999, -999); //reset oldItemPosition when grid is left and re-entered
@@ -27,9 +27,15 @@ public class InventoryManager : MonoBehaviour
 
     InventoryHighlight inventoryHighlight;
 
+    private Vector2Int originalItemPosition = new Vector2Int();
+    private ItemGrid lastUsedGrid; //always store the last grid
+    public static InventoryManager instance;
+
     private void Awake()
     {
         inventoryHighlight = GetComponent<InventoryHighlight>();
+        if (instance  == null ) 
+            instance = this;
     }
 
     private void Update()
@@ -38,16 +44,16 @@ public class InventoryManager : MonoBehaviour
         {
             ItemIconDrag();
 
-            if (Keyboard.current.qKey.wasPressedThisFrame)
-            {
-                if (selectedItem == null)
-                    CreateRandomItem();
-            }
+            //if (Keyboard.current.qKey.wasPressedThisFrame)
+            //{
+            //    if (selectedItem == null)
+            //        CreateRandomItem();
+            //}
 
-            if (Keyboard.current.vKey.wasPressedThisFrame)
-            {
-                InsertRandomItem();
-            }
+            //if (Keyboard.current.vKey.wasPressedThisFrame)
+            //{
+            //    InsertRandomItem();
+            //}
 
             if (Keyboard.current.rKey.wasPressedThisFrame)
             {
@@ -170,6 +176,22 @@ public class InventoryManager : MonoBehaviour
         InsertItem(inventoryItem);
     }
 
+    public bool CheckIfItemInInventory(ItemData item) //checks if an item is in inventory, reference from itemGrid
+    {
+        if (item == null)
+            return false;
+
+        if (selectedItemGrid.CheckIfItemInInventory(item))
+            return true;
+
+        return false;
+    }
+
+    public void RemoveItemInInventory(ItemData item)
+    {
+        return;
+    }
+
     private void LeftMouseButtonPress()
     {
         Vector2Int tileGridPosition = GetTileGridPosition();
@@ -219,8 +241,20 @@ public class InventoryManager : MonoBehaviour
         selectedItem = selectedItemGrid.PickUpItem(tileGridPosition.x, tileGridPosition.y);
         if (selectedItem != null)
         {
+            originalItemPosition = new Vector2Int(selectedItem.onGridPositionX, selectedItem.onGridPositionY); //store the item's slot position where picked up
             rectTransform = selectedItem.GetComponent<RectTransform>(); //get transform of picked up item
         }
+    }
+
+    public void OnInventoryClosed() //when inventory is closed and an item is picked up, return it to original spot
+    {
+        if (selectedItem != null)
+        {
+            selectedItemGrid.ReturnItemToGrid(selectedItem, originalItemPosition);
+            selectedItem = null;
+        }
+
+        inventoryHighlight.Show(false);
     }
 
     private void ItemIconDrag()

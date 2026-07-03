@@ -24,6 +24,8 @@ public class ItemGrid : MonoBehaviour
 
     public InventoryItem PickUpItem(int x, int y)
     {
+        if (!PositionCheck(x, y)) return null; //make sure we are in the bounds when picking up an item
+
         InventoryItem pickedUpItem = inventoryItemSlot[x, y]; //get the location where the item was picked up
 
         if (pickedUpItem == null)
@@ -111,6 +113,11 @@ public class ItemGrid : MonoBehaviour
         rectTransform.localPosition = position; //set the objects location to the intended rect transform spot on the grid
     }
 
+    public void ReturnItemToGrid(InventoryItem item, Vector2Int pos) //places item in original location, used in inventory manager
+    {
+        PlaceItemOnGrid(item, pos.x, pos.y);
+    }
+
     public Vector2 CalculatePositionOnGrid(InventoryItem inventoryItem, int posX, int posY)
     {
         Vector2 position = new Vector2();
@@ -161,6 +168,27 @@ public class ItemGrid : MonoBehaviour
         return true;
     }
 
+    public bool CheckIfItemInInventory(ItemData itemResource) //checks if a requested item is in the player's inventory
+    {
+        if (itemResource == null)
+            return false;
+
+        for (int ix = 0; ix < gridSizeWidth; ix++) //go through all tiles in the inventory grid
+        {
+            for (int iy = 0; iy < gridSizeHeight; iy++)
+            {
+                InventoryItem itemSlot = inventoryItemSlot[ix, iy];
+                if (itemSlot != null && itemSlot.itemData == itemResource) //if the item is found return true
+                {
+                    return true;
+                }
+                    
+            }
+        }
+
+        return false;
+    }
+
     bool PositionCheck(int posX, int posY) //checks the current location of all tiles and makes sure they fit parameters
     {
         if(posX < 0 || posY < 0) //item is outside the boundraries for placement (negative number)
@@ -176,8 +204,6 @@ public class ItemGrid : MonoBehaviour
     {
         if (PositionCheck(posX, posY) == false) //check if the position is eligible first (checks top left tile of item)
             return false;
-
-
 
         posX += itemWidth - 1; //add item tiles to positions to get bottom right tile (min size is 1 so -> -1)
         posY += itemHeight - 1;

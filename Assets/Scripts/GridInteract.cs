@@ -9,6 +9,7 @@ public class GridInteract : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     {
         inventoryManager = FindFirstObjectByType(typeof(InventoryManager)) as InventoryManager;
         itemGrid = GetComponent<ItemGrid>();
+        //inventoryManager.SelectedItemGrid = itemGrid
     }
 
     public void OnPointerEnter(PointerEventData eventData) //trigger event when cursor enters itemGrid

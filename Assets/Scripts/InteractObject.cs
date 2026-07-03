@@ -32,6 +32,9 @@ public class InteractObject : MonoBehaviour
     [SerializeField] private Revolver gun;
     [SerializeField] private GameObject ammoPlant;
     [SerializeField] private int ammoGiven;
+    [SerializeField] private GameObject plantedSeed;
+    private bool ammoTaken = false;
+    private bool seedPlanted = false;
 
     private bool isOpen = false;
     private bool isOn = false;
@@ -47,6 +50,18 @@ public class InteractObject : MonoBehaviour
     }
     public string GetInteractText()
     {
+        if (objectType == InteractObjectType.AmmoRefill) //change on screen prompts depending on ammo plant state
+        {
+            if (!ammoTaken)
+                return "Refill? (E)";
+
+            if (inventoryManager.CheckIfItemInInventory(itemResource) && seedPlanted == false)
+                return "Plant? (E)";
+
+            return "";
+
+        }
+
         return screenText;
     }
 
@@ -106,16 +121,22 @@ public class InteractObject : MonoBehaviour
 
     public void AmmoRefill()
     {
-        bool ammoTaken = false;
-
-        if (!ammoTaken)
+        if (!ammoTaken) //destroy ammo plant and give ammo when pressed
         {
             gun.reserveAmmoCount += ammoGiven;
             ammoTaken = true;
             Destroy(ammoPlant);
-            screenText = "";
-        }
-        else
             return;
+        }
+
+        if (ammoTaken)
+        {
+            if (inventoryManager.CheckIfItemInInventory(itemResource)) //if we have the item (seed) in inventory show the seed in game
+            {
+                plantedSeed.SetActive(true);
+                seedPlanted = true;
+            }
+            return;
+        }
     }
 }
