@@ -35,13 +35,13 @@ public class ItemGrid : MonoBehaviour
         return pickedUpItem; //return the location where picked up
     }
 
-    private void CleanGridReferences(InventoryItem pickedUpItem)
+    public void CleanGridReferences(InventoryItem itemToChange)
     {
-        for (int ix = 0; ix < pickedUpItem.WIDTH; ix++) //go through all tiles in item data size
+        for (int ix = 0; ix < itemToChange.WIDTH; ix++) //go through all tiles in item data size
         {
-            for (int iy = 0; iy < pickedUpItem.HEIGHT; iy++)
+            for (int iy = 0; iy < itemToChange.HEIGHT; iy++)
             {
-                inventoryItemSlot[pickedUpItem.onGridPositionX + ix, pickedUpItem.onGridPositionY + iy] = null; //reset variable on all tiles
+                inventoryItemSlot[itemToChange.onGridPositionX + ix, itemToChange.onGridPositionY + iy] = null; //reset variable on all tiles where item was picked up
             }
         }
     }
@@ -92,7 +92,7 @@ public class ItemGrid : MonoBehaviour
 
         return true; //able to place item
     }
-
+    
     public void PlaceItemOnGrid(InventoryItem inventoryItem, int posX, int posY)
     {
         RectTransform rectTransform = inventoryItem.GetComponent<RectTransform>();
@@ -166,6 +166,28 @@ public class ItemGrid : MonoBehaviour
         }
 
         return true;
+    }
+
+    public void DestroyItemInInventory(ItemData itemResource) //checks all item spots and destroys the passed item
+    {
+        if (itemResource == null)
+            return;
+
+        for (int ix = 0; ix < gridSizeWidth; ix++) //go through all tiles in the inventory grid
+        {
+            for (int iy = 0; iy < gridSizeHeight; iy++)
+            {
+                InventoryItem itemSlot = inventoryItemSlot[ix, iy];
+                if (itemSlot != null && itemSlot.itemData == itemResource) //if the item is found clean references and destroy the game object sprite
+                {
+                    CleanGridReferences(itemSlot);
+                    Destroy(itemSlot.gameObject);
+                    return;
+                }
+
+            }
+        }
+
     }
 
     public bool CheckIfItemInInventory(ItemData itemResource) //checks if a requested item is in the player's inventory

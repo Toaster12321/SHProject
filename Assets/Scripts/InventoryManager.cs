@@ -189,6 +189,7 @@ public class InventoryManager : MonoBehaviour
 
     public void RemoveItemInInventory(ItemData item)
     {
+        selectedItemGrid.DestroyItemInInventory(item);
         return;
     }
 

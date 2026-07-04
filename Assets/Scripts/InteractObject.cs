@@ -135,6 +135,7 @@ public class InteractObject : MonoBehaviour
             {
                 plantedSeed.SetActive(true);
                 seedPlanted = true;
+                inventoryManager.RemoveItemInInventory(itemResource);
             }
             return;
         }
