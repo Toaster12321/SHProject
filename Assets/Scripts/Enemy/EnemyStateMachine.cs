@@ -94,27 +94,27 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
         _enemyRenderer.color = _originalColor;
     }
 
-    public void EnableAttackHitbox()
+    public void EnableAttackHitbox()//ANIM EVENT
     {
         _attackHitbox.enabled = true;
     }
 
-    public void DisableAttackHitbox()
+    public void DisableAttackHitbox()//ANIM EVENT
     {
         _attackHitbox.enabled = false;
     }
 
-    public void DisableRotation() //used for stopping rotation of carn plant when attacking
+    public void DisableRotation() //ANIM EVENT used for stopping rotation of carn plant when attacking
     {
         _context.IsRotatingEnabled = false;
     }
 
-    public void EnableRotation()
+    public void EnableRotation()//ANIM EVENT
     {
         _context.IsRotatingEnabled = true;
     }
 
-    private void DestroyEnemy() //called via animation events
+    private void DestroyEnemy() //ANIM EVENT
     {
         GameObject.Destroy(gameObject);
     }

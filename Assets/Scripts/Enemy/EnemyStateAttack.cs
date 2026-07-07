@@ -5,7 +5,7 @@ public class EnemyStateAttack : EnemyState
 {
     private float _attackCooldown = 2f;//how long before damage is applied again
     private float _lastAttackTime;
-    private float _rotationSpeed = 360f;
+    private float _rotationSpeed = 150f;
 
     public EnemyStateAttack( EnemyStateContext context, EnemyStateMachine.EEnemyState estate) : base(context, estate)
     {
@@ -20,6 +20,11 @@ public class EnemyStateAttack : EnemyState
             Context.Agent.SetDestination(Context.SelfTransform.position);
         }
         Context.Animator.SetBool("attacking", true);
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.CarnPlant)
+        {
+            Context.IsRotatingEnabled = true;
+        }
+        
     }
 
     public override void ExitState()

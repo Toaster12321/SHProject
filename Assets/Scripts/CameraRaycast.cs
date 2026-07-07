@@ -56,7 +56,7 @@ public class CameraRaycast : MonoBehaviour
                 break;
 
             case InteractObject.InteractObjectType.Switch:
-                currentObject.AddItemToInventory();
+                currentObject.TurnOnOff();
                 break;
 
             case InteractObject.InteractObjectType.PickableItem:

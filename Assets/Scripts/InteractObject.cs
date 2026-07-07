@@ -33,6 +33,8 @@ public class InteractObject : MonoBehaviour
     [SerializeField] private GameObject ammoPlant;
     [SerializeField] private int ammoGiven;
     [SerializeField] private GameObject plantedSeed;
+    [SerializeField] private ItemData seedItem;
+    [SerializeField] private ItemData waterItem;
     private bool ammoTaken = false;
     private bool seedPlanted = false;
 
@@ -55,8 +57,11 @@ public class InteractObject : MonoBehaviour
             if (!ammoTaken)
                 return "Refill? (E)";
 
-            if (inventoryManager.CheckIfItemInInventory(itemResource) && seedPlanted == false)
+            if (inventoryManager.CheckIfItemInInventory(seedItem) && seedPlanted == false)
                 return "Plant? (E)";
+
+            if (inventoryManager.CheckIfItemInInventory(waterItem) && seedPlanted == true)
+                return "Water? (E)";
 
             return "";
 
@@ -125,17 +130,25 @@ public class InteractObject : MonoBehaviour
         {
             gun.reserveAmmoCount += ammoGiven;
             ammoTaken = true;
-            Destroy(ammoPlant);
+            ammoPlant.SetActive(false);
             return;
         }
 
         if (ammoTaken)
         {
-            if (inventoryManager.CheckIfItemInInventory(itemResource)) //if we have the item (seed) in inventory show the seed in game
+            if (inventoryManager.CheckIfItemInInventory(seedItem) && !seedPlanted) //if we have the item (seed) in inventory show the seed in game
             {
                 plantedSeed.SetActive(true);
                 seedPlanted = true;
-                inventoryManager.RemoveItemInInventory(itemResource);
+                inventoryManager.RemoveItemInInventory(seedItem);
+            }
+            else if(inventoryManager.CheckIfItemInInventory(waterItem) && seedPlanted)
+            {
+                ammoPlant.SetActive(true);
+                plantedSeed.SetActive(false);
+                ammoTaken = false;
+                seedPlanted = false;
+                inventoryManager.RemoveItemInInventory(waterItem);
             }
             return;
         }
