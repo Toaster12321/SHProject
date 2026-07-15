@@ -15,26 +15,34 @@ public class EnemyStateIdle : EnemyState
         {
             _idleTimer = 0f;
 
-            Context.Animator.SetBool("walking", false); //set walking to false just in case, idle animation autoloads by default
+            Context.Animator.SetBool("walking", false); //set walking to false in case of entering idle from attack
+            Context.Agent.isStopped = true; //stop moving
+        }
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.MushroomSpider)
+        {
+            _idleTimer = 0f;
+
+            Context.Animator.SetBool("walking", false); //set walking to false in case of entering idle from attack or chase
+            Context.Animator.SetBool("chasing", false); 
             Context.Agent.isStopped = true; //stop moving
         }
     }
 
     public override void ExitState()
     {
-        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab || Context.EnemyType == EnemyStateMachine.EnemyType.MushroomSpider)
             Context.Agent.isStopped = false; //resume movement
     }
 
     public override void UpdateState()
     {
-        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab || Context.EnemyType == EnemyStateMachine.EnemyType.MushroomSpider)
             _idleTimer += Time.deltaTime; //start timer
     }
 
     public override EnemyStateMachine.EEnemyState GetNextState()
     {
-        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab || Context.EnemyType == EnemyStateMachine.EnemyType.MushroomSpider)
         {
             if (Context.PlayerInSightRange) //if player enters vision radius -> chase
                 return EnemyStateMachine.EEnemyState.Chase;

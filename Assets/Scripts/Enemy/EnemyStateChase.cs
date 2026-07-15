@@ -17,7 +17,11 @@ public class EnemyStateChase : EnemyState
         if (Context.Animator.GetBool("attacking"))
             Context.Animator.SetBool("attacking", false);
 
-        Context.Animator.SetBool("walking", true);
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+            Context.Animator.SetBool("walking", true);
+
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.MushroomSpider)
+            Context.Animator.SetBool("chasing", true);
     }
 
     public override void ExitState()

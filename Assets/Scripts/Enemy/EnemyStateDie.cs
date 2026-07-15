@@ -31,6 +31,14 @@ public class EnemyStateDie : EnemyState
             _explosionAnimationTime = 1.25f;
             _totalAnimationTime = _explosionAnimationTime + _gasDuration;
         }
+        else if (Context.EnemyType == EnemyStateMachine.EnemyType.MushroomSpider)
+        {
+            Context.Agent.GetComponent<BoxCollider>().enabled = false;
+
+            Context.Agent.isStopped = true; //turn off navmesh functions
+            Context.Agent.ResetPath();
+            Context.Agent.enabled = false;
+        }
     }
 
     public override void ExitState()

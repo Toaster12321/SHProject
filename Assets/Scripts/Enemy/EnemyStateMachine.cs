@@ -16,7 +16,8 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     public enum EnemyType
     {
         Scab,
-        CarnPlant
+        CarnPlant,
+        MushroomSpider
     }
 
     private EnemyStateContext _context;
@@ -37,8 +38,8 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     [SerializeField] private Transform _selfTransform;
     [SerializeField] private Collider _attackHitbox;
     private bool _isRotatingEnabled = true;
+    [SerializeField] private EnemyStateMachine _enemyStateMachine;
     private Color _originalColor;
-
 
 
     private void Start()
@@ -60,7 +61,7 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
 
         if (_enemyRenderer != null)
             StartCoroutine(FlashRed());
-        if (_enemyType == EnemyType.Scab)
+        if (_enemyType == EnemyType.Scab || _enemyType == EnemyType.MushroomSpider)
             TransitionToState(EEnemyState.Chase);
 
         if (currentHP <= 0)
@@ -73,7 +74,7 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     private void Awake()
     {
         _context = new EnemyStateContext(_enemyType, _enemyRenderer, _originalColor, _agent, _player, _whatIsGround, _attackHitbox, _whatIsPlayer, _animator, _particleEmitter, _sightRange,
-            _attackRange, _walkPointRange, _selfTransform, _isRotatingEnabled);
+            _attackRange, _walkPointRange, _selfTransform, _isRotatingEnabled, _enemyStateMachine);
         InitializeStates();
     }
 
@@ -117,5 +118,15 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     private void DestroyEnemy() //ANIM EVENT
     {
         GameObject.Destroy(gameObject);
+    }
+
+    public Coroutine StartStateCoroutine(IEnumerator routine) //allows coroutines in other non-monobehaviour states
+    {
+        return StartCoroutine(routine);
+    }
+
+    public void StopStateCoroutine(IEnumerator routine) //allows coroutines in other non-monobehaviour states
+    {
+        StopCoroutine(routine);
     }
 }

@@ -1,11 +1,16 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 public class EnemyStateAttack : EnemyState
 {
     private float _attackCooldown = 2f;//how long before damage is applied again
     private float _lastAttackTime;
     private float _rotationSpeed = 150f;
+
+    private float jumpHeight = 1.2f;
+    private float jumpDisplacement = 10f;
+    private float jumpDuration = 5f;
 
     public EnemyStateAttack( EnemyStateContext context, EnemyStateMachine.EEnemyState estate) : base(context, estate)
     {
@@ -24,7 +29,12 @@ public class EnemyStateAttack : EnemyState
         {
             Context.IsRotatingEnabled = true;
         }
-        
+
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.MushroomSpider)
+        {
+            Context.EnemyStateMachine.StartCoroutine(JumpAttack());
+        }
+
     }
 
     public override void ExitState()
@@ -48,7 +58,7 @@ public class EnemyStateAttack : EnemyState
     public override EnemyStateMachine.EEnemyState GetNextState()
     {
 
-        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab || Context.EnemyType == EnemyStateMachine.EnemyType.MushroomSpider)
         {
             if (Context.PlayerInSightRange && !Context.PlayerInAttackRange) //if player enters vision radius -> chase
                 return EnemyStateMachine.EEnemyState.Chase;
@@ -84,6 +94,36 @@ public class EnemyStateAttack : EnemyState
             Context.Player.GetComponentInParent<Player>().TakeDamage(1); //apply damage
             _lastAttackTime = Time.time;
         }
+
+
+    }
+
+    private IEnumerator JumpAttack()
+    {
+        Vector3 _startPos = Context.SelfTransform.position;
+        Vector3 _endPos = _startPos + Context.SelfTransform.forward * jumpDisplacement;
+
+        float elapsedTime = 0f;
+        Context.Agent.isStopped = true;
+
+        yield return new WaitForSeconds(0.3f);
+        while (elapsedTime < jumpDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float currentTime = elapsedTime / jumpDuration;
+
+            Vector3 _pos = Vector3.Lerp(_startPos, _endPos, currentTime); //forward movement
+
+            _pos.y += Mathf.Sin(currentTime * MathF.PI) * jumpHeight;
+
+            Context.SelfTransform.position = _pos;
+
+            yield return null;
+        }
+
+        Context.SelfTransform.position = _endPos;
+        Context.Agent.Warp(Context.SelfTransform.position);
+        Context.Agent.isStopped = false;
 
 
     }

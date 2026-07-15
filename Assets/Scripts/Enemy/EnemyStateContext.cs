@@ -15,10 +15,11 @@ public class EnemyStateContext
     private Transform _selfTransform;
     private Collider _attackHitbox;
     private bool _isRotatingEnabled;
+    private EnemyStateMachine _enemyStateMachine;
 
 
     public EnemyStateContext(EnemyStateMachine.EnemyType enemyType, Material enemyRenderer, Color originalColor, NavMeshAgent agent, Transform player, LayerMask whatIsGround, Collider attackHitbox,
-        LayerMask whatIsPlayer, Animator animator, ParticleSystem particleEmitter, float sightRange, float attackRange, float walkPointRange, Transform selfTransform, bool isRotatingEnabled)
+        LayerMask whatIsPlayer, Animator animator, ParticleSystem particleEmitter, float sightRange, float attackRange, float walkPointRange, Transform selfTransform, bool isRotatingEnabled, EnemyStateMachine enemyStateMachine)
     {
         _enemyType = enemyType;
         _enemyRenderer = enemyRenderer;
@@ -35,6 +36,7 @@ public class EnemyStateContext
         _walkPointRange = walkPointRange;
         _selfTransform = selfTransform;
         _isRotatingEnabled = isRotatingEnabled;
+        _enemyStateMachine = enemyStateMachine;
     }
 
     public EnemyStateMachine.EnemyType EnemyType => _enemyType;
@@ -56,6 +58,7 @@ public class EnemyStateContext
         get => _isRotatingEnabled;
         set => _isRotatingEnabled = value;
     }
+    public EnemyStateMachine EnemyStateMachine => _enemyStateMachine;
 
     public bool PlayerInSightRange => //checks for the position of the player in a radius of sight range on layer mask of player
         Physics.CheckSphere(SelfTransform.position, _sightRange, _whatIsPlayer);  
