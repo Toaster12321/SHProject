@@ -61,12 +61,10 @@ public class ItemGrid : MonoBehaviour
         positionOnTheGrid.x = mousePosition.x - rectTransform.position.x; //gets x and y location of mouse based on the rect transform of the grid
         positionOnTheGrid.y = rectTransform.position.y - mousePosition.y;
 
-        Debug.Log($"PositionOnGridPixels: {positionOnTheGrid}");
 
         tileGridPosition.x = (int)(positionOnTheGrid.x / tileSizeWidth); //sets which grid is being hovered using ints
         tileGridPosition.y = (int)(positionOnTheGrid.y / tileSizeHeight);
 
-        Debug.Log($"Tile: {tileGridPosition}");
         return tileGridPosition;
     }
 

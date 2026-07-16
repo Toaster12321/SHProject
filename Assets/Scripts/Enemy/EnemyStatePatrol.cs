@@ -73,7 +73,7 @@ public class EnemyStatePatrol : EnemyState
         float randomX = Random.Range(-Context.WalkPointRange, Context.WalkPointRange);
 
         _walkPoint = new Vector3(Context.Agent.transform.position.x + randomX, Context.Agent.transform.position.y, Context.Agent.transform.position.z + randomZ); //set current position on x and z to our random values
-
+        
         if (Physics.Raycast(_walkPoint, -Context.Agent.transform.up, 2f, Context.WhatIsGround)) //make sure our walkpoint is on the ground and not off the map
             _walkPointSet = true;  //walk point is set
     }

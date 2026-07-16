@@ -9,9 +9,10 @@ public class EnemyStateAttack : EnemyState
     private float _rotationSpeed = 150f;
 
     private float jumpHeight = 1.2f;
-    private float jumpDisplacement = 10f;
-    private float jumpDuration = 5f;
+    private float jumpDisplacement = 7f;
+    private float jumpDuration = 0.8f;
 
+    private bool _jumpFinished = false;
     public EnemyStateAttack( EnemyStateContext context, EnemyStateMachine.EEnemyState estate) : base(context, estate)
     {
         
@@ -20,11 +21,14 @@ public class EnemyStateAttack : EnemyState
     public override void EnterState()
     {
         _lastAttackTime = 0f;
+        Context.Animator.SetBool("attacking", true);
+        _jumpFinished = false;
+
         if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
         {
             Context.Agent.SetDestination(Context.SelfTransform.position);
         }
-        Context.Animator.SetBool("attacking", true);
+        
         if (Context.EnemyType == EnemyStateMachine.EnemyType.CarnPlant)
         {
             Context.IsRotatingEnabled = true;
@@ -39,7 +43,7 @@ public class EnemyStateAttack : EnemyState
 
     public override void ExitState()
     {
-        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab || Context.EnemyType == EnemyStateMachine.EnemyType.MushroomSpider)
             Context.Agent.isStopped = false;
         Context.Animator.SetBool("attacking", false);
     }
@@ -53,6 +57,7 @@ public class EnemyStateAttack : EnemyState
             var lookRotation = Quaternion.LookRotation(lookPos); //turns Vector3 -> Quaternion with rotation
             Context.SelfTransform.rotation = Quaternion.RotateTowards(Context.SelfTransform.rotation, lookRotation, _rotationSpeed * Time.deltaTime); //set rotation to rotate towards the player at set rotation speed 
         }
+
     }
 
     public override EnemyStateMachine.EEnemyState GetNextState()
@@ -60,8 +65,17 @@ public class EnemyStateAttack : EnemyState
 
         if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab || Context.EnemyType == EnemyStateMachine.EnemyType.MushroomSpider)
         {
-            if (Context.PlayerInSightRange && !Context.PlayerInAttackRange) //if player enters vision radius -> chase
-                return EnemyStateMachine.EEnemyState.Chase;
+            if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)
+                if (Context.PlayerInSightRange && !Context.PlayerInAttackRange) //if player enters vision radius -> chase
+                    return EnemyStateMachine.EEnemyState.Chase;
+
+
+            if (Context.EnemyType == EnemyStateMachine.EnemyType.MushroomSpider)
+                if (Context.PlayerInSightRange && !Context.PlayerInAttackRange && _jumpFinished) //if player enters vision radius -> chase
+                    return EnemyStateMachine.EEnemyState.Chase;
+                else if (!Context.PlayerInSightRange && !Context.PlayerInAttackRange && _jumpFinished)
+                    return EnemyStateMachine.EEnemyState.Patrol;
+
         }
         else if (Context.EnemyType == EnemyStateMachine.EnemyType.CarnPlant)
         {
@@ -105,8 +119,11 @@ public class EnemyStateAttack : EnemyState
 
         float elapsedTime = 0f;
         Context.Agent.isStopped = true;
+        Context.Agent.updatePosition = false;
+        Context.Agent.updateRotation = false;
 
-        yield return new WaitForSeconds(0.3f);
+        yield return new WaitForSeconds(0.5f);
+        
         while (elapsedTime < jumpDuration)
         {
             elapsedTime += Time.deltaTime;
@@ -122,9 +139,13 @@ public class EnemyStateAttack : EnemyState
         }
 
         Context.SelfTransform.position = _endPos;
-        Context.Agent.Warp(Context.SelfTransform.position);
+        Context.Agent.Warp(_endPos);
+
+        Context.Agent.updatePosition = true;
+        Context.Agent.updateRotation = true;
         Context.Agent.isStopped = false;
 
+        _jumpFinished = true;
 
     }
 

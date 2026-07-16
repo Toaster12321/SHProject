@@ -21,11 +21,17 @@ public class EnemyStateChase : EnemyState
             Context.Animator.SetBool("walking", true);
 
         if (Context.EnemyType == EnemyStateMachine.EnemyType.MushroomSpider)
+        {
             Context.Animator.SetBool("chasing", true);
+            Context.Animator.SetBool("walking", false);
+        }
+            
     }
 
     public override void ExitState()
     {
+        if (Context.EnemyType == EnemyStateMachine.EnemyType.MushroomSpider)
+            Context.Animator.SetBool("chasing", false);
     }
 
     public override void UpdateState()
