@@ -15,8 +15,11 @@ public class InteractObject : MonoBehaviour
 
     [SerializeField] public InteractObjectType objectType;
     [SerializeField] private string screenText;
+
+    [Header("Door")]
     [SerializeField] private Transform player;
     [SerializeField] private Animator objectAnimator;
+    [SerializeField] private bool flippedDoor;
     [SerializeField] private bool XComparison; //choose x or z based on arrows in editor on open/close object to compare player position to 
     [SerializeField] private bool ZComparison;
 
@@ -49,6 +52,9 @@ public class InteractObject : MonoBehaviour
     {
         if (objectType == InteractObjectType.Switch)
             emissiveMaterial.DisableKeyword("_EMISSION");
+
+        if (flippedDoor)
+            objectAnimator.SetBool("flipped", true);
     }
     public string GetInteractText()
     {
@@ -76,9 +82,39 @@ public class InteractObject : MonoBehaviour
         isOpen = !isOpen; //set is open to the opposite of what it previously was (always started closed -> false)
 
         Vector3 localPlayerPos = transform.InverseTransformPoint(player.position); //gets the players transform in local space
-
-        if (XComparison) //compare x axis
+        if (!flippedDoor)
         {
+            if (XComparison) //compare x axis
+            {
+                if ((localPlayerPos.x > 0 || objectAnimator.GetBool("openObject")) && objectAnimator.GetBool("openObjectInside") != true) //if the player is above 0 we are outside, if we triggered a bool play "close" in the animation state tree regardless of comparison
+                {
+                    objectAnimator.SetBool("openObject", isOpen);
+                }
+                else //else we are inside so play inside open/close animations
+                {
+                    objectAnimator.SetBool("openObjectInside", isOpen); //play close or open animation based on the bool
+                }
+            }
+            else if (ZComparison) //compare z axis
+            {
+                if ((localPlayerPos.z > 0 || objectAnimator.GetBool("openObject")) && objectAnimator.GetBool("openObjectInside") != true)
+                {
+                    objectAnimator.SetBool("openObject", isOpen);
+                }
+                else
+                {
+                    objectAnimator.SetBool("openObjectInside", isOpen);
+
+                }
+            }
+            else
+            {
+                objectAnimator.SetBool("openObject", isOpen);
+            }
+        }
+        else if (flippedDoor)
+        {
+            print(localPlayerPos);
             if ((localPlayerPos.x > 0 || objectAnimator.GetBool("openObject")) && objectAnimator.GetBool("openObjectInside") != true) //if the player is above 0 we are outside, if we triggered a bool play "close" in the animation state tree regardless of comparison
             {
                 objectAnimator.SetBool("openObject", isOpen);
@@ -88,22 +124,7 @@ public class InteractObject : MonoBehaviour
                 objectAnimator.SetBool("openObjectInside", isOpen); //play close or open animation based on the bool
             }
         }
-        else if (ZComparison) //compare z axis
-        {
-            if ((localPlayerPos.z > 0 || objectAnimator.GetBool("openObject")) && objectAnimator.GetBool("openObjectInside") != true)
-            {
-                objectAnimator.SetBool("openObject", isOpen);
-            }
-            else
-            {
-                objectAnimator.SetBool("openObjectInside", isOpen);
-                
-            }
-        }
-        else
-        {
-            objectAnimator.SetBool("openObject", isOpen);
-        }    
+        
     }
 
     public void TurnOnOff()
