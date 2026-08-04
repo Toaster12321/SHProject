@@ -7,6 +7,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: Ban
+    second: {fileID: 2100000, guid: 6f00838ef6a1701459ce280c631f2893, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: Lampara1
     second: {fileID: 2100000, guid: 5e5b86801f131694f97f8bf454de22b0, type: 2}
   - first:
