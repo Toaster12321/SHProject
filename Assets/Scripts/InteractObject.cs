@@ -20,8 +20,10 @@ public class InteractObject : MonoBehaviour
     [SerializeField] private Transform player;
     [SerializeField] private Animator objectAnimator;
     [SerializeField] private bool flippedDoor;
+    [SerializeField] private bool lockedDoor;
     [SerializeField] private bool XComparison; //choose x or z based on arrows in editor on open/close object to compare player position to 
     [SerializeField] private bool ZComparison;
+    [SerializeField] private AudioSource lockedSFX;
 
     [Header("Light Switch")]
     [SerializeField] private GameObject lightObject;
@@ -43,6 +45,9 @@ public class InteractObject : MonoBehaviour
 
     private bool isOpen = false;
     private bool isOn = false;
+
+    private bool interactedOnce = false;
+    private String returnText = "";
 
     public void Awake()
     {
@@ -73,12 +78,23 @@ public class InteractObject : MonoBehaviour
 
         }
 
+        if (objectType == InteractObjectType.Door && lockedDoor)
+            if (interactedOnce)
+                return returnText;
+
+
         return screenText;
     }
 
     public void OpenClose()
     {
-
+        if (lockedDoor)
+        {
+            lockedSFX.Play();
+            interactedOnce = true;
+            returnText = "Interact(Locked) (E)";
+            return;
+        }    
         isOpen = !isOpen; //set is open to the opposite of what it previously was (always started closed -> false)
 
         Vector3 localPlayerPos = transform.InverseTransformPoint(player.position); //gets the players transform in local space
