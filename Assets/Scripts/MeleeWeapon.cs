@@ -1,6 +1,7 @@
 using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public class MeleeWeapon : MonoBehaviour
 {
@@ -27,11 +28,7 @@ public class MeleeWeapon : MonoBehaviour
     private void Awake()
     {
         firstPersonController = GetComponentInParent<FirstPersonController>();
-    }
-    private void Start()
-    {
         attackAction = FirstPersonController.playerInput.actions["Attack"];
-        AssignInput();
     }
 
     private void Update()
@@ -44,6 +41,7 @@ public class MeleeWeapon : MonoBehaviour
         else
             knifeAnimator.SetBool("dashing", false);
     }
+    private void OnActionPressed(InputAction.CallbackContext ctx) => Swing();
 
     public void Swing()
     {
@@ -79,11 +77,6 @@ public class MeleeWeapon : MonoBehaviour
     }
 
 
-    void AssignInput()
-    {
-        attackAction.performed += ctx => Swing(); //call swing when attack is performed
-    }
-
     private void OnTriggerEnter(Collider other) //when the collider connects with the enemy -> inflict damage
     {
         EnemyStateMachine enemy = other.GetComponentInParent<EnemyStateMachine>();
@@ -95,6 +88,7 @@ public class MeleeWeapon : MonoBehaviour
         }
     }
 
+    
     public void EnableWeaponCollider() //enable/disable collider for animation events
     {
         weaponCollider.enabled = true;
@@ -105,6 +99,16 @@ public class MeleeWeapon : MonoBehaviour
     public void DisableWeaponCollider()
     {
         weaponCollider.enabled = false;
+    }
+
+    private void OnEnable()
+    {
+        attackAction.performed += OnActionPressed;
+    }
+
+    private void OnDisable()
+    {
+        attackAction.performed -= OnActionPressed;
     }
 }
 

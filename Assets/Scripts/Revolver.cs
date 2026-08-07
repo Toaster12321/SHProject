@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -28,15 +29,14 @@ public class Revolver : MonoBehaviour
     private void Awake()
     {
         firstPersonController = GetComponentInParent<FirstPersonController>();
+        attackAction = FirstPersonController.playerInput.actions["Attack"];
+        reloadAction = FirstPersonController.playerInput.actions["Reload"];
     }
 
     void Start()
     {
         currentClipAmmoCount = clipSize;
         currentCooldown = fireCooldown; //set cooldown
-        attackAction = FirstPersonController.playerInput.actions["Attack"];
-        reloadAction = FirstPersonController.playerInput.actions["Reload"];
-        AssignInput();
     }
 
     void Update()
@@ -49,7 +49,7 @@ public class Revolver : MonoBehaviour
             gunAnimator.SetBool("dashing", false);
     }
 
-    private void Shoot()
+    private void Shoot(InputAction.CallbackContext ctx)
     {
         if (currentClipAmmoCount <= 0)
         {
@@ -71,7 +71,7 @@ public class Revolver : MonoBehaviour
         }
     }
 
-    private void Reload()
+    private void Reload(InputAction.CallbackContext ctx)
     {
         if (currentClipAmmoCount == clipSize) //full clip, can't reload
             return;
@@ -90,12 +90,6 @@ public class Revolver : MonoBehaviour
         reserveAmmoCount = Mathf.Clamp(reserveAmmoCount -= remainderAmmo, 0, int.MaxValue); //dont go below 0 in reserve ammo
     }
 
-    private void AssignInput()
-    {
-        reloadAction.performed += ctx => Reload();
-        attackAction.performed += ctx => Shoot();
-    }
-
 
     IEnumerator PlayCocking()
     {
@@ -109,8 +103,20 @@ public class Revolver : MonoBehaviour
         gunshot.Play();
     }
 
-    private void animEventDryFire()
+    private void animEventDryFire() //ANIMATION EVENT ONLY 
     {
         dryFire.Play();
+    }
+
+    private void OnEnable()
+    {
+        attackAction.performed += Shoot;
+        reloadAction.performed += Reload;
+    }
+
+    private void OnDisable()
+    {
+        attackAction.performed -= Shoot;
+        reloadAction.performed -= Reload;
     }
 }

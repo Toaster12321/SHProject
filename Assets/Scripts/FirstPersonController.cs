@@ -39,6 +39,7 @@ public class FirstPersonController : MonoBehaviour
 
     [SerializeField] private InputActionReference moveInput; //references for input system controls
     [SerializeField] private InputActionReference lookInput;
+    [SerializeField] private InputActionReference weaponSwitchInput;
     [SerializeField] private InputActionReference _menuOpenAction;
     [SerializeField] private InputActionReference _menuCloseAction;
     private InputAction sprintAction;
@@ -66,6 +67,7 @@ public class FirstPersonController : MonoBehaviour
             HandleMouseLook();
             ApplyFinalMovement();
             footstepsWalking();
+            CheckForWeaponSwitch();
         }
         
         if(isDashing) //start dash timer
@@ -129,6 +131,15 @@ public class FirstPersonController : MonoBehaviour
             moveDirection.y -= gravity * Time.deltaTime; //if we are in the sky appply gravity each frame
 
         characterController.Move(moveDirection * Time.deltaTime);//move the character controller in a direction each frame
+    }
+
+    private void CheckForWeaponSwitch()
+    {
+        if (weaponSwitchInput.action.ReadValue<Vector2>().y > 0f)
+        {
+            if(InventoryManager.instance.CheckIfItemTypeInInventory(ItemData.ItemType.Weapon))
+                return;
+        }
     }
 
     private void footstepsWalking()

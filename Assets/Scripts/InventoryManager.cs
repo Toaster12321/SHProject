@@ -187,6 +187,15 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
+    public bool CheckIfItemTypeInInventory(ItemData.ItemType itemType) //checks if an item type is in inventory, reference from itemGrid
+    {
+        if (selectedItemGrid.CheckIfItemTypeInInventory(itemType))
+            return true;
+            
+
+        return false;
+    }
+
     public void RemoveItemInInventory(ItemData item)
     {
         selectedItemGrid.DestroyItemInInventory(item);

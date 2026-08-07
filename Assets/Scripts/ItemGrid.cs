@@ -1,5 +1,6 @@
 using NUnit.Framework.Interfaces;
 using System;
+using System.Collections.Generic;
 using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -15,6 +16,7 @@ public class ItemGrid : MonoBehaviour
 
     [SerializeField] int gridSizeWidth; //change to resize grid (i.e. 5 x 10) = (320 x 640px)
     [SerializeField] int gridSizeHeight;
+    private List<ItemData> weaponItems;
 
     private void Awake()
     {
@@ -200,9 +202,29 @@ public class ItemGrid : MonoBehaviour
                 InventoryItem itemSlot = inventoryItemSlot[ix, iy];
                 if (itemSlot != null && itemSlot.itemData == itemResource) //if the item is found return true
                 {
+                    weaponItems.Add(itemSlot.itemData);
                     return true;
                 }
                     
+            }
+        }
+
+        return false;
+    }
+
+    public bool CheckIfItemTypeInInventory(ItemData.ItemType itemType) //checks if a requested item is in the player's inventory
+    {
+        for (int ix = 0; ix < gridSizeWidth; ix++) //go through all tiles in the inventory grid
+        {
+            for (int iy = 0; iy < gridSizeHeight; iy++)
+            {
+                InventoryItem itemSlot = inventoryItemSlot[ix, iy];
+                if (itemSlot != null && itemSlot.itemData.itemType == itemType) //if the item is found return true
+                {
+                    weaponItems.Add(itemSlot.itemData);
+                    return true;
+                }
+
             }
         }
 
