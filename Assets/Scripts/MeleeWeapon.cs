@@ -7,7 +7,7 @@ public class MeleeWeapon : MonoBehaviour
 {
     [Header("Attacking Params")]
     public float attackDelay = 0.001f; //delay of when attack should hit
-    public float attackSpeed = 1f;
+    public float attackCooldown = 0.9f;
     public int attackDamage = 1;
     public LayerMask attackLayer;
 
@@ -24,11 +24,18 @@ public class MeleeWeapon : MonoBehaviour
     public Animator cameraAnimator;
 
     private FirstPersonController firstPersonController;
+    private WeaponSwitcher weaponSwitcher;
 
     private void Awake()
     {
+        weaponSwitcher = GetComponentInParent<WeaponSwitcher>();
         firstPersonController = GetComponentInParent<FirstPersonController>();
         attackAction = FirstPersonController.playerInput.actions["Attack"];
+    }
+
+    private void Start()
+    {
+        attackCount = 0;
     }
 
     private void Update()
@@ -50,21 +57,23 @@ public class MeleeWeapon : MonoBehaviour
         readyToAttack = false;
         attacking = true;
 
-        Invoke(nameof(ResetAttack), attackSpeed); //calls reset attack function after 1s(attack speed)
+        Invoke(nameof(ResetAttack), attackCooldown); //calls reset attack function after 1s(cooldown)
 
         if (attackCount == 0)
         {
+            print(attackCount);
             if (knifeAnimator.GetBool("dashing"))
                 knifeAnimator.SetBool("dashing", false);
-            knifeAnimator.SetTrigger("swinging");
+            knifeAnimator.SetBool("swinging",true);
             cameraAnimator.SetTrigger("knife_recoil");
             attackCount++;
         }
         else
         {
+            print(attackCount);
             if (knifeAnimator.GetBool("dashing"))
                 knifeAnimator.SetBool("dashing", false);
-            knifeAnimator.SetTrigger("following_up");
+            knifeAnimator.SetBool("following_up", true);
             cameraAnimator.SetTrigger("knife_followup");
             attackCount = 0;
         }
@@ -88,7 +97,21 @@ public class MeleeWeapon : MonoBehaviour
         }
     }
 
-    
+    private void ResetAttackState()
+    {
+        attacking = false;
+        readyToAttack = true;
+
+        knifeAnimator.SetBool("swinging", false);
+        knifeAnimator.SetBool("following_up", false);
+        knifeAnimator.SetBool("dashing", false);
+
+        weaponCollider.enabled = false;
+        attackCount = 0;
+        CancelInvoke(nameof(ResetAttack));
+    }
+
+
     public void EnableWeaponCollider() //enable/disable collider for animation events
     {
         weaponCollider.enabled = true;
@@ -101,14 +124,36 @@ public class MeleeWeapon : MonoBehaviour
         weaponCollider.enabled = false;
     }
 
+
     private void OnEnable()
     {
+        ResetAttackState();
         attackAction.performed += OnActionPressed;
     }
 
     private void OnDisable()
     {
+        ResetAttackState();
         attackAction.performed -= OnActionPressed;
+    }
+
+    private void AnimEventFinishHolster()
+    {
+        weaponSwitcher.AnimEventFinishHolster();
+    }
+
+    private void AnimEventFinishDraw()
+    {
+        weaponSwitcher.AnimEventFinishDraw();
+    }
+
+    private void AnimEventFinishSwing()
+    {
+        knifeAnimator.SetBool("swinging", false);
+    }
+    private void AnimEventFinishFollowUp()
+    {
+        knifeAnimator.SetBool("following_up", false);
     }
 }
 
