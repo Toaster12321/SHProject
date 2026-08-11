@@ -54,9 +54,15 @@ public class Revolver : MonoBehaviour
 
     private void Shoot(InputAction.CallbackContext ctx)
     {
-        if (currentClipAmmoCount <= 0)
+        if (currentClipAmmoCount <= 0) //prevent shooting when empty
         {
             gunAnimator.SetTrigger("empty");
+            return;
+        }
+
+        if (currentClipAmmoCount <= 0 && reserveAmmoCount > 0) //auto reload if out of ammo and have more in reserve
+        {
+            gunAnimator.SetBool("reloading", true);
             return;
         }
 
@@ -82,7 +88,7 @@ public class Revolver : MonoBehaviour
         if (reserveAmmoCount <= 0) //no reserve ammo to reload
              return;
 
-        gunAnimator.SetBool("reloading",true);   
+        gunAnimator.SetBool("reloading",true);
     }
 
     private void AnimEventGiveAmmo() //ANIMATION EVENT ONLY
@@ -100,9 +106,15 @@ public class Revolver : MonoBehaviour
 
     private void ResetShootState()
     {
+        gunAnimator.Rebind();
+
+        gunAnimator.ResetTrigger("fire");
+        gunAnimator.ResetTrigger("empty");
+
         gunAnimator.SetBool("reloading", false);
         gunAnimator.SetBool("dashing", false);
-        CancelInvoke(nameof(onGunShoot));
+        gunAnimator.SetBool("holster", false);
+        CancelInvoke();
         StopAllCoroutines();
     }
 
@@ -140,11 +152,13 @@ public class Revolver : MonoBehaviour
 
     private void AnimEventFinishHolster()
     {
+        Debug.Log("holster finished");
         weaponSwitcher.AnimEventFinishHolster();
     }
 
     private void AnimEventFinishDraw()
     {
+        Debug.Log("draw finished");
         weaponSwitcher.AnimEventFinishDraw();
     }
 }

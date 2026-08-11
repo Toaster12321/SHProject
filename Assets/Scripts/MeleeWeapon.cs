@@ -86,7 +86,7 @@ public class MeleeWeapon : MonoBehaviour
     }
 
 
-    private void OnTriggerEnter(Collider other) //when the collider connects with the enemy -> inflict damage
+private void OnTriggerEnter(Collider other) //when the collider connects with the enemy -> inflict damage
     {
         EnemyStateMachine enemy = other.GetComponentInParent<EnemyStateMachine>();
         if (enemy)
@@ -102,6 +102,8 @@ public class MeleeWeapon : MonoBehaviour
         attacking = false;
         readyToAttack = true;
 
+        knifeAnimator.Rebind();
+        knifeAnimator.SetBool("holster", false);
         knifeAnimator.SetBool("swinging", false);
         knifeAnimator.SetBool("following_up", false);
         knifeAnimator.SetBool("dashing", false);

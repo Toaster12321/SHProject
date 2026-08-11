@@ -11,9 +11,6 @@ AnimatorStateTransition:
   - m_ConditionMode: 1
     m_ConditionEvent: empty
     m_EventTreshold: 0
-  - m_ConditionMode: 2
-    m_ConditionEvent: reloading
-    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -5238903434773382083}
   m_Solo: 0
@@ -296,25 +293,25 @@ AnimatorStateMachine:
   m_ChildStates:
   - serializedVersion: 1
     m_State: {fileID: -968565665757818799}
-    m_Position: {x: -320, y: 70, z: 0}
+    m_Position: {x: -280, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5041223880825092245}
-    m_Position: {x: -320, y: -90, z: 0}
+    m_Position: {x: -280, y: -90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -8561339654818988072}
     m_Position: {x: -730, y: -90, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -5238903434773382083}
-    m_Position: {x: -600, y: 100, z: 0}
+    m_Position: {x: -620, y: 110, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -3617562431945794582}
     m_Position: {x: -730, y: 220, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 5912293214485863476}
-    m_Position: {x: -50, y: 70, z: 0}
+    m_Position: {x: -10, y: 70, z: 0}
   - serializedVersion: 1
     m_State: {fileID: -6752207149246981116}
-    m_Position: {x: -540, y: 360, z: 0}
+    m_Position: {x: -1000, y: 80, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
@@ -383,14 +380,20 @@ AnimatorController:
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: holster
-    m_Type: 9
+  - m_Name: reloading
+    m_Type: 4
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
     m_Controller: {fileID: 9100000}
-  - m_Name: reloading
+  - m_Name: holster
     m_Type: 4
+    m_DefaultFloat: 0
+    m_DefaultInt: 0
+    m_DefaultBool: 0
+    m_Controller: {fileID: 9100000}
+  - m_Name: idling
+    m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
@@ -465,7 +468,10 @@ AnimatorStateTransition:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: 
-  m_Conditions: []
+  m_Conditions:
+  - m_ConditionMode: 1
+    m_ConditionEvent: idling
+    m_EventTreshold: 0
   m_DstStateMachine: {fileID: 0}
   m_DstState: {fileID: -968565665757818799}
   m_Solo: 0
@@ -475,7 +481,7 @@ AnimatorStateTransition:
   m_TransitionDuration: 0.25
   m_TransitionOffset: 0
   m_ExitTime: 0.25
-  m_HasExitTime: 1
+  m_HasExitTime: 0
   m_HasFixedDuration: 1
   m_InterruptionSource: 0
   m_OrderedInterruption: 1
