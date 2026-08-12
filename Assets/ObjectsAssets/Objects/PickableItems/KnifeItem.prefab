@@ -1,0 +1,129 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &3357311550495560032
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -4550178804419628526, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2356a3831d67d9247ad575d5f179a383, type: 2}
+    - target: {fileID: 1569242737957558695, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      propertyPath: m_Name
+      value: KnifeItem
+      objectReference: {fileID: 0}
+    - target: {fileID: 1569242737957558695, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698702154677693195, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -196.61
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698702154677693195, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.9600346
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698702154677693195, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -81.939995
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698702154677693195, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698702154677693195, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698702154677693195, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698702154677693195, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698702154677693195, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698702154677693195, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2698702154677693195, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1569242737957558695, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6594318297315002810}
+    - targetCorrespondingSourceObject: {fileID: 1569242737957558695, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2387157949590934094}
+  m_SourcePrefab: {fileID: -4161369568681901532, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+--- !u!1 &4274057769654995143 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1569242737957558695, guid: 05694c88ff9611e4c917fb0df1501bd0, type: 3}
+  m_PrefabInstance: {fileID: 3357311550495560032}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &6594318297315002810
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4274057769654995143}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afb65592a3cfe24d815834723a98585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractObject
+  objectType: 2
+  screenText: Pick Up (E)
+  player: {fileID: 0}
+  objectAnimator: {fileID: 0}
+  flippedDoor: 0
+  lockedDoor: 0
+  XComparison: 0
+  ZComparison: 0
+  lockedSFX: {fileID: 0}
+  lightObject: {fileID: 0}
+  emissiveMaterial: {fileID: 0}
+  itemResource: {fileID: 11400000, guid: a7f7e3af4b5d529468736e5f8d21bd43, type: 2}
+  gun: {fileID: 0}
+  ammoPlant: {fileID: 0}
+  ammoGiven: 0
+  plantedSeed: {fileID: 0}
+  seedItem: {fileID: 0}
+  waterItem: {fileID: 0}
+--- !u!65 &2387157949590934094
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4274057769654995143}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.1040194, y: 0.9951715, z: 0.026897907}
+  m_Center: {x: -0.00792098, y: 0.26350123, z: 0.000062704086}

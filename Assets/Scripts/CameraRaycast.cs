@@ -8,10 +8,12 @@ public class CameraRaycast : MonoBehaviour
     [SerializeField] private LayerMask interactLayer;
     private InputAction interactAction;
     private InteractObject currentObject;
+    private WeaponSwitcher weaponSwitcher;
 
 
     private void Awake()
     {
+        weaponSwitcher = GetComponentInChildren<WeaponSwitcher>();
         interactAction = FirstPersonController.playerInput.actions["Interact"];
         AssignInput();
     }
@@ -61,6 +63,7 @@ public class CameraRaycast : MonoBehaviour
 
             case InteractObject.InteractObjectType.PickableItem:
                 currentObject.AddItemToInventory();
+                weaponSwitcher.EquipWeapon();
                 break;
 
             case InteractObject.InteractObjectType.AmmoRefill:

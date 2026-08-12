@@ -67,7 +67,6 @@ public class FirstPersonController : MonoBehaviour
             HandleMouseLook();
             ApplyFinalMovement();
             footstepsWalking();
-            CheckForWeaponSwitch();
         }
         
         if(isDashing) //start dash timer
@@ -131,15 +130,6 @@ public class FirstPersonController : MonoBehaviour
             moveDirection.y -= gravity * Time.deltaTime; //if we are in the sky appply gravity each frame
 
         characterController.Move(moveDirection * Time.deltaTime);//move the character controller in a direction each frame
-    }
-
-    private void CheckForWeaponSwitch()
-    {
-        if (weaponSwitchInput.action.ReadValue<Vector2>().y > 0f)
-        {
-            if(InventoryManager.instance.CheckIfItemTypeInInventory(ItemData.ItemType.Weapon))
-                return;
-        }
     }
 
     private void footstepsWalking()

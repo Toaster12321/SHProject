@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class InventoryManager : MonoBehaviour
 {
-    [SerializeField] private ItemGrid selectedItemGrid;
+    public ItemGrid selectedItemGrid;
     public ItemGrid SelectedItemGrid { get => lastUsedGrid; 
         set 
         {
@@ -187,13 +187,10 @@ public class InventoryManager : MonoBehaviour
         return false;
     }
 
-    public bool CheckIfItemTypeInInventory(ItemData.ItemType itemType) //checks if an item type is in inventory, reference from itemGrid
+    public void GetItemTypeInInventory(ItemData.ItemType itemType) //checks if an item type is in inventory, reference from itemGrid
     {
-        if (selectedItemGrid.CheckIfItemTypeInInventory(itemType))
-            return true;
-            
-
-        return false;
+        var passedItemType = itemType;
+        selectedItemGrid.GetItemTypeInInventory(passedItemType);  
     }
 
     public void RemoveItemInInventory(ItemData item)

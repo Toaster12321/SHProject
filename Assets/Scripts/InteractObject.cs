@@ -15,9 +15,9 @@ public class InteractObject : MonoBehaviour
 
     [SerializeField] public InteractObjectType objectType;
     [SerializeField] private string screenText;
+    [SerializeField] private Transform player;
 
     [Header("Door")]
-    [SerializeField] private Transform player;
     [SerializeField] private Animator objectAnimator;
     [SerializeField] private bool flippedDoor;
     [SerializeField] private bool lockedDoor;

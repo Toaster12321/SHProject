@@ -16,12 +16,13 @@ public class ItemGrid : MonoBehaviour
 
     [SerializeField] int gridSizeWidth; //change to resize grid (i.e. 5 x 10) = (320 x 640px)
     [SerializeField] int gridSizeHeight;
-    private List<ItemData> weaponItems;
+    public List<ItemData> weaponItems;
 
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
         Init(gridSizeWidth, gridSizeHeight);
+        weaponItems = new List<ItemData>();
     }
 
     public InventoryItem PickUpItem(int x, int y)
@@ -202,7 +203,6 @@ public class ItemGrid : MonoBehaviour
                 InventoryItem itemSlot = inventoryItemSlot[ix, iy];
                 if (itemSlot != null && itemSlot.itemData == itemResource) //if the item is found return true
                 {
-                    weaponItems.Add(itemSlot.itemData);
                     return true;
                 }
                     
@@ -212,23 +212,30 @@ public class ItemGrid : MonoBehaviour
         return false;
     }
 
-    public bool CheckIfItemTypeInInventory(ItemData.ItemType itemType) //checks if a requested item is in the player's inventory
+    public List<ItemData> GetItemTypeInInventory(ItemData.ItemType itemType) //checks if a requested item type is in the player's inventory
     {
+        weaponItems.Clear();
+
         for (int ix = 0; ix < gridSizeWidth; ix++) //go through all tiles in the inventory grid
         {
             for (int iy = 0; iy < gridSizeHeight; iy++)
             {
                 InventoryItem itemSlot = inventoryItemSlot[ix, iy];
-                if (itemSlot != null && itemSlot.itemData.itemType == itemType) //if the item is found return true
+                if (itemSlot != null && itemSlot.itemData != null && itemSlot.itemData.itemType == itemType) //if the item type is found return true
                 {
-                    weaponItems.Add(itemSlot.itemData);
-                    return true;
+                    if (itemType == ItemData.ItemType.Weapon)
+                        if (weaponItems.Contains(itemSlot.itemData))
+                            continue;
+                        else
+                            weaponItems.Add(itemSlot.itemData);
                 }
 
             }
         }
+        if (itemType == ItemData.ItemType.Weapon)
+            return weaponItems;
 
-        return false;
+        return new List<ItemData>(); 
     }
 
     bool PositionCheck(int posX, int posY) //checks the current location of all tiles and makes sure they fit parameters

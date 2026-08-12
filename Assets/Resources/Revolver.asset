@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a2cdb57111f64b246a330f77c1f977af, type: 3}
   m_Name: Revolver
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
-  width: 3
-  height: 2
+  width: 2
+  height: 1
   itemIcon: {fileID: 21300000, guid: 8a9a07b249ad503458a1e9907018c5ca, type: 3}
+  itemType: 0
