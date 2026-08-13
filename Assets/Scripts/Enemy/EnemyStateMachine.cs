@@ -21,25 +21,40 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     }
 
     private EnemyStateContext _context;
-    [SerializeField] private float maxHP;
+    
     private float currentHP;
     private float _invulnDuration = 0.2f;
     private float _lastTimeHit;
     public bool isDead {  get; private set; }
 
+    [Header("Stats")]
+    [SerializeField] private float maxHP;
     [SerializeField] private EnemyType _enemyType;
+
+    [Header("Components")]
     [SerializeField] private Material _enemyRenderer;
     [SerializeField] private NavMeshAgent _agent; //navmesh agent reference
+    [SerializeField] private Animator _animator; //animation reference
     [SerializeField] private Transform _player; //player position reference
     [SerializeField] private LayerMask _whatIsGround, _whatIsPlayer; //layers for ground and player
-    [SerializeField] private Animator _animator; //animation reference
     [SerializeField] private ParticleSystem _particleEmitter;
-    [SerializeField] private float _sightRange, _attackRange, _walkPointRange;
     [SerializeField] private Transform _selfTransform;
+    [SerializeField] private EnemyStateMachine _enemyStateMachine;
+
+    [Header("Patrol State")]
+    [SerializeField] private float _walkPointRange;
+    [SerializeField] private float _maxPatrolRadius;
+    [SerializeField] private float _homeRadius;
+
+    [Header("Attack State")]
+    [SerializeField] private float _sightRange;
+    [SerializeField] private float _attackRange;
     [SerializeField] private Collider _attackHitbox;
     private bool _isRotatingEnabled = true;
-    [SerializeField] private EnemyStateMachine _enemyStateMachine;
+    private Vector3 _patrolStartingPosition;
+    private bool _patrolStartingPositionSet;
     private Color _originalColor;
+    
 
 
     private void Start()
@@ -74,7 +89,7 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     private void Awake()
     {
         _context = new EnemyStateContext(_enemyType, _enemyRenderer, _originalColor, _agent, _player, _whatIsGround, _attackHitbox, _whatIsPlayer, _animator, _particleEmitter, _sightRange,
-            _attackRange, _walkPointRange, _selfTransform, _isRotatingEnabled, _enemyStateMachine);
+            _attackRange, _walkPointRange, _selfTransform, _isRotatingEnabled, _enemyStateMachine, _patrolStartingPosition, _patrolStartingPositionSet, _maxPatrolRadius, _homeRadius);
         InitializeStates();
     }
 

@@ -16,10 +16,15 @@ public class EnemyStateContext
     private Collider _attackHitbox;
     private bool _isRotatingEnabled;
     private EnemyStateMachine _enemyStateMachine;
+    private Vector3 _patrolStartingPosition;
+    private bool _patrolStartPositionSet;
+    private float _maxPatrolRadius;
+    private float _homeRadius;
 
 
     public EnemyStateContext(EnemyStateMachine.EnemyType enemyType, Material enemyRenderer, Color originalColor, NavMeshAgent agent, Transform player, LayerMask whatIsGround, Collider attackHitbox,
-        LayerMask whatIsPlayer, Animator animator, ParticleSystem particleEmitter, float sightRange, float attackRange, float walkPointRange, Transform selfTransform, bool isRotatingEnabled, EnemyStateMachine enemyStateMachine)
+        LayerMask whatIsPlayer, Animator animator, ParticleSystem particleEmitter, float sightRange, float attackRange, float walkPointRange, Transform selfTransform, bool isRotatingEnabled, EnemyStateMachine enemyStateMachine,
+        Vector3 patrolStartingPosition, bool patrolStartPositionSet, float maxPatrolRadius, float homeRadius)
     {
         _enemyType = enemyType;
         _enemyRenderer = enemyRenderer;
@@ -37,6 +42,10 @@ public class EnemyStateContext
         _selfTransform = selfTransform;
         _isRotatingEnabled = isRotatingEnabled;
         _enemyStateMachine = enemyStateMachine;
+        _patrolStartingPosition = patrolStartingPosition;
+        _patrolStartPositionSet = patrolStartPositionSet;
+        _maxPatrolRadius = maxPatrolRadius;
+        _homeRadius = homeRadius;
     }
 
     public EnemyStateMachine.EnemyType EnemyType => _enemyType;
@@ -65,4 +74,17 @@ public class EnemyStateContext
 
     public bool PlayerInAttackRange => //checks for the position of the player in a radius of attack range on layer mask of player
         Physics.CheckSphere(SelfTransform.position, _attackRange, _whatIsPlayer);
+
+    public Vector3 PatrolStartingPosition
+    {
+        get => _patrolStartingPosition;
+        set => _patrolStartingPosition = value;
+    }
+    public bool PatrolStartingPositionSet
+    {
+        get => _patrolStartPositionSet;
+        set => _patrolStartPositionSet = value;
+    }
+    public float MaxPatrolRadius => _maxPatrolRadius;
+    public float HomeRadius => _homeRadius;
 }

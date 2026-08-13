@@ -23,7 +23,6 @@ public class WeaponSwitcher : MonoBehaviour
             weaponAnimators[i] = transform.GetChild(i).GetComponentInChildren<Animator>(true);
             weaponList.Add(transform.GetChild(i).GetComponentInChildren<InventoryItem>(true).itemData); //add the item data of each item in weapon holder to the weapon list of item data
         }
-        print(weaponList.Count);
 
         for (int i = 0; i < weaponList.Count; i++) //if the player owns a weapon in the list on start select it 
         {

@@ -3,7 +3,8 @@ using UnityEngine;
 public class EnemyStatePatrol : EnemyState
 {
     private Vector3 _walkPoint;
-    private bool _walkPointSet = false; 
+    private bool _walkPointSet = false;
+    private bool _returningToStart = false;
     public EnemyStatePatrol(EnemyStateContext context, EnemyStateMachine.EEnemyState estate) : base(context, estate)
     {
         
@@ -11,6 +12,12 @@ public class EnemyStatePatrol : EnemyState
 
     public override void EnterState()
     {
+        if (!Context.PatrolStartingPositionSet)
+        {
+            Context.PatrolStartingPosition = Context.Agent.transform.position;
+            Context.PatrolStartingPositionSet = true;
+        }
+        _returningToStart = false;
         Context.Animator.SetBool("walking", true); //show walking and resume movement
         Context.Agent.isStopped = false;
 
@@ -24,12 +31,32 @@ public class EnemyStatePatrol : EnemyState
 
     public override void UpdateState()
     {
-        if (!_walkPointSet) //search for a walk point if one is not set
+        float distanceFromStart = Vector3.Distance(Context.Agent.transform.position, Context.PatrolStartingPosition);
+        if (distanceFromStart > Context.MaxPatrolRadius)
+        {
+            Context.Agent.SetDestination(Context.PatrolStartingPosition);
+            _returningToStart = true;
+            _walkPointSet = false;
+            return;
+        }
+
+        if (_returningToStart)
+        {
+            Context.Agent.SetDestination(Context.PatrolStartingPosition); //set location again to prevent chase state
+
+            if (distanceFromStart <= Context.HomeRadius)
+            {
+                _returningToStart = false;
+            }
+
+            return;
+        }
+
+        if (!_walkPointSet && !_returningToStart) //search for a walk point if one is not set
             SearchWalkPoint();
          
         if (_walkPointSet) //once set send agent to that spot
             Context.Agent.SetDestination(_walkPoint);
-
     }   
 
     public override EnemyStateMachine.EEnemyState GetNextState()

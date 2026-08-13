@@ -4,6 +4,7 @@ public class EnemyStateChase : EnemyState
 {
     private float _aggroTimer;
     private float _aggroDuration = 3f;
+    private bool _returningToStart = false;
     public EnemyStateChase(EnemyStateContext context, EnemyStateMachine.EEnemyState estate) : base(context, estate)
     {
 
@@ -11,7 +12,14 @@ public class EnemyStateChase : EnemyState
 
     public override void EnterState()
     {
+        if (!Context.PatrolStartingPositionSet)
+        {
+            Context.PatrolStartingPosition = Context.Agent.transform.position;
+            Context.PatrolStartingPositionSet = true;
+        }
+
         _aggroTimer = 0f;
+        _returningToStart = false;
 
         Context.Agent.isStopped = false;
         if (Context.Animator.GetBool("attacking"))
@@ -36,6 +44,27 @@ public class EnemyStateChase : EnemyState
 
     public override void UpdateState()
     {
+
+        float distanceFromStart = Vector3.Distance(Context.Agent.transform.position, Context.PatrolStartingPosition);
+        if (distanceFromStart > Context.MaxPatrolRadius)
+        {
+            Context.Agent.SetDestination(Context.PatrolStartingPosition);
+            _returningToStart = true;
+            return;
+        }
+
+        if(_returningToStart)
+        {
+            Context.Agent.SetDestination(Context.PatrolStartingPosition); //set location again to prevent chase state
+
+            if (distanceFromStart <= Context.HomeRadius)
+            {
+                _returningToStart = false;
+            }
+
+            return;
+        }
+
         _aggroTimer += Time.deltaTime;
 
         Context.Agent.SetDestination(Context.Player.position);
@@ -43,6 +72,9 @@ public class EnemyStateChase : EnemyState
 
     public override EnemyStateMachine.EEnemyState GetNextState()
     {
+        if (_returningToStart) //prevent transitions until home radius is reached
+            return StateKey;
+
         if (Context.PlayerInAttackRange) //if player enters attack radius -> attack
             return EnemyStateMachine.EEnemyState.Attack;
 
