@@ -24,6 +24,8 @@ public class InteractObject : MonoBehaviour
     [SerializeField] private bool XComparison; //choose x or z based on arrows in editor on open/close object to compare player position to 
     [SerializeField] private bool ZComparison;
     [SerializeField] private AudioSource lockedSFX;
+    [SerializeField] private AudioSource unlockedSFX;
+    [SerializeField] private ItemData keyItem;
 
     [Header("Light Switch")]
     [SerializeField] private GameObject lightObject;
@@ -90,6 +92,14 @@ public class InteractObject : MonoBehaviour
     {
         if (lockedDoor)
         {
+            if (inventoryManager.CheckIfItemInInventory(keyItem) && lockedDoor)
+            {
+                lockedDoor = false;
+                returnText = "Interact (E)";
+                unlockedSFX.Play();
+                inventoryManager.RemoveItemInInventory(keyItem);
+                return;
+            }
             lockedSFX.Play();
             interactedOnce = true;
             returnText = "Interact(Locked) (E)";
