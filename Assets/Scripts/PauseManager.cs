@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PauseManager : MonoBehaviour
@@ -30,5 +31,20 @@ public class PauseManager : MonoBehaviour
         FirstPersonController.instance.canMove = true;
         FirstPersonController.playerInput.SwitchCurrentActionMap("Player");//switch back to overworld controls
         AudioListener.pause = false;
+    }
+
+    public void PauseDuringText()
+    {
+        isPaused = true;
+        FirstPersonController.instance.canMove = false; //prevent all movement in input script
+        FirstPersonController.playerInput.SwitchCurrentActionMap("UI"); //switch to UI controls
+    }
+
+
+    public void UnpauseDuringText()
+    {
+        isPaused = false;
+        FirstPersonController.instance.canMove = true; //prevent all movement in input script
+        FirstPersonController.playerInput.SwitchCurrentActionMap("Player"); //switch to UI controls
     }
 }

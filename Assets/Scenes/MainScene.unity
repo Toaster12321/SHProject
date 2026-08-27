@@ -3007,6 +3007,8 @@ MonoBehaviour:
   plantedSeed: {fileID: 0}
   seedItem: {fileID: 0}
   waterItem: {fileID: 0}
+  cutsceneManager: {fileID: 0}
+  dialogueLines: []
 --- !u!65 &39093884
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -9946,6 +9948,8 @@ MonoBehaviour:
   plantedSeed: {fileID: 0}
   seedItem: {fileID: 0}
   waterItem: {fileID: 0}
+  cutsceneManager: {fileID: 0}
+  dialogueLines: []
 --- !u!1001 &159476897
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -25230,6 +25234,8 @@ MonoBehaviour:
   plantedSeed: {fileID: 0}
   seedItem: {fileID: 0}
   waterItem: {fileID: 0}
+  cutsceneManager: {fileID: 0}
+  dialogueLines: []
 --- !u!65 &408662723
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -30499,10 +30505,10 @@ RectTransform:
   - {fileID: 872604329}
   m_Father: {fileID: 997855434}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.13222918, y: 0.054444443}
-  m_AnchorMax: {x: 0.8835209, y: 0.34066665}
-  m_AnchoredPosition: {x: 1.5959473, y: 238.85474}
-  m_SizeDelta: {x: 160.61743, y: 595.7092}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 16.595947, y: -87.64526}
+  m_SizeDelta: {x: 1602.6174, y: 904.7092}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &503591030
 MonoBehaviour:
@@ -38403,6 +38409,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3882804365380695878, guid: bcf292a5c88600644a8ae37555570702, type: 3}
   m_PrefabInstance: {fileID: 656397837}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &656617554 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7167271943239594729, guid: 52d77ca18a6ebec4aa017a878ccf6fc1, type: 3}
+  m_PrefabInstance: {fileID: 1759881503}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &656928080
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -41361,7 +41372,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -41386,6 +41397,8 @@ MonoBehaviour:
     characterName: 2
   - lineText: Please Work !
     characterName: 2
+  - lineText: OK
+    characterName: 1
   cutsceneManager: {fileID: 1220892486}
   playOnlyOnce: 1
 --- !u!1001 &708250015
@@ -51129,6 +51142,8 @@ MonoBehaviour:
   plantedSeed: {fileID: 0}
   seedItem: {fileID: 0}
   waterItem: {fileID: 0}
+  cutsceneManager: {fileID: 0}
+  dialogueLines: []
 --- !u!95 &760351214
 Animator:
   serializedVersion: 7
@@ -76411,6 +76426,8 @@ MonoBehaviour:
   plantedSeed: {fileID: 0}
   seedItem: {fileID: 0}
   waterItem: {fileID: 0}
+  cutsceneManager: {fileID: 0}
+  dialogueLines: []
 --- !u!65 &1213101699
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -76757,6 +76774,7 @@ MonoBehaviour:
   interactTextBox: {fileID: 1475275390}
   interactionCrosshair: {fileID: 459973590}
   pauseMenu: {fileID: 1268116809}
+  cutsceneManager: {fileID: 1220892486}
   inventoryOpen: 0
 --- !u!114 &1220892485
 MonoBehaviour:
@@ -76785,6 +76803,7 @@ MonoBehaviour:
   dialogueUI: {fileID: 997855433}
   characterNamePlate: {fileID: 27977183}
   dialogueText: {fileID: 1643817812}
+  cutsceneActive: 0
 --- !u!1 &1220994195
 GameObject:
   m_ObjectHideFlags: 0
@@ -84372,6 +84391,8 @@ MonoBehaviour:
   plantedSeed: {fileID: 0}
   seedItem: {fileID: 0}
   waterItem: {fileID: 0}
+  cutsceneManager: {fileID: 0}
+  dialogueLines: []
 --- !u!65 &1347313003
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -90385,6 +90406,8 @@ MonoBehaviour:
   plantedSeed: {fileID: 0}
   seedItem: {fileID: 0}
   waterItem: {fileID: 0}
+  cutsceneManager: {fileID: 0}
+  dialogueLines: []
 --- !u!65 &1458730017
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -95485,6 +95508,8 @@ MonoBehaviour:
   plantedSeed: {fileID: 0}
   seedItem: {fileID: 0}
   waterItem: {fileID: 0}
+  cutsceneManager: {fileID: 0}
+  dialogueLines: []
 --- !u!95 &1544555966
 Animator:
   serializedVersion: 7
@@ -102637,10 +102662,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1268116810}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.048437502, y: 0.5}
-  m_AnchorMax: {x: 0.22333334, y: 0.8618519}
-  m_AnchoredPosition: {x: 0, y: 4}
-  m_SizeDelta: {x: -272, y: -295}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 93.478516, y: -140.1419}
+  m_SizeDelta: {x: 64.47, y: 96.3952}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1675031187
 MonoBehaviour:
@@ -108208,16 +108233,85 @@ PrefabInstance:
       propertyPath: m_Name
       value: Door
       objectReference: {fileID: 0}
+    - target: {fileID: 7167271943239594729, guid: 52d77ca18a6ebec4aa017a878ccf6fc1, type: 3}
+      propertyPath: m_Layer
+      value: 13
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 7167271943239594729, guid: 52d77ca18a6ebec4aa017a878ccf6fc1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1759881508}
+    - targetCorrespondingSourceObject: {fileID: 7167271943239594729, guid: 52d77ca18a6ebec4aa017a878ccf6fc1, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1759881507}
   m_SourcePrefab: {fileID: 100100000, guid: 52d77ca18a6ebec4aa017a878ccf6fc1, type: 3}
 --- !u!4 &1759881504 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5673147797166178989, guid: 52d77ca18a6ebec4aa017a878ccf6fc1, type: 3}
   m_PrefabInstance: {fileID: 1759881503}
   m_PrefabAsset: {fileID: 0}
+--- !u!65 &1759881507
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656617554}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.019238496, y: 0.0011201322, z: 0.04363599}
+  m_Center: {x: -0.009249889, y: -6.111806e-10, z: -0.0003027274}
+--- !u!114 &1759881508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 656617554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5afb65592a3cfe24d815834723a98585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractObject
+  objectType: 4
+  screenText: Open (E)
+  player: {fileID: 66839948}
+  objectAnimator: {fileID: 0}
+  flippedDoor: 0
+  lockedDoor: 0
+  XComparison: 0
+  ZComparison: 0
+  lockedSFX: {fileID: 0}
+  unlockedSFX: {fileID: 0}
+  keyItem: {fileID: 0}
+  lightObject: {fileID: 0}
+  emissiveMaterial: {fileID: 0}
+  itemResource: {fileID: 0}
+  gun: {fileID: 0}
+  ammoPlant: {fileID: 0}
+  ammoGiven: 0
+  plantedSeed: {fileID: 0}
+  seedItem: {fileID: 0}
+  waterItem: {fileID: 0}
+  cutsceneManager: {fileID: 1220892486}
+  dialogueLines:
+  - lineText: Don't come in here !
+    characterName: 2
+  - lineText: or else...
+    characterName: 2
 --- !u!1001 &1763261770
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -125810,6 +125904,8 @@ MonoBehaviour:
   plantedSeed: {fileID: 0}
   seedItem: {fileID: 0}
   waterItem: {fileID: 0}
+  cutsceneManager: {fileID: 0}
+  dialogueLines: []
 --- !u!1001 &2037198422
 PrefabInstance:
   m_ObjectHideFlags: 0

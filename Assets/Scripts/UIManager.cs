@@ -9,6 +9,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject interactionCrosshair;
     [SerializeField] GameObject pauseMenu;
 
+    [SerializeField] CutsceneManager cutsceneManager;
+
     public bool inventoryOpen = false;
     public static UIManager instance;
 
@@ -42,7 +44,7 @@ public class UIManager : MonoBehaviour
         //PAUSE MENU FUNCTIONS
         if (FirstPersonController.instance.MenuOpenInput) //if open menu is pressed pause the game
         {
-            if (!PauseManager.instance.isPaused)
+            if (!PauseManager.instance.isPaused && (cutsceneManager.cutsceneActive != true))
             {
                 PauseGame();
             }

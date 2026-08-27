@@ -70,6 +70,10 @@ public class CameraRaycast : MonoBehaviour
                 currentObject.AmmoRefill();
                 break;
 
+            case InteractObject.InteractObjectType.Dialogue:
+                currentObject.StartDialogue();
+                break;
+
             default:
                 break;
         }

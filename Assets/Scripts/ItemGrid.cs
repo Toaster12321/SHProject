@@ -23,6 +23,7 @@ public class ItemGrid : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
         Init(gridSizeWidth, gridSizeHeight);
         weaponItems = new List<ItemData>();
+        Debug.Log($"Array dimensions: {inventoryItemSlot.GetLength(0)} x {inventoryItemSlot.GetLength(1)}");
     }
 
     public InventoryItem PickUpItem(int x, int y)
@@ -52,7 +53,10 @@ public class ItemGrid : MonoBehaviour
     private void Init(int width, int height) //function to resize the grid height/width boxes and item sizes
     {
         inventoryItemSlot = new InventoryItem[width, height];
+        Debug.Log(width + " x" + height);
+        Debug.Log(tileSizeWidth + "x" + tileSizeHeight);
         Vector2 size = new Vector2((width * tileSizeWidth) / 3 , (height * tileSizeHeight) / 3); //divide by 3 since using 3x scaled texture 
+        Debug.Log(size);
         rectTransform.sizeDelta = size; //change rect transform of grid
     }
 

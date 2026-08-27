@@ -1,5 +1,6 @@
 using Mono.Cecil;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -10,7 +11,8 @@ public class InteractObject : MonoBehaviour
         Door,
         Switch,
         PickableItem,
-        AmmoRefill
+        AmmoRefill,
+        Dialogue
     }
 
     [SerializeField] public InteractObjectType objectType;
@@ -42,6 +44,10 @@ public class InteractObject : MonoBehaviour
     [SerializeField] private GameObject plantedSeed;
     [SerializeField] private ItemData seedItem;
     [SerializeField] private ItemData waterItem;
+
+    [Header("Dialogue Object")]
+    [SerializeField] private CutsceneManager cutsceneManager;
+    [SerializeField] private List<DialogueLines> dialogueLines;
     private bool ammoTaken = false;
     private bool seedPlanted = false;
 
@@ -199,5 +205,10 @@ public class InteractObject : MonoBehaviour
             }
             return;
         }
+    }
+
+    public void StartDialogue()
+    {
+        cutsceneManager.StartCutscene(dialogueLines);
     }
 }

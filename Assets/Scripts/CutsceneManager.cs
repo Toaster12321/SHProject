@@ -14,7 +14,7 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] private TMP_Text characterNamePlate;
     [SerializeField] private TMP_Text dialogueText;
 
-    private float charsPerSecond = 40f;
+    private float charsPerSecond = 30f;
 
     private List<DialogueLines> currentLines;
     private int currentLineIndex;
@@ -22,13 +22,13 @@ public class CutsceneManager : MonoBehaviour
 
     private InputAction continueAction;
     private bool textActive = false;
-    private bool cutsceneActive = false;
+    public bool cutsceneActive = false;
     private string fullLineText;
 
 
     private void Start()
     {
-        continueAction = FirstPersonController.playerInput.actions["Interact"];
+        continueAction = FirstPersonController.playerInput.actions["Continue"];
         dialogueUI.SetActive(false); //hide UI
     }
 
@@ -45,6 +45,7 @@ public class CutsceneManager : MonoBehaviour
         if (dialogueLines == null || dialogueLines.Count == 0)
             return;
 
+        PauseManager.instance.PauseDuringText();
         currentLines = dialogueLines;
         currentLineIndex = 0;
         cutsceneActive = true;
@@ -111,6 +112,7 @@ public class CutsceneManager : MonoBehaviour
 
     private void EndCutscene()
     {
+        PauseManager.instance.UnpauseDuringText();
         cutsceneActive = false;
         currentLines = null;
         dialogueUI.SetActive(false);
