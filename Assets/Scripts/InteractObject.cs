@@ -12,7 +12,8 @@ public class InteractObject : MonoBehaviour
         Switch,
         PickableItem,
         AmmoRefill,
-        Dialogue
+        Dialogue,
+        Computer
     }
 
     [SerializeField] public InteractObjectType objectType;
@@ -48,6 +49,8 @@ public class InteractObject : MonoBehaviour
     [Header("Dialogue Object")]
     [SerializeField] private CutsceneManager cutsceneManager;
     [SerializeField] private List<DialogueLines> dialogueLines;
+
+    private ComputerScreen computerScreen;
     private bool ammoTaken = false;
     private bool seedPlanted = false;
 
@@ -63,6 +66,9 @@ public class InteractObject : MonoBehaviour
     }
     public void Start()
     {
+        if (objectType == InteractObjectType.Computer)
+            computerScreen = GetComponent<ComputerScreen>();
+
         if (objectType == InteractObjectType.Switch)
             emissiveMaterial.DisableKeyword("_EMISSION");
 
@@ -210,5 +216,10 @@ public class InteractObject : MonoBehaviour
     public void StartDialogue()
     {
         cutsceneManager.StartCutscene(dialogueLines);
+    }
+
+    public void ShowComputerScreen()
+    {
+        computerScreen.InteractScreen();
     }
 }

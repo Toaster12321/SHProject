@@ -25,6 +25,9 @@ public class CameraRaycast : MonoBehaviour
 
     private void Update()
     {
+        if (!Camera.main)
+            return;
+
         Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f)); //raycast is casted at center of viewport, (0.5,0.5) = 50%x and 50%y
 
         if (Physics.Raycast(ray, out RaycastHit hitObject, interactDistance, interactLayer))
@@ -72,6 +75,10 @@ public class CameraRaycast : MonoBehaviour
 
             case InteractObject.InteractObjectType.Dialogue:
                 currentObject.StartDialogue();
+                break;
+
+            case InteractObject.InteractObjectType.Computer:
+                currentObject.ShowComputerScreen();
                 break;
 
             default:
