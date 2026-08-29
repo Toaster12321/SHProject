@@ -40,8 +40,6 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private InputActionReference moveInput; //references for input system controls
     [SerializeField] private InputActionReference lookInput;
     [SerializeField] private InputActionReference weaponSwitchInput;
-    [SerializeField] private InputActionReference _menuOpenAction;
-    [SerializeField] private InputActionReference _menuCloseAction;
     private InputAction sprintAction;
 
     void Awake()
@@ -74,9 +72,6 @@ public class FirstPersonController : MonoBehaviour
 
         if (Time.time >= lastDashTime + dashCooldown)//reset cooldown for dash
             dashCoolingDown = false;
-
-        MenuOpenInput = _menuOpenAction.action.WasPressedThisFrame(); //assign inputs
-        MenuCloseInput = _menuCloseAction.action.WasPressedThisFrame();
     }
 
     private void HandleMovementInput()

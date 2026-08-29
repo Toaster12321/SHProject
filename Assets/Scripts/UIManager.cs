@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class UIManager : MonoBehaviour
 {
@@ -12,12 +13,16 @@ public class UIManager : MonoBehaviour
     [SerializeField] CutsceneManager cutsceneManager;
 
     public bool inventoryOpen = false;
+    private InputAction _menuOpenAction;
+    private InputAction _menuCloseAction;
     public static UIManager instance;
 
     private void Awake()
     {
         if (instance == null)
             instance = this;
+        _menuOpenAction = FirstPersonController.playerInput.actions["OpenMenu"];
+        _menuCloseAction = FirstPersonController.playerInput.actions["CloseMenu"];
     }
     private void Start()
     {
@@ -42,20 +47,16 @@ public class UIManager : MonoBehaviour
         }
 
         //PAUSE MENU FUNCTIONS
-        if (FirstPersonController.instance.MenuOpenInput) //if open menu is pressed pause the game
-        {
-            if (!PauseManager.instance.isPaused && (cutsceneManager.cutsceneActive != true))
-            {
-                PauseGame();
-            }
-        }
-        else if (FirstPersonController.instance.MenuCloseInput)//if the menu close input is pressed and we are paused unpause the game
-        {
-            if (PauseManager.instance.isPaused)
-            {
-                UnpauseGame();
-            }
-        }
+        if (!PauseManager.instance.isPaused && (cutsceneManager.cutsceneActive != true))
+            _menuOpenAction.performed += ctx => PauseGame();
+        else
+            _menuOpenAction.performed -= ctx => PauseGame();
+
+        if (PauseManager.instance.isPaused)
+            _menuCloseAction.performed += ctx => UnpauseGame();
+        else
+            _menuCloseAction.performed -= ctx => UnpauseGame();
+
     }
 
     public void PauseGame()
