@@ -19,8 +19,8 @@ public class CutsceneManager : MonoBehaviour
     private List<DialogueLines> currentLines;
     private int currentLineIndex;
     private Coroutine typingRoutine;
-
     private InputAction continueAction;
+    private InputAction clickAction;
     private bool textActive = false;
     public bool cutsceneActive = false;
     private string fullLineText;
@@ -29,15 +29,22 @@ public class CutsceneManager : MonoBehaviour
     private void Start()
     {
         continueAction = FirstPersonController.playerInput.actions["Continue"];
+        clickAction = FirstPersonController.playerInput.actions["Click"];
         dialogueUI.SetActive(false); //hide UI
     }
 
     private void Update()
     {
         if (!cutsceneActive)
+        {
             continueAction.performed -= ContinueDialogue;
+            clickAction.performed -= ContinueDialogue;
+        }
         else
+        { 
             continueAction.performed += ContinueDialogue;
+            clickAction.performed += ContinueDialogue;
+        }
     }
 
     public void StartCutscene(List<DialogueLines> dialogueLines)
