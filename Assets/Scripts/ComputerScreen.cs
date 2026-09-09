@@ -17,6 +17,11 @@ public class ComputerScreen : MonoBehaviour
     [SerializeField] private GameObject weaponHolder;
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private GameObject passwordScreen;
+    [SerializeField] private GameObject interfaceScreen;
+    [SerializeField] private GameObject cameraScreen;
+    [SerializeField] private Camera camera1;
+    [SerializeField] private Camera camera2;
+    [SerializeField] private GameObject logScreen;
     [SerializeField] private TMP_Text statusTextbox;
     private TMP_InputField passwordTextbox;
     private InputAction closeAction;
@@ -39,18 +44,16 @@ public class ComputerScreen : MonoBehaviour
     {
         computerCanvas.SetActive(false);
         passwordScreen.SetActive(false);
+        interfaceScreen.SetActive(false);
+        cameraScreen.SetActive(false);
+        logScreen.SetActive(false);
+        camera1.enabled = false;
+        camera2.enabled = false;
         computerCamera.enabled = false;
         compRenderer.enabled = false;
     }
 
-    private void Update()
-    {
-        if (computerCamera.enabled)
-            closeAction.performed += ctx => CloseScreen();
-        else
-            closeAction.performed -= ctx => CloseScreen();
 
-    }
     public void InteractScreen()
     {
         weaponHolder.SetActive(false);
@@ -114,25 +117,7 @@ public class ComputerScreen : MonoBehaviour
     {
         yield return new WaitForSeconds(1f);
         passwordScreen.SetActive(false);
-
-        for (int i = 0; i < LOADING_LOOP_TIMES; i++)
-        {
-            foreach (char character in loadingDots)
-            {
-                loadingTextBox.text += character;
-                yield return new WaitForSeconds(1f / textSpeed);
-                if (loadingTextBox.text == "...")
-                    loadingTextBox.text = "";
-            }
-        }
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-        loadingScreen.SetActive(false);
-        passwordScreen.SetActive(true);
-        yield return null;
-        passwordTextbox.ActivateInputField();
-
+        interfaceScreen.SetActive(true);
     }
 
     private void CloseScreen()
@@ -150,13 +135,40 @@ public class ComputerScreen : MonoBehaviour
         mainCanvas.enabled = true;
     }
 
+    public void OnLogsButtonClicked()
+    {
+        logScreen.SetActive(true);
+        interfaceScreen.SetActive(false);
+    }
+
+    public void OnCamsButtonClicked()
+    {
+        cameraScreen.SetActive(true);
+        interfaceScreen.SetActive(false);
+    }
+
+    public void OnCam1Clicked()
+    {
+        computerCamera.enabled = false;
+        camera1.enabled = true; 
+    }
+
+    public void OnCam2Clicked()
+    {
+        computerCamera.enabled = false;
+        camera2.enabled = true;
+    }
+
     private void OnEnable() //read password input when user submits with enter
     {
         passwordTextbox.onSubmit.AddListener(ValidateInput);
+        closeAction.performed += ctx => CloseScreen();
     }
 
     private void OnDisable()
     {
         passwordTextbox.onSubmit.RemoveListener(ValidateInput);
+        closeAction.performed -= ctx => CloseScreen();
     }
+
 }
