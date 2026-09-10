@@ -5,6 +5,7 @@ using UnityEditor.Timeline.Actions;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class ComputerScreen : MonoBehaviour
 {
@@ -23,6 +24,8 @@ public class ComputerScreen : MonoBehaviour
     [SerializeField] private Camera camera2;
     [SerializeField] private GameObject logScreen;
     [SerializeField] private TMP_Text statusTextbox;
+    [SerializeField] private RawImage cameraDisplay;
+    [SerializeField] private RenderTexture cameraFeed;
     private TMP_InputField passwordTextbox;
     private InputAction closeAction;
 
@@ -51,6 +54,10 @@ public class ComputerScreen : MonoBehaviour
         camera2.enabled = false;
         computerCamera.enabled = false;
         compRenderer.enabled = false;
+
+        cameraDisplay.texture = cameraFeed;
+        camera1.targetTexture = cameraFeed;
+        camera2.targetTexture = cameraFeed;
     }
 
 
@@ -116,6 +123,10 @@ public class ComputerScreen : MonoBehaviour
     private IEnumerator ShowInterface()
     {
         yield return new WaitForSeconds(1f);
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        compRenderer.enabled = true;
+        computerCanvas.SetActive(true);
         passwordScreen.SetActive(false);
         interfaceScreen.SetActive(true);
     }
@@ -129,10 +140,13 @@ public class ComputerScreen : MonoBehaviour
         passwordScreen.SetActive(false);
         loadingScreen.SetActive(false);
         computerCanvas.SetActive(false);
+        cameraScreen.SetActive(false);
         computerCamera.enabled = false;
         compRenderer.enabled = false;
         playerCamera.enabled = true;
         mainCanvas.enabled = true;
+        camera1.enabled = false;
+        camera2.enabled = false;
     }
 
     public void OnLogsButtonClicked()
@@ -149,14 +163,16 @@ public class ComputerScreen : MonoBehaviour
 
     public void OnCam1Clicked()
     {
-        computerCamera.enabled = false;
-        camera1.enabled = true; 
+        computerCamera.enabled = true;
+        camera1.enabled = true;
+        camera2.enabled = false;
     }
 
     public void OnCam2Clicked()
     {
-        computerCamera.enabled = false;
+        computerCamera.enabled = true;
         camera2.enabled = true;
+        camera1.enabled = false;
     }
 
     private void OnEnable() //read password input when user submits with enter
