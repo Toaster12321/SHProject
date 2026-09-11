@@ -14,6 +14,12 @@ public class CutsceneManager : MonoBehaviour
     [SerializeField] private TMP_Text characterNamePlate;
     [SerializeField] private TMP_Text dialogueText;
 
+    public bool cutsceneActive = false;
+
+
+    [Header("Note UI Elements")]
+    [SerializeField] private GameObject noteUI;
+
     private float charsPerSecond = 30f;
 
     private List<DialogueLines> currentLines;
@@ -22,7 +28,7 @@ public class CutsceneManager : MonoBehaviour
     private InputAction continueAction;
     private InputAction clickAction;
     private bool textActive = false;
-    public bool cutsceneActive = false;
+    private bool showingNote = false;
     private string fullLineText;
 
 
@@ -31,6 +37,7 @@ public class CutsceneManager : MonoBehaviour
         continueAction = FirstPersonController.playerInput.actions["Continue"];
         clickAction = FirstPersonController.playerInput.actions["Click"];
         dialogueUI.SetActive(false); //hide UI
+        noteUI.SetActive(false);
     }
 
     private void Update()
@@ -41,9 +48,23 @@ public class CutsceneManager : MonoBehaviour
             clickAction.performed -= ContinueDialogue;
         }
         else
-        { 
+        {
+            if (showingNote)
+                return;
+
             continueAction.performed += ContinueDialogue;
             clickAction.performed += ContinueDialogue;
+        }
+
+        if (showingNote)
+        {
+            continueAction.performed += HideNoteUI;
+            clickAction.performed += HideNoteUI;
+        }
+        else if(!showingNote)
+        {
+            continueAction.performed -= HideNoteUI;
+            clickAction.performed -= HideNoteUI;
         }
     }
 
@@ -123,5 +144,19 @@ public class CutsceneManager : MonoBehaviour
         cutsceneActive = false;
         currentLines = null;
         dialogueUI.SetActive(false);
+    }
+
+    public void ShowNoteUI()
+    {
+        noteUI.SetActive(true);
+        showingNote = true;
+        PauseManager.instance.PauseDuringText();
+    }
+
+    public void HideNoteUI(InputAction.CallbackContext ctx)
+    {
+        noteUI.SetActive(false);
+        showingNote = false;
+        PauseManager.instance.UnpauseDuringText();
     }
 }

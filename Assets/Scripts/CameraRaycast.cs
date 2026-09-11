@@ -81,6 +81,10 @@ public class CameraRaycast : MonoBehaviour
                 currentObject.ShowComputerScreen();
                 break;
 
+            case InteractObject.InteractObjectType.Note:
+                currentObject.ShowNote();
+                break;
+
             default:
                 break;
         }

@@ -141,8 +141,8 @@ public class ComputerScreen : MonoBehaviour
         loadingScreen.SetActive(false);
         computerCanvas.SetActive(false);
         cameraScreen.SetActive(false);
+        logScreen.SetActive(false);
         computerCamera.enabled = false;
-        compRenderer.enabled = false;
         playerCamera.enabled = true;
         mainCanvas.enabled = true;
         camera1.enabled = false;

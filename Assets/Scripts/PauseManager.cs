@@ -21,6 +21,7 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 0f; //set time to 0 = game time paused
         FirstPersonController.instance.canMove = false; //prevent all movement in input script
         FirstPersonController.playerInput.SwitchCurrentActionMap("UI"); //switch to UI controls
+        FirstPersonController.instance.StopWalkingSFX();
         AudioListener.pause = true; //pause all audio playing
     }
 
@@ -38,6 +39,7 @@ public class PauseManager : MonoBehaviour
         isPaused = true;
         FirstPersonController.instance.canMove = false; //prevent all movement in input script
         FirstPersonController.playerInput.SwitchCurrentActionMap("UI"); //switch to UI controls
+        FirstPersonController.instance.StopWalkingSFX();
     }
 
 

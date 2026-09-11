@@ -42,6 +42,7 @@ public class FirstPersonController : MonoBehaviour
     [SerializeField] private InputActionReference weaponSwitchInput;
     private InputAction sprintAction;
 
+
     void Awake()
     {
         playerAnimator = GetComponent<Animator>();
@@ -129,12 +130,34 @@ public class FirstPersonController : MonoBehaviour
 
     private void footstepsWalking()
     {
-        bool isMoving = currentInput != Vector2.zero; //bool for movement 
 
-        if (isMoving && !walking.isPlaying) //play footsteps when walking and not dashing
+        bool isMoving = currentInput != Vector2.zero; //bool for movement 
+        bool isGrounded = characterController.isGrounded;
+
+        if (isMoving && isGrounded && !walking.isPlaying) //play footsteps when walking and not dashing
             walking.Play();
-        else if (!isMoving && walking.isPlaying)
+        else if ( (!isMoving || !isGrounded) && walking.isPlaying)
             walking.Stop();
+    }
+
+    public void StopWalkingSFX()
+    {
+        if (walking != null)
+        {
+            walking.Stop();
+            walking.pitch = 1f;
+        }
+
+        if (isDashing)
+            walkSpeed /= 2f;
+
+        isDashing = false;
+        dashCoolingDown = false;
+        dashTime = 0f;
+
+        currentInput = Vector2.zero;
+        moveDirection.x = 0f;
+        moveDirection.y = 0f;
     }
 
     private void OnEnable() //enable controls

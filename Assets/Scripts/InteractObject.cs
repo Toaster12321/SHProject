@@ -1,6 +1,7 @@
 using Mono.Cecil;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -13,7 +14,8 @@ public class InteractObject : MonoBehaviour
         PickableItem,
         AmmoRefill,
         Dialogue,
-        Computer
+        Computer,
+        Note
     }
 
     [SerializeField] public InteractObjectType objectType;
@@ -46,9 +48,14 @@ public class InteractObject : MonoBehaviour
     [SerializeField] private ItemData seedItem;
     [SerializeField] private ItemData waterItem;
 
-    [Header("Dialogue Object")]
+    [Header("Dialogue/Note Object")]
     [SerializeField] private CutsceneManager cutsceneManager;
     [SerializeField] private List<DialogueLines> dialogueLines;
+
+    [Header("Note Object")]
+    [SerializeField] private string noteText;
+    [SerializeField] private TMP_Text noteTextbox;
+
 
     private ComputerScreen computerScreen;
     private bool ammoTaken = false;
@@ -221,5 +228,11 @@ public class InteractObject : MonoBehaviour
     public void ShowComputerScreen()
     {
         computerScreen.InteractScreen();
+    }
+
+    public void ShowNote()
+    {
+        noteTextbox.text = noteText;
+        cutsceneManager.ShowNoteUI();
     }
 }
