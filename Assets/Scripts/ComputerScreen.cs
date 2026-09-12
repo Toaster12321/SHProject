@@ -20,9 +20,14 @@ public class ComputerScreen : MonoBehaviour
     [SerializeField] private GameObject passwordScreen;
     [SerializeField] private GameObject interfaceScreen;
     [SerializeField] private GameObject cameraScreen;
+    [SerializeField] private GameObject cameraCloseButton;
+    [SerializeField] private GameObject cameraRender;
     [SerializeField] private Camera camera1;
     [SerializeField] private Camera camera2;
     [SerializeField] private GameObject logScreen;
+    [SerializeField] private GameObject logsCloseButton;
+    [SerializeField] private GameObject logNote;
+    [SerializeField] private TMP_Text logTextbox;
     [SerializeField] private TMP_Text statusTextbox;
     [SerializeField] private RawImage cameraDisplay;
     [SerializeField] private RenderTexture cameraFeed;
@@ -50,10 +55,12 @@ public class ComputerScreen : MonoBehaviour
         interfaceScreen.SetActive(false);
         cameraScreen.SetActive(false);
         logScreen.SetActive(false);
+        logNote.SetActive(false);
         camera1.enabled = false;
         camera2.enabled = false;
         computerCamera.enabled = false;
         compRenderer.enabled = false;
+        logTextbox.text = "";
 
         cameraDisplay.texture = cameraFeed;
         camera1.targetTexture = cameraFeed;
@@ -166,6 +173,8 @@ public class ComputerScreen : MonoBehaviour
         computerCamera.enabled = true;
         camera1.enabled = true;
         camera2.enabled = false;
+        cameraCloseButton.SetActive(false);
+        cameraRender.SetActive(true);
     }
 
     public void OnCam2Clicked()
@@ -173,7 +182,40 @@ public class ComputerScreen : MonoBehaviour
         computerCamera.enabled = true;
         camera2.enabled = true;
         camera1.enabled = false;
+        cameraCloseButton.SetActive(false);
+        cameraRender.SetActive(true);
     }
+
+
+    public void HideLog()
+    {
+        logNote.SetActive(false);
+        logsCloseButton.SetActive(true);
+        logTextbox.text = "";
+    }
+
+    public void HideSecurityCamera()
+    {
+        camera1.enabled = false;
+        camera2.enabled = false;
+        computerCamera.enabled = true;
+        cameraRender.SetActive(false);
+        cameraCloseButton.SetActive(true);
+    }
+
+
+    public void HideCameraScreen()
+    {
+        cameraScreen.SetActive(false);
+        interfaceScreen.SetActive(true);
+    }
+
+    public void HideLogsScreen()
+    {
+        logScreen.SetActive(false);
+        interfaceScreen.SetActive(true);
+    }
+
 
     private void OnEnable() //read password input when user submits with enter
     {
