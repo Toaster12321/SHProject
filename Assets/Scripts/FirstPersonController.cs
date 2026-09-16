@@ -171,4 +171,21 @@ public class FirstPersonController : MonoBehaviour
         moveInput.action.Disable();
         lookInput.action.Disable();
     }
+
+    public void Save(ref PlayerSaveData data) //passes in reference, not copy, to read and write data
+    {
+        data.position = transform.position;
+    }
+
+    public void Load(PlayerSaveData data)
+    {
+        transform.position = data.position;
+    }
+
+}
+
+[System.Serializable]
+public struct PlayerSaveData
+{
+    public Vector3 position;
 }
