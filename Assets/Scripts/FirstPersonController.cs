@@ -45,6 +45,7 @@ public class FirstPersonController : MonoBehaviour
 
     void Awake()
     {
+        GameManager.Instance.FirstPersonController = this;
         playerAnimator = GetComponent<Animator>();
         playerInput = GetComponent<PlayerInput>(); 
         playerCamera = GetComponentInChildren<Camera>(); //assign references
@@ -52,7 +53,9 @@ public class FirstPersonController : MonoBehaviour
         sprintAction = playerInput.actions["Sprint"];
 
         if (instance == null)
+        {
             instance = this;
+        }
         Cursor.lockState = CursorLockMode.Locked;//lock and hide cursor
         Cursor.visible = false;
     }
@@ -175,11 +178,15 @@ public class FirstPersonController : MonoBehaviour
     public void Save(ref PlayerSaveData data) //passes in reference, not copy, to read and write data
     {
         data.position = transform.position;
+        print(transform.position.ToString());
+        print("data saved");
     }
 
     public void Load(PlayerSaveData data)
     {
         transform.position = data.position;
+        print(data.position.ToString());
+        print("data loaded");
     }
 
 }

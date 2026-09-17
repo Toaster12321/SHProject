@@ -79519,6 +79519,7 @@ GameObject:
   - component: {fileID: 1220892484}
   - component: {fileID: 1220892485}
   - component: {fileID: 1220892486}
+  - component: {fileID: 1220892487}
   m_Layer: 0
   m_Name: LevelControl
   m_TagString: Untagged
@@ -79588,6 +79589,18 @@ MonoBehaviour:
   dialogueText: {fileID: 1643817812}
   cutsceneActive: 0
   noteUI: {fileID: 1537233417}
+--- !u!114 &1220892487
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1220892482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e6021add3d94d745a4730b0c66cd8ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GameManager
 --- !u!1 &1220994195
 GameObject:
   m_ObjectHideFlags: 0
