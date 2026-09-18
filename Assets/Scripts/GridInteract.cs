@@ -7,7 +7,7 @@ public class GridInteract : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
     ItemGrid itemGrid;
     private void Awake()
     {
-        inventoryManager = FindFirstObjectByType(typeof(InventoryManager)) as InventoryManager;
+        inventoryManager = FindAnyObjectByType(typeof(InventoryManager)) as InventoryManager;
         itemGrid = GetComponent<ItemGrid>();
         //inventoryManager.SelectedItemGrid = itemGrid
     }
