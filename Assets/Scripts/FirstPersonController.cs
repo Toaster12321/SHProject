@@ -184,9 +184,17 @@ public class FirstPersonController : MonoBehaviour
 
     public void Load(PlayerSaveData data)
     {
+        characterController.enabled = false;
         transform.position = data.position;
+
+        moveDirection = Vector3.zero;
+        currentInput = Vector2.zero;
+        dashTime = 0f;
+        isDashing = false;
+        dashCoolingDown = false;
         print(data.position.ToString());
         print("data loaded");
+        characterController.enabled = true;
     }
 
 }
