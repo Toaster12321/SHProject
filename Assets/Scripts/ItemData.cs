@@ -7,6 +7,7 @@ public class ItemData : ScriptableObject
     public int height = 1;
 
     public Sprite itemIcon;
+    public string itemID;
     public ItemType itemType;
     public enum ItemType
     {

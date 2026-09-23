@@ -294,4 +294,37 @@ public class ItemGrid : MonoBehaviour
         }
         return null;
     }
+
+    public List<InventoryItem> GetPlacedItems() //used for obtaining a list of items used for saving/loading data
+    {
+        List<InventoryItem> placedItems = new List<InventoryItem>();
+        HashSet<InventoryItem> alreadyAdded = new HashSet<InventoryItem>(); //hashset ensures that each item is unique to prevent items that take up multiple spaces being added to the list more than once
+
+        for (int ix = 0; ix < gridSizeWidth; ix++) //go through all tiles in the inventory grid
+        {
+            for (int iy = 0; iy < gridSizeHeight; iy++)
+            {
+                InventoryItem itemSlot = inventoryItemSlot[ix, iy];
+
+                if (itemSlot != null && alreadyAdded.Add(itemSlot)) //if the item is found clean references and destroy the game object sprite
+                {
+                    placedItems.Add(itemSlot);
+                }
+            }
+        }
+
+        return placedItems;
+    }
+
+    public void ClearGrid() //wipes sprites of items when saving/loading
+    {
+        List<InventoryItem> placedItems = GetPlacedItems();
+
+        foreach (InventoryItem item in placedItems)
+        {
+            Destroy(item.gameObject);
+        }
+
+        Array.Clear(inventoryItemSlot, 0, inventoryItemSlot.Length);
+    }
 }

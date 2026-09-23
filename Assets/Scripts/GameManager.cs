@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     }
 
     public FirstPersonController FirstPersonController { get; set; }
+    public InventoryManager InventoryManager { get; set; }
 
 
     public void Awake()

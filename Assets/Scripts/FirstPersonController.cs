@@ -178,8 +178,6 @@ public class FirstPersonController : MonoBehaviour
     public void Save(ref PlayerSaveData data) //passes in reference, not copy, to read and write data
     {
         data.position = transform.position;
-        print(transform.position.ToString());
-        print("data saved");
     }
 
     public void Load(PlayerSaveData data)
@@ -192,8 +190,6 @@ public class FirstPersonController : MonoBehaviour
         dashTime = 0f;
         isDashing = false;
         dashCoolingDown = false;
-        print(data.position.ToString());
-        print("data loaded");
         characterController.enabled = true;
     }
 

@@ -35,26 +35,47 @@ public class InventoryItem : MonoBehaviour
 
     public bool rotated = false;
 
-   
-    internal void Set(ItemData itemData) //sets the passed ItemData into the on-screen icon with its width and height
+    public void Set(ItemData itemData) //sets the passed ItemData into the on-screen icon with its width and height
     {
         this.itemData = itemData;
+        rotated = false;
 
         GetComponent<Image>().sprite = itemData.itemIcon;
 
-        Vector2 size = new Vector2();
-        size.x = itemData.width * ItemGrid.tileSizeWidth;
-        size.y = itemData.height * ItemGrid.tileSizeHeight;
-        GetComponent<RectTransform>().sizeDelta = size;
+        UpdateVisualSize();
+        UpdateVisualRotation();
     }
 
-    internal void Rotate()
+    public void Rotate()
     {
         rotated = !rotated;
 
+        UpdateVisualSize();
+        UpdateVisualRotation();
+
+    }
+
+    public void SetRotation(bool isRotated) //used to set rotation of items when loading inventory data
+    {
+        rotated = isRotated;
+
+        UpdateVisualSize();
+        UpdateVisualRotation();
+    }
+
+    public void UpdateVisualSize()
+    {
+        RectTransform rectTransform = GetComponent<RectTransform>();
+        rectTransform.sizeDelta = new Vector2(
+            WIDTH * ItemGrid.tileSizeWidth,
+            HEIGHT * ItemGrid.tileSizeHeight
+            );
+    }
+
+    public void UpdateVisualRotation()
+    {
         RectTransform rectTransform = GetComponent<RectTransform>();
         rectTransform.rotation = Quaternion.Euler(0, 0, rotated == true ? 90f : 0f); // if its already rotated rotate from 0 -> 90degrees, otherwise rotate from 90 -> 0 degrees on the z axis
-
     }
 
 }

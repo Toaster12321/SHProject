@@ -1,7 +1,10 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 public class InventoryManager : MonoBehaviour
 {
@@ -25,6 +28,9 @@ public class InventoryManager : MonoBehaviour
     [SerializeField] Transform canvasTransform;
     [SerializeField] UIManager uiManager;
 
+    [Header("Save/Load Elements")] 
+    [SerializeField] ItemGrid inventoryGrid;
+
     InventoryHighlight inventoryHighlight;
 
     private Vector2Int originalItemPosition = new Vector2Int();
@@ -33,6 +39,7 @@ public class InventoryManager : MonoBehaviour
 
     private void Awake()
     {
+        GameManager.Instance.InventoryManager = this;
         inventoryHighlight = GetComponent<InventoryHighlight>();
         if (instance  == null ) 
             instance = this;
@@ -269,4 +276,79 @@ public class InventoryManager : MonoBehaviour
         if (selectedItem != null) //if we have a picked up item move it with the cursor
             rectTransform.position = Mouse.current.position.ReadValue();
     }
+
+    public void Save(ref InventorySaveData data) //passes in reference, not copy, to read and write data
+    {
+        data.itemList.Clear();
+
+        List<InventoryItem> placedItems = inventoryGrid.GetPlacedItems();
+        print("data saved");
+        print(placedItems);
+        foreach (InventoryItem item in placedItems)
+        {
+            SavedInventoryItem savedItem = new SavedInventoryItem
+            {
+                itemID = item.itemData.itemID,
+                x = item.onGridPositionX,
+                y = item.onGridPositionY,
+                rotated = item.rotated
+            };
+            data.itemList.Add(savedItem);
+        }
+    }
+
+    public void Load(InventorySaveData data)
+    {
+        inventoryGrid.ClearGrid();
+        print("data loaded");
+        foreach (SavedInventoryItem savedItem in data.itemList)
+        {
+            ItemData itemData = FindItemData(savedItem.itemID);
+
+            if (itemData == null)
+            {
+                Debug.LogWarning($"Could not find item: {savedItem.itemID}");
+
+                continue;
+            }
+
+            InventoryItem inventoryItem = Instantiate(itemPrefab).GetComponent<InventoryItem>();
+
+            inventoryItem.Set(itemData);
+            inventoryItem.SetRotation(savedItem.rotated);
+
+            inventoryGrid.PlaceItemOnGrid(inventoryItem, savedItem.x, savedItem.y);
+        }
+    }
+
+    private ItemData FindItemData(string itemID)
+    {
+        if (items == null)
+            return null;
+
+        foreach(ItemData item in items)
+        {
+            if(item != null && item.itemID == itemID)
+            {
+                return item;
+            }
+        }
+
+        return null;
+    }
+}
+[System.Serializable]
+public class SavedInventoryItem
+{
+    public String itemID;
+    public int x;
+    public int y;
+    public bool rotated;
+}
+
+
+[System.Serializable]
+public class InventorySaveData
+{
+    public List<SavedInventoryItem> itemList = new List<SavedInventoryItem>();
 }

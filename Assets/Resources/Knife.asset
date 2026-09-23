@@ -15,3 +15,5 @@ MonoBehaviour:
   width: 2
   height: 1
   itemIcon: {fileID: 21300000, guid: 573cb1921ad22f14dbe0bbbbd034db9b, type: 3}
+  itemID: knife
+  itemType: 0

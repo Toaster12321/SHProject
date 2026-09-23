@@ -9,6 +9,7 @@ public class SaveManager
     public struct SaveData
     {
         public PlayerSaveData PlayerData;
+        public InventorySaveData InventoryData;
     }
 
     public static string SaveFileName()
@@ -26,7 +27,11 @@ public class SaveManager
 
     private static void HandleSaveData()
     {
+        if (_saveData.InventoryData == null)
+            _saveData.InventoryData = new InventorySaveData();
+
         GameManager.Instance.FirstPersonController.Save(ref _saveData.PlayerData);
+        GameManager.Instance.InventoryManager.Save(ref _saveData.InventoryData);
     }
 
     public static void Load()
@@ -40,5 +45,6 @@ public class SaveManager
     public static void HandleLoadData()
     {
         GameManager.Instance.FirstPersonController.Load(_saveData.PlayerData);
+        GameManager.Instance.InventoryManager.Load(_saveData.InventoryData);
     }
 }
