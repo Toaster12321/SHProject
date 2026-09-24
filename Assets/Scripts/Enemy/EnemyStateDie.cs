@@ -16,6 +16,9 @@ public class EnemyStateDie : EnemyState
 
     public override void EnterState()
     {
+        if (!EnemyManager.instance.killedEnemyList.Contains(Context.EnemyStateMachine.enemyID)) //marks enemy as killed for save file
+            EnemyManager.instance.killedEnemyList.Add(Context.EnemyStateMachine.enemyID);
+
         Context.Animator.SetTrigger("no_hp");
 
         if (Context.EnemyType == EnemyStateMachine.EnemyType.Scab)

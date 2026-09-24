@@ -10,6 +10,7 @@ public class SaveManager
     {
         public PlayerSaveData PlayerData;
         public InventorySaveData InventoryData;
+        public EnemySaveData EnemyData;
     }
 
     public static string SaveFileName()
@@ -27,11 +28,15 @@ public class SaveManager
 
     private static void HandleSaveData()
     {
-        if (_saveData.InventoryData == null)
+        if (_saveData.InventoryData == null) //must make instances of classes since their lists obtain null values and not default values like in structs
             _saveData.InventoryData = new InventorySaveData();
+
+        if (_saveData.EnemyData == null)
+            _saveData.EnemyData = new EnemySaveData();
 
         GameManager.Instance.FirstPersonController.Save(ref _saveData.PlayerData);
         GameManager.Instance.InventoryManager.Save(ref _saveData.InventoryData);
+        GameManager.Instance.EnemyManager.Save(ref _saveData.EnemyData);
     }
 
     public static void Load()
@@ -46,5 +51,6 @@ public class SaveManager
     {
         GameManager.Instance.FirstPersonController.Load(_saveData.PlayerData);
         GameManager.Instance.InventoryManager.Load(_saveData.InventoryData);
+        GameManager.Instance.EnemyManager.Load(_saveData.EnemyData);
     }
 }

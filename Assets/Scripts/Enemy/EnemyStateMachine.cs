@@ -30,6 +30,7 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     [Header("Stats")]
     [SerializeField] private float maxHP;
     [SerializeField] private EnemyType _enemyType;
+    public string enemyID;
 
     [Header("Components")]
     [SerializeField] private Material _enemyRenderer;
@@ -61,6 +62,12 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     {
         _originalColor = _enemyRenderer.color;
         currentHP = maxHP; //make sure enemy starts with max HP
+
+        print(InventoryManager.instance);
+        if (EnemyManager.instance.killedEnemyList.Contains(enemyID))
+        {
+            GameObject.Destroy(gameObject);
+        }
     }
 
     public void TakeDamage(float amount)

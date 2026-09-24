@@ -41,7 +41,7 @@ public class InventoryManager : MonoBehaviour
     {
         GameManager.Instance.InventoryManager = this;
         inventoryHighlight = GetComponent<InventoryHighlight>();
-        if (instance  == null ) 
+        if (instance == null ) 
             instance = this;
     }
 

@@ -196,7 +196,7 @@ public class FirstPersonController : MonoBehaviour
 }
 
 [System.Serializable]
-public struct PlayerSaveData
+public struct PlayerSaveData //struct makes a default value for position to obtain
 {
     public Vector3 position;
 }
