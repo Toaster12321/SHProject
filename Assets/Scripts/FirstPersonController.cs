@@ -177,12 +177,12 @@ public class FirstPersonController : MonoBehaviour
 
     public void Save(ref PlayerSaveData data) //passes in reference, not copy, to read and write data
     {
-        data.position = transform.position;
+        data.position = transform.position; //save player's current position
     }
 
     public void Load(PlayerSaveData data)
     {
-        characterController.enabled = false;
+        characterController.enabled = false; //loads player position and resets all movement variables
         transform.position = data.position;
 
         moveDirection = Vector3.zero;

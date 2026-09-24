@@ -36,7 +36,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
   m_AnchoredPosition: {x: -802.6, y: 361.1}
-  m_SizeDelta: {x: 114, y: 64}
+  m_SizeDelta: {x: 96, y: 96}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2893400302111936748
 CanvasRenderer:
@@ -88,5 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0c02a7e3230441649b34116609c8cdf2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventoryItem
-  sizeWidth: 4
-  sizeHeight: 1
+  itemData: {fileID: 0}
+  onGridPositionX: 0
+  onGridPositionY: 0
+  rotated: 0

@@ -67,6 +67,19 @@ public class ComputerScreen : MonoBehaviour
         camera2.targetTexture = cameraFeed;
     }
 
+    private void Update()
+    {
+        if (computerCanvas.activeSelf)
+        {
+            passwordTextbox.onSubmit.AddListener(ValidateInput);
+            closeAction.performed += ctx => CloseScreen();
+        }
+        else
+        {
+            passwordTextbox.onSubmit.RemoveListener(ValidateInput);
+            closeAction.performed -= ctx => CloseScreen();
+        }
+    }
 
     public void InteractScreen()
     {
@@ -140,6 +153,7 @@ public class ComputerScreen : MonoBehaviour
 
     private void CloseScreen()
     {
+        Debug.Log("closing screen");
         pauseManager.UnpauseDuringText();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -214,19 +228,6 @@ public class ComputerScreen : MonoBehaviour
     {
         logScreen.SetActive(false);
         interfaceScreen.SetActive(true);
-    }
-
-
-    private void OnEnable() //read password input when user submits with enter
-    {
-        passwordTextbox.onSubmit.AddListener(ValidateInput);
-        closeAction.performed += ctx => CloseScreen();
-    }
-
-    private void OnDisable()
-    {
-        passwordTextbox.onSubmit.RemoveListener(ValidateInput);
-        closeAction.performed -= ctx => CloseScreen();
     }
 
 }

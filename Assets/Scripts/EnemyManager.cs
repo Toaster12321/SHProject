@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class EnemyManager : MonoBehaviour
 {
-    public List<string> killedEnemyList = new List<string>();
+    public List<string> killedEnemyList = new List<string>(); //stores which enemies have been killed in game
     public static EnemyManager instance;
 
     private void Awake()
@@ -17,7 +17,7 @@ public class EnemyManager : MonoBehaviour
 
     public void Save(ref EnemySaveData data)
     {
-        data.killedEnemies.Clear();
+        data.killedEnemies.Clear(); //clear previous list then append to save data
 
         foreach(string enemyID in killedEnemyList)
         {
@@ -27,7 +27,7 @@ public class EnemyManager : MonoBehaviour
 
     public void Load(EnemySaveData data)
     {
-        foreach(string enemyID in data.killedEnemies)
+        foreach(string enemyID in data.killedEnemies) //store data from saved enemy list to in-game kill list
         {
             if (!killedEnemyList.Contains(enemyID))
                 killedEnemyList.Add(enemyID);
@@ -36,8 +36,8 @@ public class EnemyManager : MonoBehaviour
 
 }
 
-[System.Serializable]
-public class EnemySaveData
+[System.Serializable] //class that stores killedEnemies list to be translated to JSON
+public class EnemySaveData 
 {
     public List<string> killedEnemies = new List<string>();
 }

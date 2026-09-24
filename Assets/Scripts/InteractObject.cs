@@ -20,7 +20,6 @@ public class InteractObject : MonoBehaviour
 
     [SerializeField] public InteractObjectType objectType;
     [SerializeField] private string screenText;
-    [SerializeField] private Transform player;
 
     [Header("Door")]
     [SerializeField] private Animator objectAnimator;
@@ -38,7 +37,6 @@ public class InteractObject : MonoBehaviour
 
     [Header("Pickable Item")]
     [SerializeField] private ItemData itemResource;
-    private InventoryManager inventoryManager;
 
     [Header("Ammo Refill")]
     [SerializeField] private Revolver gun;
@@ -67,10 +65,6 @@ public class InteractObject : MonoBehaviour
     private bool interactedOnce = false;
     private String returnText = "";
 
-    public void Awake()
-    {
-        inventoryManager = player.GetComponentInChildren<InventoryManager>();
-    }
     public void Start()
     {
         if (objectType == InteractObjectType.Computer)
@@ -89,10 +83,10 @@ public class InteractObject : MonoBehaviour
             if (!ammoTaken)
                 return "Refill? (E)";
 
-            if (inventoryManager.CheckIfItemInInventory(seedItem) && seedPlanted == false)
+            if (InventoryManager.instance.CheckIfItemInInventory(seedItem) && seedPlanted == false)
                 return "Plant? (E)";
 
-            if (inventoryManager.CheckIfItemInInventory(waterItem) && seedPlanted == true)
+            if (InventoryManager.instance.CheckIfItemInInventory(waterItem) && seedPlanted == true)
                 return "Water? (E)";
 
             return "";
@@ -111,12 +105,12 @@ public class InteractObject : MonoBehaviour
     {
         if (lockedDoor)
         {
-            if (inventoryManager.CheckIfItemInInventory(keyItem) && lockedDoor)
+            if (InventoryManager.instance.CheckIfItemInInventory(keyItem) && lockedDoor)
             {
                 lockedDoor = false;
                 returnText = "Interact (E)";
                 unlockedSFX.Play();
-                inventoryManager.RemoveItemInInventory(keyItem);
+                InventoryManager.instance.RemoveItemInInventory(keyItem);
                 return;
             }
             lockedSFX.Play();
@@ -126,7 +120,7 @@ public class InteractObject : MonoBehaviour
         }    
         isOpen = !isOpen; //set is open to the opposite of what it previously was (always started closed -> false)
 
-        Vector3 localPlayerPos = transform.InverseTransformPoint(player.position); //gets the players transform in local space
+        Vector3 localPlayerPos = transform.InverseTransformPoint(FirstPersonController.instance.transform.position); //gets the players transform in local space
         if (!flippedDoor)
         {
             if (XComparison) //compare x axis
@@ -186,7 +180,7 @@ public class InteractObject : MonoBehaviour
 
     public void AddItemToInventory()
     {
-        inventoryManager.AddItem(itemResource);
+        InventoryManager.instance.AddItem(itemResource);
         Destroy(gameObject);
     }
 
@@ -202,19 +196,19 @@ public class InteractObject : MonoBehaviour
 
         if (ammoTaken)
         {
-            if (inventoryManager.CheckIfItemInInventory(seedItem) && !seedPlanted) //if we have the item (seed) in inventory show the seed in game
+            if (InventoryManager.instance.CheckIfItemInInventory(seedItem) && !seedPlanted) //if we have the item (seed) in inventory show the seed in game
             {
                 plantedSeed.SetActive(true);
                 seedPlanted = true;
-                inventoryManager.RemoveItemInInventory(seedItem);
+                InventoryManager.instance.RemoveItemInInventory(seedItem);
             }
-            else if(inventoryManager.CheckIfItemInInventory(waterItem) && seedPlanted)
+            else if(InventoryManager.instance.CheckIfItemInInventory(waterItem) && seedPlanted)
             {
                 ammoPlant.SetActive(true);
                 plantedSeed.SetActive(false);
                 ammoTaken = false;
                 seedPlanted = false;
-                inventoryManager.RemoveItemInInventory(waterItem);
+                InventoryManager.instance.RemoveItemInInventory(waterItem);
             }
             return;
         }
