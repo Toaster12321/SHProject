@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   width: 2
   height: 1
-  itemIcon: {fileID: 21300000, guid: 7e059edec7250224ba0b67a379e3fbfe, type: 3}
+  itemIcon: {fileID: 21300000, guid: 8a9a07b249ad503458a1e9907018c5ca, type: 3}
   itemID: revolver
   itemType: 0

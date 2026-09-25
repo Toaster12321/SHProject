@@ -7,14 +7,14 @@ using UnityEngine;
 
 public class ItemGrid : MonoBehaviour
 {
-    public const float tileSizeWidth = 96; //grid boxes have size of 64x64px
-    public const float tileSizeHeight = 96;
+    public const float tileSizeWidth = 96f; //grid boxes have size of 96x96px (scaled by 3, originally 32px)
+    public const float tileSizeHeight = 96f;
 
     InventoryItem[,] inventoryItemSlot;
 
     RectTransform rectTransform;
 
-    [SerializeField] int gridSizeWidth; //change to resize grid (i.e. 5 x 10) = (320 x 640px)
+    [SerializeField] int gridSizeWidth; //change to resize grid (i.e. 5 x 10) = (480 x 960px)
     [SerializeField] int gridSizeHeight;
     public List<ItemData> weaponItems;
 
@@ -23,7 +23,6 @@ public class ItemGrid : MonoBehaviour
         rectTransform = GetComponent<RectTransform>();
         Init(gridSizeWidth, gridSizeHeight);
         weaponItems = new List<ItemData>();
-        Debug.Log($"Array dimensions: {inventoryItemSlot.GetLength(0)} x {inventoryItemSlot.GetLength(1)}");
     }
 
     public InventoryItem PickUpItem(int x, int y)
@@ -53,24 +52,25 @@ public class ItemGrid : MonoBehaviour
     private void Init(int width, int height) //function to resize the grid height/width boxes and item sizes
     {
         inventoryItemSlot = new InventoryItem[width, height];
-        Debug.Log(width + " x" + height);
-        Debug.Log(tileSizeWidth + "x" + tileSizeHeight);
-        Vector2 size = new Vector2((width * tileSizeWidth) / 3 , (height * tileSizeHeight) / 3); //divide by 3 since using 3x scaled texture 
-        Debug.Log(size);
+        Vector2 size = new Vector2(width * (tileSizeWidth / 3) , height * (tileSizeHeight / 3)); //divide by 3 since using 3x scaled texture 
         rectTransform.sizeDelta = size; //change rect transform of grid
     }
 
-    Vector2 positionOnTheGrid = new Vector2();
-    Vector2Int tileGridPosition = new Vector2Int();
-    public Vector2Int GetTileGridPosition(Vector2 mousePosition)
+    public Vector2Int GetTileGridPosition(Vector2 mousePosition, int itemWidth = 1, int itemHeight = 1)
     {
-        
-        positionOnTheGrid.x = mousePosition.x - rectTransform.position.x; //gets x and y location of mouse based on the rect transform of the grid
-        positionOnTheGrid.y = rectTransform.position.y - mousePosition.y;
+        Vector2Int tileGridPosition = new Vector2Int();
 
+        if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(rectTransform, mousePosition, null, out Vector2 localPosition)) //convert from screen coords (mouse pos) to local UI coords, store in local position
+            return new Vector2Int(-1, -1);
 
-        tileGridPosition.x = (int)(positionOnTheGrid.x / tileSizeWidth); //sets which grid is being hovered using ints
-        tileGridPosition.y = (int)(positionOnTheGrid.y / tileSizeHeight);
+        float xFromLeft = localPosition.x + rectTransform.rect.width * rectTransform.pivot.x; //how far the mouse is from the left edge
+        float yFromTop = rectTransform.rect.height * (1f - rectTransform.pivot.y) - localPosition.y; //how far the mouse is from the top edge
+
+        xFromLeft -= (itemWidth - 1) * ItemGrid.tileSizeWidth / 6; //if item is larger than 1 tile offset position, / 6 for conversion
+        yFromTop -= (itemHeight - 1) * ItemGrid.tileSizeHeight / 6;
+
+        tileGridPosition.x = (int)(xFromLeft / (tileSizeWidth / 3f)); //convert float distances to tile grid coords
+        tileGridPosition.y = (int)(yFromTop / (tileSizeHeight / 3f));
 
         return tileGridPosition;
     }
@@ -101,7 +101,7 @@ public class ItemGrid : MonoBehaviour
     public void PlaceItemOnGrid(InventoryItem inventoryItem, int posX, int posY)
     {
         RectTransform rectTransform = inventoryItem.GetComponent<RectTransform>();
-        rectTransform.SetParent(this.rectTransform);
+        rectTransform.SetParent(this.rectTransform, false);
 
         for (int x = 0; x < inventoryItem.WIDTH; x++) //go through all tiles in the grid based off the size of the item, allow all tiles to be selected
         {
@@ -125,9 +125,11 @@ public class ItemGrid : MonoBehaviour
 
     public Vector2 CalculatePositionOnGrid(InventoryItem inventoryItem, int posX, int posY)
     {
+
         Vector2 position = new Vector2();
-        position.x = posX * tileSizeWidth / 3 + tileSizeWidth * inventoryItem.WIDTH / 6; //working with 32px asset but scaled 3x so visually 96px requires /3 and /6 for mouse to grid conversion
-        position.y = -(posY * tileSizeHeight / 3 + tileSizeHeight * inventoryItem.HEIGHT / 6);
+        position.x = posX * (tileSizeWidth / 3f) + (tileSizeWidth / 3f) * (inventoryItem.WIDTH / 2f); //working with 32px asset but scaled 3x so visually 96px requires /3 and /6 for mouse to grid conversion
+        position.y = -(posY * (tileSizeHeight / 3f) + (tileSizeHeight / 3f) * (inventoryItem.HEIGHT / 2f));
+
         return position;
     }
 

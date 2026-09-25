@@ -63,12 +63,12 @@ public class InventoryItem : MonoBehaviour
         UpdateVisualRotation();
     }
 
-    public void UpdateVisualSize()
+    public void UpdateVisualSize() //updates item sprite icon based on item width/ height, divide by 3 for conversion to 32px
     {
-        RectTransform rectTransform = GetComponent<RectTransform>();
+        RectTransform rectTransform = GetComponent<RectTransform>(); 
         rectTransform.sizeDelta = new Vector2(
-            WIDTH * ItemGrid.tileSizeWidth,
-            HEIGHT * ItemGrid.tileSizeHeight
+            itemData.width * (ItemGrid.tileSizeWidth / 3),
+            itemData.height * (ItemGrid.tileSizeHeight / 3)
             );
     }
 

@@ -226,8 +226,7 @@ public class InventoryManager : MonoBehaviour
 
         if (selectedItem != null) //offsets cursor position based on item size when placing items
         {
-            cursorPosition.x -= (selectedItem.WIDTH - 1) * ItemGrid.tileSizeWidth / 2;
-            cursorPosition.y += (selectedItem.HEIGHT - 1) * ItemGrid.tileSizeHeight / 2;
+            return selectedItemGrid.GetTileGridPosition(cursorPosition, selectedItem.WIDTH, selectedItem.HEIGHT);
         }
 
         return selectedItemGrid.GetTileGridPosition(cursorPosition);
