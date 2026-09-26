@@ -54,4 +54,9 @@ public class SaveManager
         GameManager.Instance.InventoryManager.Load(_saveData.InventoryData);
         GameManager.Instance.EnemyManager.Load(_saveData.EnemyData);
     }
+
+    public void SaveGame()
+    {
+        Save();
+    }
 }

@@ -40,17 +40,14 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
     }
-
-    private void Update()
+    
+    public void SaveGame() //BUTTON EVENT
     {
-        if(Keyboard.current.numpad0Key.wasPressedThisFrame)
-        {
-            SaveManager.Save();
-        }
-
-        if (Keyboard.current.numpad1Key.wasPressedThisFrame)
-        {
-            SaveManager.Load();
-        }
+        SaveManager.Save();
+    }   
+    
+    public void LoadGame() //BUTTON EVENT
+    {
+        SaveManager.Load();
     }
 }
