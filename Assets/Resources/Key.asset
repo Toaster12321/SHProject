@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   width: 1
   height: 1
+  itemName: Key
+  itemDesc: Unlocks something...
   itemIcon: {fileID: 21300000, guid: f94985717b9a9ec4c8b6214766afff20, type: 3}
+  pauseDisplayIcon: {fileID: 5511076779675262105, guid: c4cb8feeeb0178f4c83e68fc3c4c0ecf, type: 3}
   itemID: key
   itemType: 1

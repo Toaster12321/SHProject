@@ -9,8 +9,8 @@ public class UIManager : MonoBehaviour
     [SerializeField] GameObject interactTextBox;
     [SerializeField] GameObject interactionCrosshair;
     [SerializeField] GameObject pauseMenu;
-
     [SerializeField] CutsceneManager cutsceneManager;
+
 
     public bool inventoryOpen = false;
     private InputAction _menuOpenAction;

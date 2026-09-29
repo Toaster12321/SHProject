@@ -1,9 +1,12 @@
+using GLTFast.Schema;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class InventoryManager : MonoBehaviour
@@ -31,6 +34,11 @@ public class InventoryManager : MonoBehaviour
     [Header("Save/Load Elements")] 
     [SerializeField] ItemGrid inventoryGrid;
 
+    [Header("UI Pause Elements")]
+    [SerializeField] UnityEngine.UI.Image itemImage;
+    [SerializeField] TMP_Text itemName;
+    [SerializeField] TMP_Text itemDesc;
+
     InventoryHighlight inventoryHighlight;
 
     private Vector2Int originalItemPosition = new Vector2Int();
@@ -40,6 +48,9 @@ public class InventoryManager : MonoBehaviour
     private void Awake()
     {
         GameManager.Instance.InventoryManager = this;
+        itemImage.enabled = false;
+        itemName.text = string.Empty;
+        itemDesc.text = string.Empty;
         inventoryHighlight = GetComponent<InventoryHighlight>();
         if (instance == null ) 
             instance = this;
@@ -136,15 +147,21 @@ public class InventoryManager : MonoBehaviour
         if (selectedItem == null) //nothing is picked up
         {
             itemToHighlight = selectedItemGrid.GetItem(positionOnGrid.x, positionOnGrid.y); //get hovered item's location
-
             if (itemToHighlight != null) //if there is an item to highlight, show with same size as the item's width and height
             {
                 inventoryHighlight.Show(true);
                 inventoryHighlight.SetSize(itemToHighlight);
                 inventoryHighlight.SetPosition(selectedItemGrid, itemToHighlight);
+
+                ShowItemDetails(itemToHighlight, true);
             }
             else
+            {
                 inventoryHighlight.Show(false);
+                ShowItemDetails(itemToHighlight, false);
+            }
+                
+                
         }
         else //item is picked up
         {
@@ -157,7 +174,24 @@ public class InventoryManager : MonoBehaviour
 
             inventoryHighlight.SetSize(selectedItem);
             inventoryHighlight.SetPosition(selectedItemGrid, selectedItem, positionOnGrid.x, positionOnGrid.y);
+
+            ShowItemDetails(selectedItem, true);
         }
+    }
+
+    private void ShowItemDetails(InventoryItem hoveredItem, bool status)
+    {
+        itemImage.enabled = status;
+        itemName.enabled = status;
+        itemDesc.enabled = status;
+
+        if (status == true)
+        {
+            itemImage.sprite = hoveredItem.itemData.pauseDisplayIcon;
+            itemName.text = hoveredItem.itemData.itemName;
+            itemDesc.text = hoveredItem.itemData.itemDesc;
+        }
+        
     }
 
     private void CreateRandomItem()

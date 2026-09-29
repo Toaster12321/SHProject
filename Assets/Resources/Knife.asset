@@ -14,6 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ItemData
   width: 2
   height: 1
+  itemName: Rusty Knife
+  itemDesc: Old knife, stained with blood
   itemIcon: {fileID: 21300000, guid: 573cb1921ad22f14dbe0bbbbd034db9b, type: 3}
+  pauseDisplayIcon: {fileID: 21300000, guid: 0e3128bda29a6224f9aae79c3e427b33, type: 3}
   itemID: knife
   itemType: 0
