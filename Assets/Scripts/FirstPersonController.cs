@@ -46,7 +46,7 @@ public class FirstPersonController : MonoBehaviour
     void Awake()
     {
         GameManager.Instance.FirstPersonController = this;
-        playerAnimator = GetComponent<Animator>();
+        playerAnimator = GetComponentInChildren<Animator>();
         playerInput = GetComponent<PlayerInput>(); 
         playerCamera = GetComponentInChildren<Camera>(); //assign references
         characterController = GetComponent<CharacterController>();
@@ -138,9 +138,15 @@ public class FirstPersonController : MonoBehaviour
         bool isGrounded = characterController.isGrounded;
 
         if (isMoving && isGrounded && !walking.isPlaying) //play footsteps when walking and not dashing
+        {
             walking.Play();
+            playerAnimator.SetBool("walking", true);
+        }
         else if ( (!isMoving || !isGrounded) && walking.isPlaying)
+        { 
             walking.Stop();
+            playerAnimator.SetBool("walking", false);
+        }
     }
 
     public void StopWalkingSFX()
