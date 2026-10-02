@@ -91,7 +91,7 @@ public class Revolver : MonoBehaviour
         gunAnimator.SetBool("reloading",true);
     }
 
-    private void AnimEventGiveAmmo() //ANIMATION EVENT ONLY
+    public void AnimEventGiveAmmo() //ANIMATION EVENT ONLY
     {
         int remainderAmmo = clipSize - currentClipAmmoCount;
 

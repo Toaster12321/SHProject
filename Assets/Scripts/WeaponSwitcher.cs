@@ -12,7 +12,11 @@ public class WeaponSwitcher : MonoBehaviour
     private Animator[] weaponAnimators;
     private List<ItemData> weaponList;
     private bool switching = false;
-    
+
+    [Header("Revolver Variables")]
+    [SerializeField] private Revolver revolver;
+    [SerializeField] private AudioSource dryFire;
+
 
     void Start()
     {
@@ -161,4 +165,13 @@ public class WeaponSwitcher : MonoBehaviour
         }
     }
 
+    private void animEventDryFire() //ANIMATION EVENT ONLY for revolver
+    {
+        dryFire.Play();
+    }
+
+    private void AnimEventGiveAmmo() //ANIMATION EVENT ONLY
+    {
+        revolver.AnimEventGiveAmmo();
+    }
 }

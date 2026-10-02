@@ -76691,6 +76691,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSwitcher
   weaponSwitchInput: {fileID: 868975165099802632, guid: 289c1b55c9541489481df5cc06664110, type: 3}
+  revolver: {fileID: 1827611563}
+  dryFire: {fileID: 460268642}
 --- !u!114 &1195138427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141536,14 +141538,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2654050269999529465}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.20150825, y: 0.9061055, z: 0.34664643, w: 0.13492034}
-  m_LocalPosition: {x: -0.014217825, y: 0.036855504, z: 0.036303833}
+  m_LocalRotation: {x: -0.3662519, y: 0.81372255, z: 0.16318324, w: -0.42081645}
+  m_LocalPosition: {x: -0.014218602, y: 0.036858317, z: 0.036303602}
   m_LocalScale: {x: 1, y: 1.0000001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 9128027900762908451}
   m_Father: {fileID: 371527016880502390}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 2.446, y: 233.62201, z: -47.228}
 --- !u!1 &1101752327650065529
 GameObject:
   m_ObjectHideFlags: 0
@@ -143273,14 +143275,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4974870679340787100}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.252373, y: -0.052115623, z: 0.3965132, w: 0.8811182}
-  m_LocalPosition: {x: 0.0000017890318, y: -0.000000048043628, z: 0.0000003985001}
+  m_LocalRotation: {x: 0.13423204, y: 0.19099535, z: 0.4504403, w: 0.8617461}
+  m_LocalPosition: {x: 0.0000023473613, y: 0.00001957866, z: -0.0000040246073}
   m_LocalScale: {x: 1, y: 1.0000001, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5005891498487815722}
   m_Father: {fileID: 513361131432754222}
-  m_LocalEulerAnglesHint: {x: 29.083, y: -352.881, z: 50.305}
+  m_LocalEulerAnglesHint: {x: 3.399, y: -333.199, z: 56.003}
 --- !u!1001 &7122525010814779800
 PrefabInstance:
   m_ObjectHideFlags: 0
