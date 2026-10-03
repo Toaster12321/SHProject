@@ -9,7 +9,7 @@ public class WeaponSwitcher : MonoBehaviour
     private int selectedWeaponIndex = 0;
     private int pendingWeaponIndex = 0;
     [SerializeField] private InputActionReference weaponSwitchInput;
-    private Animator[] weaponAnimators;
+    private Animator weaponAnimator;
     private List<ItemData> weaponList;
     private bool switching = false;
 
@@ -20,14 +20,19 @@ public class WeaponSwitcher : MonoBehaviour
 
     void Start()
     {
-        weaponAnimators = new Animator[transform.childCount];
+        weaponAnimator = GetComponent<Animator>();
         weaponList = new List<ItemData>();
         for (int i = 0; i < transform.childCount; i++) //fill weapon animators array with each animator in child list
         {
-            weaponAnimators[i] = transform.GetChild(i).GetComponentInChildren<Animator>(true);
-            weaponList.Add(transform.GetChild(i).GetComponentInChildren<InventoryItem>(true).itemData); //add the item data of each item in weapon holder to the weapon list of item data
-        }
+            Transform weaponTransform = transform.GetChild(i);
 
+            InventoryItem inventoryItem = weaponTransform.GetComponentInChildren<InventoryItem>(true);
+
+            if (inventoryItem == null || inventoryItem.itemData == null)
+                continue;
+
+            weaponList.Add(inventoryItem.itemData); //add the item data of each item in weapon holder to the weapon list of item data
+        }
         for (int i = 0; i < weaponList.Count; i++) //if the player owns a weapon in the list on start select it 
         {
             if (PlayerOwnsSelectedWeapon(i))
@@ -88,13 +93,13 @@ public class WeaponSwitcher : MonoBehaviour
         selectedWeaponIndex = fromWeaponIndex; //get the index of the current held weapon
         pendingWeaponIndex = toWeaponIndex; //hold the next index value in pending weapon
 
-        weaponAnimators[selectedWeaponIndex].SetBool("holster",true); //play the holster animation the held weapon
+        weaponAnimator.SetBool("holster",true); //play the holster animation the held weapon
     }
 
 
     public void AnimEventFinishHolster()  //ANIMATION EVENT ONLY
     {
-        weaponAnimators[selectedWeaponIndex].SetBool("holster", false); //reset bool
+        weaponAnimator.SetBool("holster", false); //reset bool
 
         SelectWeapon(pendingWeaponIndex); //after the holster animation is finished select the new weapon at index
         selectedWeaponIndex = pendingWeaponIndex; //update selected weapon index
@@ -103,7 +108,7 @@ public class WeaponSwitcher : MonoBehaviour
 
     public void AnimEventFinishDraw()  //ANIMATION EVENT ONLY
     {
-        weaponAnimators[selectedWeaponIndex].SetTrigger("idling"); //allow switching again after draw animation is finished
+        weaponAnimator.SetTrigger("idling"); //allow switching again after draw animation is finished
         switching = false;
     }
 

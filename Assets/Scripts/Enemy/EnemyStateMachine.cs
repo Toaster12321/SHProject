@@ -62,8 +62,6 @@ public class EnemyStateMachine : StateManager<EnemyStateMachine.EEnemyState>
     {
         _originalColor = _enemyRenderer.color;
         currentHP = maxHP; //make sure enemy starts with max HP
-
-        print(InventoryManager.instance);
         if (EnemyManager.instance.killedEnemyList.Contains(enemyID))
         {
             GameObject.Destroy(gameObject);
