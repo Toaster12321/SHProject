@@ -123,6 +123,9 @@ public class WeaponSwitcher : MonoBehaviour
             }
             else
             {
+                if (_weapon.gameObject.tag == "Player")
+                    return;
+
                 _weapon.gameObject.SetActive(false);
             }
 
