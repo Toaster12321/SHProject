@@ -61,7 +61,6 @@ public class MeleeWeapon : MonoBehaviour
 
         if (attackCount == 0)
         {
-            print(attackCount);
             if (knifeAnimator.GetBool("dashing"))
                 knifeAnimator.SetBool("dashing", false);
             knifeAnimator.SetBool("swinging",true);
@@ -70,7 +69,6 @@ public class MeleeWeapon : MonoBehaviour
         }
         else
         {
-            print(attackCount);
             if (knifeAnimator.GetBool("dashing"))
                 knifeAnimator.SetBool("dashing", false);
             knifeAnimator.SetBool("following_up", true);
@@ -149,13 +147,5 @@ private void OnTriggerEnter(Collider other) //when the collider connects with th
         weaponSwitcher.AnimEventFinishDraw();
     }
 
-    private void AnimEventFinishSwing()
-    {
-        knifeAnimator.SetBool("swinging", false);
-    }
-    private void AnimEventFinishFollowUp()
-    {
-        knifeAnimator.SetBool("following_up", false);
-    }
 }
 

@@ -36,7 +36,7 @@ public class InteractObject : MonoBehaviour
     [SerializeField] private Material emissiveMaterial;
 
     [Header("Pickable Item")]
-    [SerializeField] private ItemData itemResource;
+    public ItemData itemResource;
 
     [Header("Ammo Refill")]
     [SerializeField] private Revolver gun;

@@ -66,7 +66,7 @@ public class CameraRaycast : MonoBehaviour
 
             case InteractObject.InteractObjectType.PickableItem:
                 currentObject.AddItemToInventory();
-                weaponSwitcher.EquipWeapon();
+                weaponSwitcher.EquipWeapon(currentObject.itemResource);
                 break;
 
             case InteractObject.InteractObjectType.AmmoRefill:
